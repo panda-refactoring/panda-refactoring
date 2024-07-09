@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap");
+
+@layer base {
+  body {
+    @apply text-common-black;
+  }
+  input {
+    @apply block w-full focus:outline-none;
+  }
+  textarea {
+    @apply focus:outline-none;
+  }
+
+  .myfont {
+    font-family: "Work Sans", sans-serif;
+  }
+
+  .signup-minheight {
+    min-height: 70vh;
+  }
+}
+
+@font-face {
+  font-family: worksans;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../../public/asset/font/WorkSans-Regular.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: worksans;
+  font-style: bold;
+  font-weight: 700;
+  src: url("../../public/asset/font/WorkSans-Bold.ttf") format("ttf");
+}
