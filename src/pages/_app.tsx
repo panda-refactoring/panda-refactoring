@@ -7,6 +7,7 @@ import { RecoilRoot } from "recoil";
 
 import MainLayout from "../styles/global-layout";
 import ModalContextProvider from "../context/modal-context";
+import MSWProvider from "../mocks/msw-provider";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const queryClient = new QueryClient();
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <RecoilRoot>
           <ModalContextProvider>
             <MainLayout>
-              <Component {...pageProps} />
+              <MSWProvider>
+                <Component {...pageProps} />
+              </MSWProvider>
             </MainLayout>
           </ModalContextProvider>
         </RecoilRoot>

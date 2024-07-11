@@ -13,10 +13,24 @@ import ErrorBoundary from "./error-boundary";
 import { bannerImages } from "../lib/banner-images";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 const Home: NextPage = () => {
   const { userData } = useAuth();
   const { ModalUI, setModalState } = useModal();
+
+  const { data: testData } = useQuery({
+    queryKey: ["test"],
+    queryFn: () => axios.get("http://localhost:3000/test"),
+  });
+
+  useEffect(() => {
+    if (!testData) return;
+
+    console.log(testData.data);
+  }, [testData]);
 
   return (
     <>
@@ -33,12 +47,12 @@ const Home: NextPage = () => {
         setModal={setModalState}
       >
         <div className="space-y-10 py-10">
-          <Recommend userData={userData?.user} />
+          {/* <Recommend userData={userData?.user} />
           <RecentStyle />
-          <MainLookbook />
+          <MainLookbook /> */}
           <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">
             <p className="text-base">매일 수익이 발생하는 옷장공유</p>
-            <p className="mt-1 mb-5 text-2xl">지금 시작해보세요!</p>
+            <p className="mb-5 mt-1 text-2xl">지금 시작해보세요!</p>
             <Button
               type="button"
               text="바로가기"

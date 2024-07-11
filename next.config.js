@@ -4,19 +4,18 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "panda-products.s3.ap-northeast-2.amazonaws.com",
-        port: "",
-        pathname: "**",
+        protocol: 'https',
+        hostname: 'panda-products.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '**',
       },
     ],
   },
 };
 
-
 // Inected Content via Sentry Wizard Below
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs');
 
 module.exports = withSentryConfig(
   module.exports,
@@ -27,8 +26,8 @@ module.exports = withSentryConfig(
     // Suppresses source map uploading logs during build
     silent: true,
 
-    org: "panda-1r",
-    project: "panda",
+    org: 'panda-1r',
+    project: 'panda',
   },
   {
     // For all available options, see:
@@ -41,7 +40,7 @@ module.exports = withSentryConfig(
     transpileClientSDK: true,
 
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    tunnelRoute: "/monitoring",
+    tunnelRoute: '/monitoring',
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
