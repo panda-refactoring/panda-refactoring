@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 
   const { data: testData } = useQuery({
     queryKey: ["test"],
-    queryFn: () => axios.get("http://localhost:3000/test"),
+    queryFn: () => axios.get("/api/products"),
   });
 
   useEffect(() => {
@@ -47,9 +47,9 @@ const Home: NextPage = () => {
         setModal={setModalState}
       >
         <div className="space-y-10 py-10">
-          {/* <Recommend userData={userData?.user} />
+          <Recommend userData={userData?.user} />
           <RecentStyle />
-          <MainLookbook /> */}
+          <MainLookbook />
           <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">
             <p className="text-base">매일 수익이 발생하는 옷장공유</p>
             <p className="mb-5 mt-1 text-2xl">지금 시작해보세요!</p>

@@ -19,13 +19,14 @@ import useModal from "../../hooks/useModal";
 import Overlay from "../../components/ui/overlay";
 import { updateViews } from "../../utils/market-view";
 import { apiGet } from "../../utils/request";
+import { ProductData } from "../../types/data-type";
 
 const Product: NextPage = () => {
   const router = useRouter();
   const { id: productId } = router.query;
 
-  const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
-  const { state, contents: userContents } = userInfo;
+  // const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
+  // const { state, contents: userContents } = userInfo;
 
   const [currentUserId, setCurrentUserId] = useState<number>(0);
 
@@ -41,16 +42,17 @@ const Product: NextPage = () => {
 
   const { ModalUI, setLoginModalState } = useModal();
 
-  useEffect(() => {
-    if (userContents) setCurrentUserId(userContents.id);
-  }, [state]);
+  // useEffect(() => {
+  //   if (userContents) setCurrentUserId(userContents.id);
+  // }, [state]);
 
   const getProduct = async () => {
     const data = await apiGet.GET_ITEM(productId as string);
-    return data.product;
+
+    return data;
   };
 
-  const { data: product, isLoading } = useQuery("getData", getProduct, {
+  const { data: product, isLoading } = useQuery<ProductData>("getData", getProduct, {
     enabled: !!productId,
     notifyOnChangeProps: "tracked",
   });
@@ -78,18 +80,19 @@ const Product: NextPage = () => {
   };
 
   const setInitialFav = () => {
-    updateFavCount(product.fav.length);
-    initialButtonStyle(product.fav);
+    updateFavCount(product!.fav.length);
+    initialButtonStyle(product!.fav);
   };
 
   useEffect(() => {
     if (!product) return;
     setInitialFav();
 
-    if (!userContents) return;
-    updateViews(userContents.id, Number(productId), product.view);
+    // if (!userContents) return;
+    // updateViews(userContents.id, Number(productId), product.view);
   }, [product]);
 
+  // * TODO: product없을 때 예외처리 (상품정보를 찾아올 수 없습니다.)
   return (
     <>
       <Header goBack />
@@ -128,9 +131,9 @@ const Product: NextPage = () => {
               )}
             </div>
             <div className="mt-4 mb-6 flex gap-2">
-              <div className="rounded-full border border-common-black px-2 py-0.5">
+              {product.category !== "" && <div className="rounded-full border border-common-black px-2 py-0.5">
                 {categoryToEng(product.category)}
-              </div>
+              </div>}
               <div className="rounded-full border border-common-black px-2 py-0.5">
                 {firstToUppercase(product.brand)}
               </div>
