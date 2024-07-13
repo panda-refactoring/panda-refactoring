@@ -26,12 +26,6 @@ const Home: NextPage = () => {
     queryFn: () => axios.get("/api/products"),
   });
 
-  useEffect(() => {
-    if (!testData) return;
-
-    console.log(testData.data);
-  }, [testData]);
-
   return (
     <>
       <Header />

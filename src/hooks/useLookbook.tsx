@@ -10,7 +10,7 @@ const useLookbook = ({ lookbooks }: { lookbooks: LookbookData[] }) => {
 
   useEffect(() => {
     if (!lookbooks.length) return;
-    setLookBookList(sortingWithFavCounts(lookbooks));
+    setLookBookList(sortingWithFavCounts(lookbooks).splice(0,7));
   }, [lookbooks]);
 
   return { lookbookList };

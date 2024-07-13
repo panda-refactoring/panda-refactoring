@@ -76,7 +76,7 @@ const apiPost = {
     axiosPost("/api/user/image", data),
 
   GET_ALL_POST: (id: string, pageParam: string) =>
-    axiosPost(`/api/look/post?cursor=${pageParam}`, { lookbookId: id }),
+    axiosPost(`/api/look/post?pageParam=${pageParam}`, { lookbookId: id }),
 };
 
 export { apiGet, apiPost, axiosDelete };

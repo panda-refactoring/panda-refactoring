@@ -89,7 +89,7 @@ export interface LookbookData {
   hashTag: { id: number; tag: string }[];
   imgurl: { id: number; img: string }[];
   product: ProductDataMin[];
-  comment: {
+  comment?: {
     id: number;
     text: string;
     author: { nickname: string };

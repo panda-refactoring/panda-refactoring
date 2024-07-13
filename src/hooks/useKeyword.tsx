@@ -50,7 +50,6 @@ const useKeyword = ({ userData }: { userData?: UserData }) => {
 
   useEffect(() => {
     if (session === "unauthenticated" && status === "success") {
-      console.log(products)
       setKeyword("추천아이템");
       setKeywordItemList({ 추천아이템: products });
     }

@@ -137,7 +137,7 @@ const PostItem: NextPage<PostItemProps> = ({
             <Icon icon="icon-park-outline:like" onClick={toggleFavButton} />
           )}
         </div>
-        {showComment && comment?.length > 0 && (
+        {showComment && comment && comment?.length > 0 && (
           <div className="py-4">
             <div>
               <h2 className="mr-2 inline-block text-lg">comments</h2>

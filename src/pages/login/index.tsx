@@ -23,8 +23,8 @@ const Login: NextPage = () => {
   const { setSigninModalState } = useModal();
 
   const findUser = async (userEmail: string) => {
-    const { data: response } = await axios.get(`/api/user?email=${userEmail}`);
-    return response;
+    const { data } = await axios.get(`/api/user?email=${userEmail}`);
+    return data;
   };
 
   const { mutate, data } = useMutation(findUser);
@@ -37,6 +37,7 @@ const Login: NextPage = () => {
   };
 
   useEffect(() => {
+    console.log(session)
     session && mutate(session?.user?.email as string);
   }, [session]);
 

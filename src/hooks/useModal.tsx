@@ -33,7 +33,7 @@ const useModal = () => {
     auth: {
       message:
         "사용자 인증이 해제되어 재로그인이 필요합니다.,로그인페이지로 이동할까요?",
-      btnText: "재로그인하기",
+      btnText: "로그인하기",
       cancelText: "둘러보기",
       submitFn: goLoginPage,
     },
