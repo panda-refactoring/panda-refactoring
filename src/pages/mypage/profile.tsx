@@ -49,7 +49,7 @@ const ProfileEdit: NextPage = () => {
   useEffect(() => {
     if (state === "hasValue") {
       setSelectedTag(
-        userContents.keywords.map(({ tag }: { tag: string }) => tag),
+        userContents?.keywords?.map(({ tag }: { tag: string }) => tag),
       );
       setIsLoading(false);
     }

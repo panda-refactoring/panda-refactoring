@@ -6,6 +6,7 @@ import { ProductData, UserData } from "../types/data-type";
 import { useSession } from "next-auth/react";
 
 const useKeyword = ({ userData }: { userData?: UserData }) => {
+  
   const { status: session } = useSession();
 
   const { data: products, status } = useQuery<ProductData[]>({

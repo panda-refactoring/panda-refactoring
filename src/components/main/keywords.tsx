@@ -12,7 +12,7 @@ const Keywords: NextPage<KeywordsProps> = ({
 
   return (
     <div className="flex h-11 w-full items-center gap-2 overflow-hidden overflow-x-scroll font-bold text-common-gray scrollbar-hide">
-      {keywords.map(({ tag, id }: { tag: string; id: number }) => (
+      {keywords?.map(({ tag, id }: { tag: string; id: number }) => (
         <div key={id} className="relative h-9 min-w-[65px] rounded-lg px-3">
           <button
             type="button"

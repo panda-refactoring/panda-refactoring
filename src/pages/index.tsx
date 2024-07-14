@@ -13,6 +13,9 @@ import ErrorBoundary from "./error-boundary";
 import { bannerImages } from "../lib/banner-images";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 const Home: NextPage = () => {
   const { userData } = useAuth();
@@ -38,7 +41,7 @@ const Home: NextPage = () => {
           <MainLookbook />
           <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">
             <p className="text-base">매일 수익이 발생하는 옷장공유</p>
-            <p className="mt-1 mb-5 text-2xl">지금 시작해보세요!</p>
+            <p className="mb-5 mt-1 text-2xl">지금 시작해보세요!</p>
             <Button
               type="button"
               text="바로가기"
