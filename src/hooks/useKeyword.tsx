@@ -41,7 +41,6 @@ const useKeyword = ({ userData }: { userData?: UserData }) => {
   };
 
   useEffect(() => {
-    console.log(userData)
     if (status !== "success" || !userData) return;
 
     setKeyword(userData.keywords[0]?.tag);

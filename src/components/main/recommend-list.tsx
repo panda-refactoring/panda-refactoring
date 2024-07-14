@@ -26,9 +26,18 @@ const RecommendList: NextPage<RecommendListProps> = ({
     if (selectedKeyword) setRecommendItems(keywordItemList);
   }, [selectedKeyword, keywordItemList]);
 
+  const hasRecommendList = recommendList?.length === 0;
+  const isVisibleRecommendButton = recommendList?.length > 0 && keywordItemList[selectedKeyword] 
+
   return (
     <>
-      {recommendList?.length === 0 ? (
+      {hasRecommendList ? (
+        <div className="grid min-h-[540px] grid-cols-2 gap-3 transition">
+        {recommendList?.map(data => (
+          <MainProduct {...data} key={data.id} imgh="h-[190px]" />
+        ))}
+      </div>
+      ): (
         <div className="flex min-h-[540px] items-center justify-center text-center">
           <div>
             <div className="mx-auto mb-4 h-20 w-20">
@@ -37,14 +46,8 @@ const RecommendList: NextPage<RecommendListProps> = ({
             <p>해당 키워드에 준비된 상품이 없습니다.</p>
           </div>
         </div>
-      ): (
-      <div className="grid min-h-[540px] grid-cols-2 gap-3 transition">
-        {recommendList?.map(data => (
-          <MainProduct {...data} key={data.id} imgh="h-[190px]" />
-        ))}
-      </div>
       )}
-      {recommendList?.length > 0 && keywordItemList[selectedKeyword] && (
+      {isVisibleRecommendButton && (
         <RecommendButton
           refreshRecommends={setRecommendItems}
           keywordItemList={keywordItemList}

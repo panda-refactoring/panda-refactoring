@@ -1,11 +1,9 @@
-import { Icon } from "@iconify/react";
+import  { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
 import { useMutation } from "react-query";
 import useFav from "../../../hooks/useFav";
 import { LookbookData, UserData } from "../../../types/data-type";
-import { setModalProps } from "../../../types/modal-type";
 import ImageSlide from "../../market/detail/image-slide";
 import TagItem from "./tag-item";
 
@@ -28,7 +26,7 @@ const PostItem: NextPage<PostItemProps> = ({
   description,
   hashTag,
   product,
-  comment,
+  comment = [],
   updateComment,
   deleteComment,
   isModal,
@@ -48,9 +46,9 @@ const PostItem: NextPage<PostItemProps> = ({
     initialButtonStyle,
   } = useFav(currentUserId);
 
-  const router = useRouter();
-
   const [showComment, setShowComment] = useState<boolean>(false);
+
+  const isVisbileComment = showComment && comment.length > 0;
 
   const { mutate } = useMutation(updateFav, {
     onSuccess: ({ data }) => {
@@ -60,8 +58,6 @@ const PostItem: NextPage<PostItemProps> = ({
       console.log(response.data.message);
     },
   });
-
-  const goLoginPage = () => router.push("/login");
 
   const clickComment = () => {
     if (!currentUserId) {
@@ -137,7 +133,7 @@ const PostItem: NextPage<PostItemProps> = ({
             <Icon icon="icon-park-outline:like" onClick={toggleFavButton} />
           )}
         </div>
-        {showComment && comment && comment?.length > 0 && (
+        {isVisbileComment && (
           <div className="py-4">
             <div>
               <h2 className="mr-2 inline-block text-lg">comments</h2>

@@ -25,6 +25,7 @@ const Product: NextPage = () => {
   const router = useRouter();
   const { id: productId } = router.query;
 
+  // * TODO: 추후 userData받아오는 로직 리팩토링 후 주석 제거 예정
   // const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
   // const { state, contents: userContents } = userInfo;
 
@@ -80,7 +81,8 @@ const Product: NextPage = () => {
   };
 
   const setInitialFav = () => {
-    updateFavCount(product!.fav.length);
+    if (!product) return;
+    updateFavCount(product.fav.length);
     initialButtonStyle(product!.fav);
   };
 

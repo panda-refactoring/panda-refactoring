@@ -22,7 +22,6 @@ const useAuth = () => {
   });
 
   useEffect(() => {
-    console.log(userEmail)
     if (session === "authenticated") {
       mutate(userEmail.user?.email as string);
       return;

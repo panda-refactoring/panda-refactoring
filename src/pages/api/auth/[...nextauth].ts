@@ -24,12 +24,6 @@ export default NextAuth({
       // @ts-ignore
       async authorize(credentials: Credentials) {
         const { email, password, nickname } = credentials;
-        // const CheckUser = await client.user.findMany({
-        //   where: {
-        //     email,
-        //     password,
-        //   },
-        // });
         const CheckUser = loginInfos.filter(info => info.email === email && info.password === password);
         if (CheckUser.length === 0) {
           throw new Error("유저 정보를 찾을 수 없습니다.");
