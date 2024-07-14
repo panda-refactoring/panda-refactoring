@@ -21,11 +21,6 @@ const Home: NextPage = () => {
   const { userData } = useAuth();
   const { ModalUI, setModalState } = useModal();
 
-  const { data: testData } = useQuery({
-    queryKey: ["test"],
-    queryFn: () => axios.get("/api/products"),
-  });
-
   return (
     <>
       <Header />

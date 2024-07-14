@@ -39,16 +39,11 @@ const Market: NextPage = () => {
 
   return (
     <div>
-      {isFilterOpen && (
-        <div
-          className={cls(
-            "fixed z-50 h-screen w-[390px] translate-x-[390px] bg-white",
-            isFilterOpen ? "translate-x-0" : "",
-          )}
-        >
-          <FilterOverlay closeOverlay={closeFilterOverlay} />
-        </div>
-      )}
+      {isFilterOpen && <div
+        className={isFilterOpen ? "fixed z-50 h-screen w-[390px] bg-white translate-x-0" : "fixed z-50 h-screen w-[390px] bg-white translate-x-[390px]"}
+      >
+        <FilterOverlay closeOverlay={closeFilterOverlay} />
+      </div>}
       <Header />
       <ModalUI />
       <CategoryNavigation />

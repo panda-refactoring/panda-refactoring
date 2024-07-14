@@ -12,16 +12,19 @@ const useAuth = () => {
   const { setAuthModalState } = useModal();
 
   const {
-    data: userData,
-    mutate: mutateFn,
+    data,
+    mutate,
     status: mutateStatus,
   } = useMutation({
-    mutationFn: (key: string) => apiGet.GET_USER(key),
+    mutationFn: async (email: string) => await apiGet.GET_USER(email),
+    onSuccess: (data) => console.log(data),
+    onError: (err) => console.log(err)
   });
 
   useEffect(() => {
+    console.log(userEmail)
     if (session === "authenticated") {
-      mutateFn(userEmail.user?.email as string);
+      mutate(userEmail.user?.email as string);
       return;
     }
 
@@ -37,7 +40,7 @@ const useAuth = () => {
     }
   }, [session]);
 
-  return { userData, mutateStatus };
+  return { userData: data, status: mutateStatus };
 };
 
 export default useAuth;

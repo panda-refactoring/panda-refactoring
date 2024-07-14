@@ -1,19 +1,22 @@
 import { http, HttpResponse } from 'msw';
 import { products } from './data/products';
 import { looks } from './data/looks';
+import { users } from './data/users';
 
 export const handlers = [
   http.get('/test', () => HttpResponse.json({ successText: '성공입니다😀'})),
   http.get(`/api/user`, ({request}) => {
     const url = new URL(request.url);
 
-    const user = url.searchParams.get('email');
+    const enteredEmail = url.searchParams.get('email'); // panda@test.com
 
-    if (!user) {
+    if (!enteredEmail) {
       return new HttpResponse(null, { status: 404 })
     }
 
-    return HttpResponse.json({ user })
+    const userData = users.find(({email}) => email === enteredEmail)
+
+    return HttpResponse.json({ user: userData })
   }),
   http.get('/api/products', () => HttpResponse.json(products)),
   http.get('/api/products/:id', ({request}) => {

@@ -8,7 +8,7 @@ export const looks = [
     description: 'test1',
     hashTag: [{ id: 0, tag: 'tag1' },{ id: 1, tag: 'tag2' }],
     imgurl: [{ id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDItMjAtMjAtMTctMTggMDAxLmpwZWc%3D.jpeg' },],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(product => product.id === 3),
     fav: [],
     userId: 1,
     user: {
@@ -40,7 +40,7 @@ export const looks = [
     description: 'test3',
     hashTag: [{ id: 0, tag: 'tag1' },{ id: 1, tag: 'tag2' },{ id: 2, tag: 'tag3' }],
     imgurl: [{ id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDItMjAtMjAtMTctMTkgMDAyLmpwZWc%3D.jpeg' },],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 8 || id === 9),
     fav: [],
     userId: 1,
     user: {
@@ -54,7 +54,7 @@ export const looks = [
     description: 'test4',
     hashTag: [{ id: 0, tag: 'tag1' },{ id: 1, tag: 'tag2' },{ id: 2, tag: 'tag3' }],
     imgurl: [{ id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDItMjAtMjAtMTctMTkgMDAzLmpwZWc%3D.jpeg' },],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 47),
     fav: [],
     userId: 1,
     user: {
@@ -71,7 +71,7 @@ export const looks = [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTAtMDMtNDYtMTcgMDAxLmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTAtMDMtNDYtMTcgMDAyLmpwZWc%3D.jpeg' }
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 26),
     fav: [],
     userId: 2,
     user: {
@@ -87,7 +87,7 @@ export const looks = [
     imgurl: [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTgtNTQtMDggMDAxLmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTgtNTQtMDkgMDAyLmpwZWc%3D.jpeg' }],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 31),
     fav: [{
       id: 0,
       productId: 1,
@@ -114,7 +114,7 @@ export const looks = [
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTgtNTQtMDkgMDA2LmpwZWc%3D.jpeg' },
       { id: 2, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTgtNTQtMDkgMDA3LmpwZWc%3D.jpeg' }
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 51),
     fav: [{
       id: 0,
       productId: 1,
@@ -150,7 +150,7 @@ export const looks = [
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTgtNTQtMDkgMDA5LmpwZWc%3D.jpeg' },
       { id: 2, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTgtNTQtMDkgMDEwLmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [{
       id: 0,
       productId: 1,
@@ -179,7 +179,7 @@ export const looks = [
     imgurl: [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktMDEtNDQgMDAzLmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [],
     userId: 4,
     user: {
@@ -197,7 +197,7 @@ export const looks = [
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktNTktNDEgMDAxLmpwZWc%3D.jpeg' },
       { id: 2, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktNTktNDEgMDAyLmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 58),
     fav: [{
       id: 0,
       productId: 1,
@@ -232,7 +232,7 @@ export const looks = [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktNTktNDEgMDA0LmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktNTktNDEgMDAzLmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [{
       id: 0,
       productId: 1,
@@ -253,7 +253,7 @@ export const looks = [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktNTktNDIgMDEwLmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTEtMTktNTktNDIgMDA5LmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [],
     userId: 4,
     user: {
@@ -270,7 +270,7 @@ export const looks = [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTMtMTgtMDAtMTUgMDAxLmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTMtMTgtMDAtMTUgMDAyLmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [{
       id: 0,
       productId: 1,
@@ -294,7 +294,7 @@ export const looks = [
     imgurl: [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDMtMTMtMTgtMDAtMTYgMDA1LmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [],
     userId: 3,
     user: {
@@ -311,7 +311,7 @@ export const looks = [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDQtMDYtMDAtMzctMDMgMDAxLmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDQtMDYtMDAtMzctMDMgMDAyLmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [],
     userId: 4,
     user: {
@@ -328,7 +328,7 @@ export const looks = [
       { id: 0, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDQtMDYtMDAtMzctMDQgMDA1LmpwZWc%3D.jpeg' },
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDQtMDYtMDAtMzctMDQgMDA0LmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: productMin.filter(({id}) => id === 15),
     fav: [],
     userId: 4,
     user: {
@@ -346,7 +346,7 @@ export const looks = [
       { id: 1, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDQtMDYtMDAtMzctMDQgMDA3LmpwZWc%3D.jpeg' },
       { id: 2, img: 'https://panda-products.s3.ap-northeast-2.amazonaws.com/lookbook/S2FrYW9UYWxrX1Bob3RvXzIwMjMtMDQtMDYtMDAtMzctMDUgMDA4LmpwZWc%3D.jpeg' },
     ],
-    product: productMin.filter(product => product.id === 15),
+    product: [],
     fav: [],
     userId: 4,
     user: {

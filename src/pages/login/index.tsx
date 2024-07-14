@@ -14,6 +14,7 @@ import { useMutation } from "react-query";
 import axios from "axios";
 import useModal from "../../hooks/useModal";
 import existUser from "../existUser";
+import { apiGet } from "../../utils/request";
 
 const Login: NextPage = () => {
   const { data: session } = useSession();
@@ -23,7 +24,7 @@ const Login: NextPage = () => {
   const { setSigninModalState } = useModal();
 
   const findUser = async (userEmail: string) => {
-    const { data } = await axios.get(`/api/user?email=${userEmail}`);
+    const { data } = await apiGet.GET_USER(userEmail)
     return data;
   };
 
@@ -37,7 +38,6 @@ const Login: NextPage = () => {
   };
 
   useEffect(() => {
-    console.log(session)
     session && mutate(session?.user?.email as string);
   }, [session]);
 
