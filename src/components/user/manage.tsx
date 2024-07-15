@@ -3,8 +3,8 @@ import { NextPage } from "next";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
-import { UserData } from "../../types/data-type";
-import { axiosDelete } from "../../utils/request";
+import { UserData } from "../../common/types";
+import { axiosDelete } from "../../service/request";
 
 const UserManage: NextPage<{
   userData: UserData;

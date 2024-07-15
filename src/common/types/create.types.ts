@@ -1,6 +1,6 @@
 import { FormEvent, MouseEvent } from "react";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { ProductData } from "./data-type";
+import { ProductData } from "../../common/types";
 
 export interface CreateState {
   [key: string]: string | number | FileList | undefined;

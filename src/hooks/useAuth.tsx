@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useMutation } from "react-query";
 
 import useModal from "./useModal";
-import { apiGet } from "../utils/request";
-import { isCookie, setCookie } from "../utils/cookie";
+import { apiGet } from "../service/request";
+import { isCookie, setCookie } from "../common/util/cookie";
 
 const useAuth = () => {
   const { data: userEmail, status: session } = useSession();

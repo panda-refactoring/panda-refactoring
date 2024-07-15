@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { Icon } from "@iconify/react";
 import { useMutation } from "react-query";
 import useFav from "../../../hooks/useFav";
-import { LookbookData, UserData } from "../../../types/data-type";
+import { LookbookData, UserData } from "../../../common/types";
 import ImageSlide from "../../market/detail/image-slide";
 import TagItem from "./tag-item";
 

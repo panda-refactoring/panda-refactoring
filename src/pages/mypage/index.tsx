@@ -1,23 +1,23 @@
 import { Icon } from "@iconify/react";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import Header from "../../components/ui/header";
-import { cls } from "../../utils/class";
+import Header from "../../components/common/header";
+import { cls } from "../../common/util/class";
 import { useRecoilValueLoadable } from "recoil";
 import {
   LookbookDataMin,
   ProductDataMin,
   UserData,
-} from "../../types/data-type";
+} from "../../common/types";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Navigation from "../../components/ui/navigation";
-import LoadingSpinner from "../../components/ui/loading-spinner";
+import Navigation from "../../components/common/navigation";
+import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import { currentUserInfoQuery } from "../../recoil/user";
 import MainProduct from "../../components/main/product-item";
 import Link from "next/link";
 import noExistUser from "../noExistUser";
-import emptybox from "../../../public/asset/image/emptybox.svg";
+import emptybox from "public/asset/image/emptybox.svg";
 
 const MyPage: NextPage = () => {
   const userInfo = useRecoilValueLoadable(currentUserInfoQuery);

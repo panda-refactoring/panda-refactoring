@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
-import client from "../../../lib/client";
-import createHashedPassword from "../../../utils/hash";
+import client from "../../../common/lib/client";
+import createHashedPassword from "../../../common/util/hash";
 import { loginInfos } from "../../../mocks/data/users";
 
 interface Credentials {

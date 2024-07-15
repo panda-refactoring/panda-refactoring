@@ -4,11 +4,11 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import Header from "../../components/ui/header";
+import Header from "../../components/common/header";
 import MainProduct from "../../components/main/product-item";
 import useToast from "../../hooks/useToast";
-import { ProductDataMin } from "../../types/data-type";
-import { apiGet } from "../../utils/request";
+import { ProductDataMin } from "../../common/types";
+import { apiGet } from "../../service/request";
 
 interface KeywordInterface {
   id: number;

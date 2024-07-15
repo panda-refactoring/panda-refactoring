@@ -6,10 +6,10 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import Header from "../../components/ui/header";
-import LoadingSpinner from "../../components/ui/loading-spinner";
+import Header from "../../components/common/header";
+import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import PostItem from "../../components/lookbook/detail/post-item";
-import { LookbookData } from "../../types/data-type";
+import { LookbookData } from "../../common/types";
 import { useInView } from "react-intersection-observer";
 import React, { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
@@ -17,7 +17,7 @@ import { useRecoilValueLoadable } from "recoil";
 import { currentUserInfoQuery } from "../../recoil/user";
 import { useRouter } from "next/router";
 import useModal from "../../hooks/useModal";
-import { apiGet, apiPost } from "../../utils/request";
+import { apiGet, apiPost } from "../../service/request";
 
 const Post: NextPage = () => {
   const userInfo = useRecoilValueLoadable(currentUserInfoQuery);

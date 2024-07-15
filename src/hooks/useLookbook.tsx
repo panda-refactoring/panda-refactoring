@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LookbookData } from "../types/data-type";
+import { LookbookData } from "../common/types";
 
 const useLookbook = ({ lookbooks }: { lookbooks: LookbookData[] }) => {
   const [lookbookList, setLookBookList] = useState<LookbookData[]>([]);

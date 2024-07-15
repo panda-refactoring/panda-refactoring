@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useMutation } from "react-query";
 import useFav from "../../hooks/useFav";
-import { LookbookData } from "../../types/data-type";
+import { LookbookData } from "../../common/types";
 
 interface LookItemProps extends LookbookData {
   userId: number;

@@ -1,19 +1,19 @@
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import Header from "../../components/ui/header";
+import Header from "../../components/common/header";
 import FilterOverlay from "../../components/market/filter/market-filter";
-import Navigation from "../../components/ui/navigation";
-import FloatingButton from "../../components/ui/floating-button";
+import Navigation from "../../components/common/navigation";
+import FloatingButton from "../../components/common/ui/floating-button";
 import FilterList from "../../components/market/filter-list";
 import MarketList from "../../components/market/market-list";
 import CategoryNavigation from "../../components/market/category-nav";
 import RentButtons from "../../components/market/rent-buttons";
-import { cls } from "../../utils/class";
-import LoadingSpinner from "../../components/ui/loading-spinner";
+import { cls } from "../../common/util/class";
+import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import { useRecoilValueLoadable } from "recoil";
 import { filteredMarketListState } from "../../recoil/filter";
-import { MainProductData } from "../../types/data-type";
+import { MainProductData } from "../../common/types";
 import useModal from "../../hooks/useModal";
 
 const Market: NextPage = () => {
