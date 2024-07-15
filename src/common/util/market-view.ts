@@ -1,4 +1,4 @@
-import { apiPost } from "./request";
+import { apiPost } from "../../service/request";
 
 interface Views {
   id: number;

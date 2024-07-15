@@ -1,25 +1,25 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import Button from "../../components/ui/button";
+import Button from "../../components/common/ui/button";
 import ImageSlide from "../../components/market/detail/image-slide";
 import {
   categoryToEng,
   firstToUppercase,
   priceAddComma,
-} from "../../utils/markets";
+} from "../../common/util/markets";
 import { useRecoilValueLoadable } from "recoil";
 import { useMutation, useQuery } from "react-query";
 import useFav from "../../hooks/useFav";
 import { useRouter } from "next/router";
 import { currentUserInfoQuery } from "../../recoil/user";
-import Header from "../../components/ui/header";
-import LoadingSpinner from "../../components/ui/loading-spinner";
+import Header from "../../components/common/header";
+import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import useModal from "../../hooks/useModal";
-import Overlay from "../../components/ui/overlay";
-import { updateViews } from "../../utils/market-view";
-import { apiGet } from "../../utils/request";
-import { ProductData } from "../../types/data-type";
+import Overlay from "../../components/common/overlay";
+import { updateViews } from "../../common/util/market-view";
+import { apiGet } from "../../service/request";
+import { ProductData } from "../../common/types/data.types";
 
 const Product: NextPage = () => {
   const router = useRouter();

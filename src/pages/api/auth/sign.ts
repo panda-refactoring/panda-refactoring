@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../lib/client";
-import createHashedPassword from "../../../utils/hash";
+import client from "../../../common/lib/client";
+import createHashedPassword from "../../../common/util/hash";
 
 const userSign = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password } = req.body;

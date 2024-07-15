@@ -1,13 +1,13 @@
 import { NextPage } from "next";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import emptybox from "../../../public/asset/image/emptybox.svg";
+import emptybox from "public/asset/image/emptybox.svg";
 
 import MainProduct from "./product-item";
 import RecommendButton from "./ui/recommend-button";
 
 import useRecommend from "../../hooks/useRecommend";
-import { ProductData } from "../../types/data-type";
+import { ProductData } from "../../common/types/data.types";
 
 interface RecommendListProps {
   selectedKeyword: string;
