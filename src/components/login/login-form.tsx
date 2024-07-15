@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import useToast from "../../hooks/useToast";
-import { errorMessage } from "../../lib/error";
-import { cls } from "../../utils/class";
-import createHashedPassword from "../../utils/hash";
-import { regExgPw, regExpEm } from "../../utils/regInput";
+import { errorMessage } from "../common/error";
+import { cls } from "../../common/util/class";
+import createHashedPassword from "../../common/util/hash";
+import { regExgPw, regExpEm } from "../../common/util/regInput";
 
 interface LoginProps {
   email: string;

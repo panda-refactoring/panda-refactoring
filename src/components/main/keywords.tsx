@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 
-import { cls } from "../../utils/class";
-import { KeywordsProps } from "../../types";
+import { cls } from "../../common/util/class";
+import { KeywordsProps } from "./types";
 
 const Keywords: NextPage<KeywordsProps> = ({
   keywords,

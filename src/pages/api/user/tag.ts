@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../lib/client";
+import client from "../../../common/lib/client";
 
 const signTag = async (req: NextApiRequest, res: NextApiResponse) => {
   const { update: updateId, post: postId } = req.query;

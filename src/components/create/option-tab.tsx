@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { Icon } from "@iconify/react";
 import { useRef } from "react";
-import { OptionTabProps } from "../../types/create-type";
+import { OptionTabProps } from "src/pages/create/types";
 
 const OptionTab: NextPage<OptionTabProps> = ({
   options,

@@ -31,4 +31,4 @@ export const taglist = {
     "40대",
     "50대 이상",
   ],
-};
+} as const;

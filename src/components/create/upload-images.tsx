@@ -1,8 +1,7 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
-import React from "react";
 import { UseFormRegister } from "react-hook-form";
-import { CreateState } from "../../types/create-type";
+import { CreateState } from "src/pages/create/types";
 
 interface UploadImagesProps {
   register: UseFormRegister<CreateState>;
