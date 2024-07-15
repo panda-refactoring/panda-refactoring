@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-import Modal from "../components/common/ui/modal";
+import Modal from "../components/ui/modal";
 
 import { modalContext } from "../context/modal-context";
-import { ModalProps } from "../common/types/modal-type";
+import { ModalProps } from "../types/modal-type";
 import { useSession } from "next-auth/react";
 
 const useModal = () => {

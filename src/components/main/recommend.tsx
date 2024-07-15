@@ -4,9 +4,9 @@ import RecommendList from "./recommend-list";
 import Keywords from "./keywords";
 import LoadingFallback from "./ui/loading-fallback";
 
-import NextSuspense from "../../pages/suspense";
+import NextSuspense from "../../hooks/suspense";
 import useKeyword from "../../hooks/useKeyword";
-import { UserData } from "../../common/types/data.types";
+import { UserData } from "../../types/data-type";
 
 const Recommend: NextPage<{
   userData?: UserData;

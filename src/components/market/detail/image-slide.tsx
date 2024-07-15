@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 import Image from "next/image";
-import { translateClasses } from "../../../common/consts/translate-class";
-import { cls } from "../../../common/util/class";
-import LoadingSpinner from "../../common/ui/loading-spinner";
+import { translateClasses } from "../../../lib/translate-class";
+import { cls } from "../../../utils/class";
+import LoadingSpinner from "../../ui/loading-spinner";
 import useSlide from "../../../hooks/useSlide";
 
 interface Images {

@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { MainProductData } from "../../common/types/data.types";
+import { MainProductData } from "../../types/data-type";
 import Link from "next/link";
 import ViewBox from "./viewbox";
 import Image from "next/image";

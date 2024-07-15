@@ -1,20 +1,20 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FieldValues, useForm } from "react-hook-form";
-import Header from "../../components/common/header";
-import profile from "public/asset/image/addprofile.png";
+import Header from "../../components/ui/header";
+import profile from "../../../public/asset/image/addprofile.png";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
 import useUpload from "../../hooks/useUpload";
 import { useMutation, useQuery } from "react-query";
-import { createImageUrl } from "../../common/util/image-url";
+import { createImageUrl } from "../../utils/image-url";
 import { signOut } from "next-auth/react";
-import Button from "../../components/common/ui/button";
-import { cls } from "../../common/util/class";
+import Button from "../../components/ui/button";
+import { cls } from "../../utils/class";
 import useToast from "../../hooks/useToast";
-import { apiGet, apiPost } from "../../service/request";
+import { apiGet, apiPost } from "../../utils/request";
 import existUser from "../existUser";
-import { credentials } from "../../common/lib/credentials";
+import { credentials } from "../../lib/credentials";
 
 const SignProfile: NextPage = () => {
   const router = useRouter();

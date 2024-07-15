@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import notfind from "../../public/asset/image/full-logo.png";
 
-import Button from "../components/common/ui/button";
+import Button from "../components/ui/button";
 
 const Error404: NextPage = () => {
   return (

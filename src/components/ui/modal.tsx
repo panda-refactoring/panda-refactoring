@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import Overlay from "../overlay";
-import { ModalProps } from "./types";
+import { ModalProps } from "../../types/modal-type";
+import Overlay from "./overlay";
 
 interface IModal {
   modal: ModalProps;

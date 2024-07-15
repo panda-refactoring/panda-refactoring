@@ -1,7 +1,7 @@
 import Error from "next/error";
 import React, { ErrorInfo, ReactNode } from "react";
 
-import { setModalProps } from "../common/types/modal-type";
+import { setModalProps } from "../types/modal-type";
 
 interface Props {
   children: ReactNode;

@@ -1,8 +1,8 @@
 import { atom, selector, selectorFamily } from "recoil";
 import { v1 } from "uuid";
-import { MainProductData } from "../common/types/data.types";
-import { priceMapping, priceWord } from "../common/util/price-mapping";
-import { apiGet } from "../service/request";
+import { MainProductData } from "../types/data-type";
+import { priceMapping, priceWord } from "../utils/price-mapping";
+import { apiGet } from "../utils/request";
 
 const categoryNameState = atom<string>({
   key: `categoryName/${v1()}`,

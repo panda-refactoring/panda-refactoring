@@ -1,5 +1,5 @@
 import { FormEvent, MouseEvent, useState } from "react";
-import { Options } from "../common/types/create-type";
+import { Options } from "../types/create-type";
 
 const useOptions = (initialValues: Options) => {
   const initialOptions = initialValues ? initialValues : {};

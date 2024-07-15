@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
-import { apiGet } from "../service/request";
-import { ProductData, UserData } from "../common/types/data.types";
+import { apiGet } from "../utils/request";
+import { ProductData, UserData } from "../types/data-type";
 import { useSession } from "next-auth/react";
 
 const useKeyword = ({ userData }: { userData?: UserData }) => {

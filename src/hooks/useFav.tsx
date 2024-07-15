@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { apiPost } from "../service/request";
+import { apiPost } from "../utils/request";
 
 interface Fav {
   id: number;

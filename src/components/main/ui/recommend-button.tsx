@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 
-import { ProductData } from "../../../common/types/data.types";
+import { ProductData } from "../../../types/data-type";
 
 const RecommendButton: NextPage<{
   refreshRecommends: (keywordItemList: {

@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { LookbookDataMin } from "../../common/types/data.types";
+import { LookbookDataMin } from "../../types/data-type";
 
 const MainLookBookItem: NextPage<LookbookDataMin> = ({ id, imgurl, user }) => {
   return (
