@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 
-import { ModalProps } from "../types/modal-type";
+import { ModalProps } from "../common/types/modal-type";
 
 export const modalContext = createContext({
   show: false,

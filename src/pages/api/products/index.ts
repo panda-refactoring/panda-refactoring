@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../lib/client";
+import client from "../../../common/lib/client";
 
 const productHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {

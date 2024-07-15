@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import logo from "../../../public/asset/image/full-logo.png";
-import graphic1 from "../../../public/asset/image/graphic1.svg";
-import graphic2 from "../../../public/asset/image/graphic2.svg";
-import graphic3 from "../../../public/asset/image/graphic3.svg";
-import graphic4 from "../../../public/asset/image/graphic4.svg";
+import logo from "public/asset/image/full-logo.png";
+import graphic1 from "public/asset/image/graphic1.svg";
+import graphic2 from "public/asset/image/graphic2.svg";
+import graphic3 from "public/asset/image/graphic3.svg";
+import graphic4 from "public/asset/image/graphic4.svg";
 import LoginForm from "../../components/login/login-form";
-import Button from "../../components/ui/button";
+import Button from "../../components/common/ui/button";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
@@ -14,7 +14,7 @@ import { useMutation } from "react-query";
 import axios from "axios";
 import useModal from "../../hooks/useModal";
 import existUser from "../existUser";
-import { apiGet } from "../../utils/request";
+import { apiGet } from "../../service/request";
 
 const Login: NextPage = () => {
   const { data: session } = useSession();

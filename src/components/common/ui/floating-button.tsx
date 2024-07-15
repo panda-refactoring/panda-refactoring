@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 
 import { Icon } from "@iconify/react";
 
-import useModal from "../../hooks/useModal";
+import useModal from "../../../hooks/useModal";
 
 const FloatingButton: NextPage<{ path: string }> = ({ path }) => {
   const { data: session } = useSession();

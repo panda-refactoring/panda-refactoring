@@ -4,23 +4,23 @@ import React, { ChangeEvent, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useForm, FieldErrors } from "react-hook-form";
 import { useMutation } from "react-query";
-import Button from "../../components/ui/button";
-import Header from "../../components/ui/header";
+import Button from "../../components/common/ui/button";
+import Header from "../../components/common/header";
 import UploadImages from "../../components/create/upload-images";
 import OptionTab from "../../components/create/option-tab";
-import { cls } from "../../utils/class";
-import { createImageUrl } from "../../utils/image-url";
+import { cls } from "../../common/util/class";
+import { createImageUrl } from "../../common/util/image-url";
 import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
 import useUpload from "../../hooks/useUpload";
 import useOptions from "../../hooks/useOptions";
-import { tabData } from "../../lib/fake-data";
-import { CreateState, Options } from "../../types/create-type";
+import { tabData } from "../../common/consts/fake-data";
 import { currentUserInfoQuery, userInfoQuery } from "../../recoil/user";
-import Overlay from "../../components/ui/overlay";
+import Overlay from "../../components/common/overlay";
 import useToast from "../../hooks/useToast";
-import { apiPost } from "../../utils/request";
+import { apiPost } from "../../service/request";
 import noExistUser from "../noExistUser";
-import { credentials } from "../../lib/credentials";
+import { credentials } from "../../common/lib/credentials";
+import { CreateState, Options } from "../../common/types/create.types";
 
 const Create: NextPage = () => {
   const router = useRouter();
@@ -205,9 +205,9 @@ const Create: NextPage = () => {
             />
           </div>
           <div className="[&>*]:flex [&>*]:h-[52px] [&>*]:items-center [&>*]:justify-between [&>*]:border-b [&>*]:px-4">
-            {Object.values(options).map(({ name }, i) => (
-              <div key={`tab${i}`} onClick={() => openOptionItem(name)}>
-                <span>{name}</span>
+            {Object.values(options).map((value, i, arr) => (
+              <div key={`tab${i}`} onClick={() => openOptionItem(value.name)}>
+                <span>{value.name}</span>
                 <Icon icon="material-symbols:arrow-outward" />
               </div>
             ))}

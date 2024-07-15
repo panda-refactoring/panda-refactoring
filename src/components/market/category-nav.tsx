@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { cls } from "../../utils/class";
+import { cls } from "../../common/util/class";
 import { useRecoilState } from "recoil";
 import { categoryNameState } from "../../recoil/filter";
 
