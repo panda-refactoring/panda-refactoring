@@ -22,7 +22,6 @@ import noExistUser from "../noExistUser";
 import { credentials } from "../../common/lib/credentials";
 
 const ProfileEdit: NextPage = () => {
-  console.log(credentials);
   const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
   const { uploadImage, encodeFile, imgsrc } = useUpload(credentials);
   const { state, contents: userContents } = userInfo;
