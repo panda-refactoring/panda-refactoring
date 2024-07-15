@@ -1,6 +1,6 @@
 import { atom, selector, selectorFamily } from "recoil";
 import { v1 } from "uuid";
-import { MainProductData } from "../common/types";
+import { MainProductData } from "../common/types/data.types";
 import { priceMapping, priceWord } from "../common/util/price-mapping";
 import { apiGet } from "../service/request";
 

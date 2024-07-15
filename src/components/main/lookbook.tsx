@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import MainLookBookItem from "./lookbook-item";
 
 import { apiGet } from "../../service/request";
-import { LookbookData, LookbookDataMin } from "../../common/types";
+import { LookbookData, LookbookDataMin } from "../../common/types/data.types";
 import useLookbook from "../../hooks/useLookbook";
 
 const MainLookbook: NextPage = () => {

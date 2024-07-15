@@ -8,7 +8,7 @@ import {
   LookbookDataMin,
   ProductDataMin,
   UserData,
-} from "../../common/types";
+} from "../../common/types/data.types";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Navigation from "../../components/common/navigation";

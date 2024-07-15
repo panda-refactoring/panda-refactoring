@@ -13,7 +13,7 @@ import LoadingSpinner from "../../components/common/ui/loading-spinner";
 
 import useModal from "../../hooks/useModal";
 import { apiGet } from "../../service/request";
-import { LookbookData } from "../../common/types";
+import { LookbookData } from "../../common/types/data.types";
 
 const Lookbook: NextPage = () => {
   const userInfo = useRecoilValueLoadable(currentUserInfoQuery);

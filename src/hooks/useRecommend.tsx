@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProductData } from "../common/types";
+import { ProductData } from "../common/types/data.types";
 import { random } from "../common/util/random";
 import { useSession } from "next-auth/react";
 

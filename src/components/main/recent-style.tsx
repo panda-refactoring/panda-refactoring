@@ -9,7 +9,7 @@ import useSlide from "../../hooks/useSlide";
 import { cls } from "../../common/util/class";
 import { apiGet } from "../../service/request";
 import { translateClasses } from "../../common/consts/translate-class";
-import { ProductData } from "../../common/types";
+import { ProductData } from "../../common/types/data.types";
 import useRecentstyle from "../../hooks/useRecentstyle";
 
 const RecentStyle: NextPage = () => {

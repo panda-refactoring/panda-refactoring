@@ -6,7 +6,7 @@ import LoadingFallback from "./ui/loading-fallback";
 
 import NextSuspense from "../../pages/suspense";
 import useKeyword from "../../hooks/useKeyword";
-import { UserData } from "../../common/types";
+import { UserData } from "../../common/types/data.types";
 
 const Recommend: NextPage<{
   userData?: UserData;

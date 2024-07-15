@@ -13,7 +13,7 @@ import { cls } from "../../common/util/class";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import { useRecoilValueLoadable } from "recoil";
 import { filteredMarketListState } from "../../recoil/filter";
-import { MainProductData } from "../../common/types";
+import { MainProductData } from "../../common/types/data.types";
 import useModal from "../../hooks/useModal";
 
 const Market: NextPage = () => {

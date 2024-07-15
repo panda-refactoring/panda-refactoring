@@ -7,7 +7,7 @@ import MainProduct from "./product-item";
 import RecommendButton from "./ui/recommend-button";
 
 import useRecommend from "../../hooks/useRecommend";
-import { ProductData } from "../../common/types";
+import { ProductData } from "../../common/types/data.types";
 
 interface RecommendListProps {
   selectedKeyword: string;

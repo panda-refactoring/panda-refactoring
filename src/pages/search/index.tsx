@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import Header from "../../components/common/header";
 import MainProduct from "../../components/main/product-item";
 import useToast from "../../hooks/useToast";
-import { ProductDataMin } from "../../common/types";
+import { ProductDataMin } from "../../common/types/data.types";
 import { apiGet } from "../../service/request";
 
 interface KeywordInterface {

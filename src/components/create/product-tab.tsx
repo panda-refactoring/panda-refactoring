@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 import { ChangeEvent, useEffect, useState } from "react";
-import { ProductDataMin } from "../../common/types";
+import { ProductDataMin } from "../../common/types/data.types";
 import { cls } from "../../common/util/class";
 
 interface ProductTagTabProps {

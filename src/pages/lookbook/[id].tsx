@@ -9,7 +9,7 @@ import {
 import Header from "../../components/common/header";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import PostItem from "../../components/lookbook/detail/post-item";
-import { LookbookData } from "../../common/types";
+import { LookbookData } from "../../common/types/data.types";
 import { useInView } from "react-intersection-observer";
 import React, { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";

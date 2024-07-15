@@ -19,7 +19,7 @@ import useModal from "../../hooks/useModal";
 import Overlay from "../../components/common/overlay";
 import { updateViews } from "../../common/util/market-view";
 import { apiGet } from "../../service/request";
-import { ProductData } from "../../common/types";
+import { ProductData } from "../../common/types/data.types";
 
 const Product: NextPage = () => {
   const router = useRouter();

@@ -9,7 +9,7 @@ import UploadImages from "../../components/create/upload-images";
 import Header from "../../components/common/header";
 import useOptions from "../../hooks/useOptions";
 import useUpload from "../../hooks/useUpload";
-import { ProductDataMin } from "../../common/types";
+import { ProductDataMin } from "../../common/types/data.types";
 import { cls } from "../../common/util/class";
 import ProductTagTab from "../../components/create/product-tab";
 import { createImageUrl } from "../../common/util/image-url";

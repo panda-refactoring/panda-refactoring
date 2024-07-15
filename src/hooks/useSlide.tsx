@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProductData } from "../common/types";
+import { ProductData } from "../common/types/data.types";
 
 const useSlide = ({
   list,
