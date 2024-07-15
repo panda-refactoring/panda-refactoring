@@ -1,4 +1,4 @@
-import { ProductData } from "../types/data.types";
+import { ProductData } from "../types/data-type";
 
 export const random = (productData: ProductData[]) => {
   const items = productData.slice();

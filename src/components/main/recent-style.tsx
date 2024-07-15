@@ -6,10 +6,10 @@ import { Icon } from "@iconify/react";
 import MainProduct from "./product-item";
 
 import useSlide from "../../hooks/useSlide";
-import { cls } from "../../common/util/class";
-import { apiGet } from "../../service/request";
-import { translateClasses } from "../../common/consts/translate-class";
-import { ProductData } from "../../common/types/data.types";
+import { cls } from "../../utils/class";
+import { apiGet } from "../../utils/request";
+import { translateClasses } from "../../lib/translate-class";
+import { ProductData } from "../../types/data-type";
 import useRecentstyle from "../../hooks/useRecentstyle";
 
 const RecentStyle: NextPage = () => {

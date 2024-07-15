@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../common/lib/client";
+import client from "../../../lib/client";
 
 const productDetailHandler = async (
   req: NextApiRequest,

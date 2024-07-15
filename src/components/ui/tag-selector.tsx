@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 import { useState } from "react";
-import { taglist } from "../../../common/consts/tag-data";
+import { taglist } from "../../lib/tag-data";
 
 const TagSelecotr: NextPage = () => {
   const [selectedTag, setSelectedTag] = useState<string[]>([]);

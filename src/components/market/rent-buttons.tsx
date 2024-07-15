@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useRecoilState } from "recoil";
 import { isRentState } from "../../recoil/filter";
-import { cls } from "../../common/util/class";
+import { cls } from "../../utils/class";
 
 const RentButtons = () => {
   const [isRent, setIsRent] = useRecoilState(isRentState);

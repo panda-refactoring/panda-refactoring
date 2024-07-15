@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import useToast from "../../hooks/useToast";
-import { errorMessage } from "../common/error";
-import { cls } from "../../common/util/class";
-import { regExgPw, regExpEm } from "../../common/util/regInput";
-import { apiPost } from "../../service/request";
-import Button from "../common/ui/button";
+import { errorMessage } from "../../lib/error";
+import { cls } from "../../utils/class";
+import { regExgPw, regExpEm } from "../../utils/regInput";
+import { apiPost } from "../../utils/request";
+import Button from "../ui/button";
 
 export interface SignProps {
   email: string;

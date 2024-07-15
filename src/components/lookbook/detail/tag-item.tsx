@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import React from "react";
-import { ProductDataMin } from "../../../common/types/data.types";
-import { priceAddComma } from "../../../common/util/markets";
+import { ProductDataMin } from "../../../types/data-type";
+import { priceAddComma } from "../../../utils/markets";
 
 const TagItem: NextPage<ProductDataMin[]> = product => {
   return (

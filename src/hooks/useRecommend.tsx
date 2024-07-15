@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ProductData } from "../common/types/data.types";
-import { random } from "../common/util/random";
+import { ProductData } from "../types/data-type";
+import { random } from "../utils/random";
 import { useSession } from "next-auth/react";
 
 const useRecommend = ({ keyword }: { keyword: string }) => {

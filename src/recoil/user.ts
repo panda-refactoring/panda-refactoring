@@ -1,6 +1,6 @@
 import { atom, AtomEffect, selector, selectorFamily } from "recoil";
 import { v1 } from "uuid";
-import { apiGet } from "../service/request";
+import { apiGet } from "../utils/request";
 
 const localStorageEffect: <T>(key: string) => AtomEffect<T> =
   (key: string) =>

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../common/lib/client";
+import client from "../../../lib/client";
 
 const userImageChange = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {

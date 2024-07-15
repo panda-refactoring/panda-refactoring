@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import Button from "../../common/ui/button";
+import Button from "../../ui/button";
 import FilterTab from "./filter-tab";
-import { priceList, tabData } from "../../../common/consts/fake-data";
+import { priceList, tabData } from "../../../lib/fake-data";
 import { useSetRecoilState } from "recoil";
 import { wordListState } from "../../../recoil/filter";
 

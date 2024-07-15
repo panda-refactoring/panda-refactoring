@@ -5,9 +5,9 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 
+import MainLayout from "../styles/global-layout";
 import ModalContextProvider from "../context/modal-context";
 import MSWProvider from "../mocks/msw-provider";
-import MainLayout from "../layout/main-layout";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const queryClient = new QueryClient();
