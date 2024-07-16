@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import { useRecoilValueLoadable } from "recoil";
 import { currentUserInfoQuery } from "../../recoil/user";
 
-import Header from "../../components/ui/header";
-import Navigation from "../../components/ui/navigation";
+import Header from "../../components/common/header";
+import Navigation from "../../components/common/navigation";
 import LookItem from "../../components/lookbook/look-item";
-import FloatingButton from "../../components/ui/floating-button";
-import LoadingSpinner from "../../components/ui/loading-spinner";
+import FloatingButton from "../../components/common/ui/floating-button";
+import LoadingSpinner from "../../components/common/ui/loading-spinner";
 
 import useModal from "../../hooks/useModal";
-import { apiGet } from "../../utils/request";
-import { LookbookData } from "../../types/data-type";
+import { apiGet } from "../../service/request";
+import { LookbookData } from "../../common/types/data.types";
 
 const Lookbook: NextPage = () => {
   const userInfo = useRecoilValueLoadable(currentUserInfoQuery);

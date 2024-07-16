@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../../components/ui/header";
-import graphic from "../../../public/asset/image/graphic3.svg";
+import Header from "../../components/common/header";
+import graphic from "public/asset/image/graphic3.svg";
 import Image from "next/image";
-import Button from "../../components/ui/button";
+import Button from "../../components/common/ui/button";
 import { useRouter } from "next/router";
 
 const Welcome = () => {

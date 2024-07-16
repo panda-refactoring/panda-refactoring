@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { MainProductData } from "../../types/data-type";
+import { MainProductData } from "../../common/types/data.types";
 import MarketItem from "./market-item";
 
 const MarketList: NextPage<{

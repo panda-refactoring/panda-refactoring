@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
 
-import { apiGet } from "../utils/request";
-import { ProductData, UserData } from "../types/data-type";
-import { useSession } from "next-auth/react";
+import { apiGet } from "../service/request";
+import { ProductData, UserData } from "../common/types/data.types";
+import { KeywordItemList } from "src/components/main/types";
 
 const useKeyword = ({ userData }: { userData?: UserData }) => {
-  
+  const [selectedKeyword, setSelectedKeyword] = useState<string>("");
+  const [keywordItemList, setKeywordItemList] = useState<KeywordItemList>({});
+
   const { status: session } = useSession();
+  const isUnAuthenticatedUser = session === "unauthenticated";
 
   const { data: products, status } = useQuery<ProductData[]>({
     queryKey: ["products"],
     queryFn: apiGet.GET_ITEMS,
     enabled: !!userData,
   });
-
-  const [selectedKeyword, setSelectedKeyword] = useState<string>("");
-  const [keywordItemList, setKeywordItemList] = useState<{
-    [key: string]: ProductData[];
-  }>({});
 
   const setKeyword = (tagName: string) => setSelectedKeyword(tagName);
 
@@ -28,11 +27,12 @@ const useKeyword = ({ userData }: { userData?: UserData }) => {
   ) => {
     if (keywords.length === 0) return;
 
+    const keywordItems: KeywordItemList = {};
+
     const mappingItems = (tag: string) => {
       return products.filter(product => product.style === tag);
     };
 
-    const keywordItems: { [key: string]: ProductData[] } = {};
     keywords.forEach(({ tag }) => {
       keywordItems[tag] = mappingItems(tag);
     });
@@ -41,18 +41,19 @@ const useKeyword = ({ userData }: { userData?: UserData }) => {
   };
 
   useEffect(() => {
-    if (status !== "success" || !userData) return;
+    if (status !== "success") return;
 
-    setKeyword(userData.keywords[0]?.tag);
-    setKeywordItems(userData.keywords, products);
-  }, [status, userData]);
-
-  useEffect(() => {
-    if (session === "unauthenticated" && status === "success") {
-      setKeyword("추천아이템");
-      setKeywordItemList({ 추천아이템: products });
+    if (userData) {
+      setKeyword(userData.keywords[0]?.tag);
+      setKeywordItems(userData.keywords, products);
+      return;
     }
-  }, [session, status]);
+
+    if (isUnAuthenticatedUser) {
+      setKeyword("추천아이템");
+      setKeywordItemList({ 추천아이템: products as ProductData[] });
+    }
+  }, [status, userData, session]);
 
   return {
     selectedKeyword,

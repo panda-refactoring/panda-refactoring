@@ -1,13 +1,13 @@
 import { NextPage } from "next";
 import { FormEvent, useState } from "react";
-import { taglist } from "../../lib/tag-data";
+import { taglist } from "../../common/consts/tag-data";
 import { Icon } from "@iconify/react";
-import Header from "../../components/ui/header";
+import Header from "../../components/common/header";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "react-query";
-import Button from "../../components/ui/button";
+import Button from "../../components/common/ui/button";
 import useToast from "../../hooks/useToast";
-import { apiGet, apiPost } from "../../utils/request";
+import { apiGet, apiPost } from "../../service/request";
 import existUser from "../existUser";
 
 interface TagData {

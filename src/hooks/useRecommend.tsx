@@ -1,39 +1,42 @@
 import { useEffect, useState } from "react";
-import { ProductData } from "../types/data-type";
-import { random } from "../utils/random";
 import { useSession } from "next-auth/react";
+import { ProductData } from "../common/types/data.types";
+import { random } from "../common/util/random";
+import { KeywordItemList } from "src/components/main/types";
 
-const useRecommend = ({ keyword }: { keyword: string }) => {
+interface IUseRecommend {
+  keyword: string;
+  productList: KeywordItemList;
+}
+
+const useRecommend = ({ keyword, productList }: IUseRecommend) => {
+  const [recommendList, setRecommendList] = useState<ProductData[]>([]);
+
   const { status: session } = useSession();
+  const isUnAuthenticatedUser = session === "unauthenticated";
 
-  const [randomItems, setRandomItems] = useState<{
-    [key: string]: ProductData[]; // 랜덤하게 뽑은 아이템 리스트 (모든 키워드에 해당하는)
-  }>({});
-  const [recommendList, setRecommendList] = useState<ProductData[]>([]); // 선택한 키워드에 해당하는 아이템 리스트
+  const setRecommendItems = (keywordItemList: KeywordItemList) => {
+    const randomItems: KeywordItemList = {};
 
-  const setRecommendItems = (keywordItemList: {
-    [key: string]: ProductData[];
-  }) => {
-    const randomItems: { [key: string]: ProductData[] } = {};
     Object.entries(keywordItemList).forEach(([key, value]) => {
       randomItems[key] = random(value);
     });
 
-    setRandomItems(randomItems);
-  };
-
-  useEffect(() => {
-    if (session === "unauthenticated") {
+    if (isUnAuthenticatedUser) {
       setRecommendList(randomItems["추천아이템"]);
       return;
     }
-    setRecommendList(randomItems[keyword]);
-  }, [randomItems]);
 
-  return {
-    recommendList,
-    setRecommendItems,
+    setRecommendList(randomItems[keyword]);
   };
+
+  useEffect(() => {
+    if (!keyword) return;
+
+    setRecommendItems(productList);
+  }, [keyword, productList]);
+
+  return { recommendList, setRecommendItems };
 };
 
 export default useRecommend;

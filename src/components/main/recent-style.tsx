@@ -3,13 +3,13 @@ import { NextPage } from "next";
 import { useQuery } from "react-query";
 import { Icon } from "@iconify/react";
 
-import MainProduct from "./product-item";
+import ProductItem from "./product-item";
 
 import useSlide from "../../hooks/useSlide";
-import { cls } from "../../utils/class";
-import { apiGet } from "../../utils/request";
-import { translateClasses } from "../../lib/translate-class";
-import { ProductData } from "../../types/data-type";
+import { cls } from "../../common/util/class";
+import { apiGet } from "../../service/request";
+import { translateClasses } from "../../common/consts/translate-class";
+import { ProductData } from "../../common/types/data.types";
 import useRecentstyle from "../../hooks/useRecentstyle";
 
 const RecentStyle: NextPage = () => {
@@ -54,7 +54,7 @@ const RecentStyle: NextPage = () => {
           )}
         >
           <li>
-            <MainProduct
+            <ProductItem
               {...(recentItems[recentItems.length - 1] as ProductData)}
               imgw="w-[140px]"
               imgh="h-[160px]"
@@ -62,25 +62,25 @@ const RecentStyle: NextPage = () => {
           </li>
           {recentItems.map(data => (
             <li key={data.id}>
-              <MainProduct {...data} imgw="w-[140px]" imgh="h-[160px]" />
+              <ProductItem {...data} imgw="w-[140px]" imgh="h-[160px]" />
             </li>
           ))}
           <li>
-            <MainProduct
+            <ProductItem
               {...(recentItems[0] as ProductData)}
               imgw="w-[140px]"
               imgh="h-[160px]"
             />
           </li>
           <li>
-            <MainProduct
+            <ProductItem
               {...(recentItems[1] as ProductData)}
               imgw="w-[140px]"
               imgh="h-[160px]"
             />
           </li>
           <li>
-            <MainProduct
+            <ProductItem
               {...(recentItems[2] as ProductData)}
               imgw="w-[140px]"
               imgh="h-[160px]"

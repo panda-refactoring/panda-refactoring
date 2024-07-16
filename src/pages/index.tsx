@@ -1,21 +1,18 @@
 import type { NextPage } from "next";
 
-import Button from "../components/ui/button";
+import Button from "../components/common/ui/button";
 import RecentStyle from "../components/main/recent-style";
-import MainLookbook from "../components/main/lookbook";
-import Header from "../components/ui/header";
-import Navigation from "../components/ui/navigation";
-import FloatingButton from "../components/ui/floating-button";
+import Lookbook from "../components/main/lookbook";
+import Header from "../components/common/header";
+import Navigation from "../components/common/navigation";
+import FloatingButton from "../components/common/ui/floating-button";
 import ImageSlide from "../components/market/detail/image-slide";
 import Recommend from "../components/main/recommend";
 import ErrorBoundary from "./error-boundary";
 
-import { bannerImages } from "../lib/banner-images";
+import { bannerImages } from "../common/consts/banner-images";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-import axios from "axios";
 
 const Home: NextPage = () => {
   const { userData } = useAuth();
@@ -38,7 +35,7 @@ const Home: NextPage = () => {
         <div className="space-y-10 py-10">
           <Recommend userData={userData?.user} />
           <RecentStyle />
-          <MainLookbook />
+          <Lookbook />
           <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">
             <p className="text-base">매일 수익이 발생하는 옷장공유</p>
             <p className="mb-5 mt-1 text-2xl">지금 시작해보세요!</p>

@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 
 import { useQuery } from "react-query";
 
-import MainLookBookItem from "./lookbook-item";
+import LookBookItem from "./lookbook-item";
 
-import { apiGet } from "../../utils/request";
-import { LookbookData, LookbookDataMin } from "../../types/data-type";
+import { apiGet } from "../../service/request";
+import { LookbookData, LookbookDataMin } from "../../common/types/data.types";
 import useLookbook from "../../hooks/useLookbook";
 
-const MainLookbook: NextPage = () => {
+const LookBook: NextPage = () => {
   const { data: lookbooks } = useQuery<LookbookData[]>({
     queryKey: ["lookbooks"],
     queryFn: apiGet.GET_LOOKS,
@@ -23,10 +23,10 @@ const MainLookbook: NextPage = () => {
         <h2 className="px-5 text-xl">Look Book</h2>
         <p className="px-5 text-textColor-gray-100">회원 스타일 피드</p>
       </div>
-      <div className="border border-t-common-black border-b-common-black">
+      <div className="border border-b-common-black border-t-common-black">
         <ul className="flex overflow-x-scroll">
           {lookbookList.map((look: LookbookDataMin) => (
-            <MainLookBookItem key={look.id} {...look} />
+            <LookBookItem key={look.id} {...look} />
           ))}
         </ul>
       </div>
@@ -34,4 +34,4 @@ const MainLookbook: NextPage = () => {
   );
 };
 
-export default MainLookbook;
+export default LookBook;
