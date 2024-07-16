@@ -5,6 +5,7 @@ import { ProductItemProps } from "./types";
 
 const ProductItem: NextPage<ProductItemProps> = props => {
   const { id, imgurl, title, brand, rental, price, imgw, imgh } = props;
+
   return (
     <div>
       <Link href={`/market/${id}`}>
