@@ -1,23 +1,10 @@
 import { NextPage } from "next";
 import Link from "next/link";
 
-import { ProductDataMin } from "../../common/types/data.types";
+import { ProductItemProps } from "./types";
 
-interface MainListProps extends ProductDataMin {
-  imgw?: string;
-  imgh?: string;
-}
-
-const MainProduct: NextPage<MainListProps> = ({
-  id,
-  imgurl,
-  title,
-  brand,
-  rental,
-  price,
-  imgw,
-  imgh,
-}) => {
+const ProductItem: NextPage<ProductItemProps> = props => {
+  const { id, imgurl, title, brand, rental, price, imgw, imgh } = props;
   return (
     <div>
       <Link href={`/market/${id}`}>
@@ -37,7 +24,7 @@ const MainProduct: NextPage<MainListProps> = ({
         <dd className="mt-1 flex items-center">
           <span
             aria-label="판매상품"
-            className="mr-[6px] -mt-1 border border-common-black bg-primary-green px-1 text-xs text-common-black"
+            className="-mt-1 mr-[6px] border border-common-black bg-primary-green px-1 text-xs text-common-black"
           >
             {rental ? "대여" : "판매"}
           </span>
@@ -50,4 +37,4 @@ const MainProduct: NextPage<MainListProps> = ({
   );
 };
 
-export default MainProduct;
+export default ProductItem;

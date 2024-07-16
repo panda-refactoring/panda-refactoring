@@ -3,14 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { LookbookDataMin } from "../../common/types/data.types";
 
-const MainLookBookItem: NextPage<LookbookDataMin> = ({ id, imgurl, user }) => {
+const LookBookItem: NextPage<LookbookDataMin> = ({ id, imgurl, user }) => {
   return (
-    <li className="border-r border-common-black py-4 px-4 first:pl-0">
+    <li className="border-r border-common-black px-4 py-4 first:pl-0">
       <Link
         href={`/lookbook/${id}`}
         className="relative block h-56 w-48 overflow-hidden bg-borderColor-gray"
       >
-        <div className="absolute top-0 left-0 h-full w-full bg-black opacity-20 transition duration-300 hover:opacity-0" />
+        <div className="absolute left-0 top-0 h-full w-full bg-black opacity-20 transition duration-300 hover:opacity-0" />
         <Image
           src={imgurl[0].img}
           alt={`${user.nickname}님의 룩북 바로가기`}
@@ -26,4 +26,4 @@ const MainLookBookItem: NextPage<LookbookDataMin> = ({ id, imgurl, user }) => {
   );
 };
 
-export default MainLookBookItem;
+export default LookBookItem;
