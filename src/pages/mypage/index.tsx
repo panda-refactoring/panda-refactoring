@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import Navigation from "../../components/common/navigation";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import { currentUserInfoQuery } from "../../recoil/user";
-import MainProduct from "../../components/main/product-item";
+import ProductItem from "../../components/main/product-item";
 import Link from "next/link";
 import noExistUser from "../noExistUser";
 import emptybox from "public/asset/image/emptybox.svg";
@@ -129,9 +129,9 @@ const MyPage: NextPage = () => {
         </div>
       </div>
       {category === "items" && userData?.product.length !== 0 && (
-        <div className="mx-4 grid grid-cols-2 gap-4 pt-5 pb-20">
+        <div className="mx-4 grid grid-cols-2 gap-4 pb-20 pt-5">
           {userData?.product.map((item: ProductDataMin) => (
-            <MainProduct {...item} key={item.id} imgh="h-[190px]" />
+            <ProductItem {...item} key={item.id} imgh="h-[190px]" />
           ))}
         </div>
       )}
@@ -146,7 +146,7 @@ const MyPage: NextPage = () => {
         </div>
       )}
       {category === "looks" && userData?.look.length !== 0 && (
-        <div className="mx-4 grid grid-cols-2 gap-4 pt-5 pb-20">
+        <div className="mx-4 grid grid-cols-2 gap-4 pb-20 pt-5">
           {userData?.look.map((item: LookbookDataMin) => (
             <Link href={`lookbook/${item.id}`} key={item.id}>
               <div className="h-[200px] w-[172px] border border-common-black bg-slate-200">

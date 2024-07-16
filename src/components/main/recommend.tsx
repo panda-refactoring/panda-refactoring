@@ -1,16 +1,14 @@
 import { NextPage } from "next";
 
 import RecommendList from "./recommend-list";
-import Keywords from "./keywords";
+import Keyword from "./keyword";
 import LoadingFallback from "./ui/loading-fallback";
 
 import NextSuspense from "../../pages/suspense";
 import useKeyword from "../../hooks/useKeyword";
 import { UserData } from "../../common/types/data.types";
 
-const Recommend: NextPage<{
-  userData?: UserData;
-}> = ({ userData }) => {
+const Recommend: NextPage<{ userData?: UserData }> = ({ userData }) => {
   const { selectedKeyword, keywordItemList, setKeyword } = useKeyword({
     userData,
   });
@@ -28,11 +26,18 @@ const Recommend: NextPage<{
       <NextSuspense fallback={<LoadingFallback />}>
         <>
           {userData && (
-            <Keywords
-              keywords={userData.keywords}
-              keyword={selectedKeyword}
-              onClickKeyword={setKeyword}
-            />
+            <div className="flex h-11 w-full items-center gap-2 overflow-hidden overflow-x-scroll font-bold text-common-gray scrollbar-hide">
+              {userData.keywords?.map(
+                ({ tag, id }: { tag: string; id: number }) => (
+                  <Keyword
+                    key={id}
+                    userKeyword={tag}
+                    selectedKeyword={selectedKeyword}
+                    onClickKeyword={setKeyword}
+                  />
+                ),
+              )}
+            </div>
           )}
           <RecommendList
             selectedKeyword={selectedKeyword}
