@@ -1,15 +1,17 @@
 import { NextPage } from "next";
-import { cls } from "../../common/util/class";
+
 import { useRecoilState } from "recoil";
 import { categoryNameState } from "../../recoil/filter";
 
-const navigationList = ["전체", "상의", "하의", "아우터", "가방", "기타"];
+import { categoryList } from "src/common/consts/fake-data";
+import { cls } from "../../common/util/class";
+
 const CategoryNavigation: NextPage = () => {
   const [category, setCategory] = useRecoilState(categoryNameState);
 
   const changeCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.target as HTMLButtonElement;
-    setCategory(target.name);
+    const { name } = e.target as HTMLButtonElement;
+    setCategory(name);
   };
 
   return (
@@ -17,7 +19,7 @@ const CategoryNavigation: NextPage = () => {
       className="flex h-10 overflow-x-scroll border-b border-common-black 
     bg-white text-base text-textColor-gray-100 scrollbar-hide [&>button]:flex-shrink-0"
     >
-      {navigationList.map((item, i) => (
+      {categoryList.map((item, i) => (
         <button
           key={i}
           className={cls(
