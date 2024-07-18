@@ -13,7 +13,7 @@ import Overlay from "../../components/common/overlay";
 import UserManage from "../../components/user/manage";
 import useToast from "../../hooks/useToast";
 import useUpload from "../../hooks/useUpload";
-import { taglist } from "../../common/consts/tag-data";
+import { taglist } from "../../common/consts/tags";
 import { currentUserInfoQuery, userInfoQuery } from "../../recoil/user";
 import { cls } from "../../common/util/class";
 import { createImageUrl } from "../../common/util/image-url";
@@ -174,7 +174,7 @@ const ProfileEdit: NextPage = () => {
       {!isLoading && <Toast />}
       {isTab && <Overlay />}
       {isLoading && (
-        <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <LoadingSpinner />
         </div>
       )}
@@ -268,7 +268,7 @@ const ProfileEdit: NextPage = () => {
             <Icon
               type="button"
               icon="carbon:close"
-              className="absolute top-4 right-4 z-50 h-7 w-7 cursor-pointer"
+              className="absolute right-4 top-4 z-50 h-7 w-7 cursor-pointer"
               onClick={() => {
                 setIsTab(false),
                   setSelectedTag(
@@ -286,15 +286,15 @@ const ProfileEdit: NextPage = () => {
             </button>
           </form>
           <div className="h-[390px] w-full bg-white p-5 pt-0">
-            <p className="pt-5 pl-3 text-xs text-textColor-gray-100">
+            <p className="pl-3 pt-5 text-xs text-textColor-gray-100">
               키워드를 선택해 주세요.
             </p>
-            <ul className="flex w-full flex-wrap gap-2 py-3 px-2">
+            <ul className="flex w-full flex-wrap gap-2 px-2 py-3">
               {allSelectedTag.map((ele, index) => {
                 return (
                   <li
                     className={cls(
-                      "flex cursor-pointer items-center gap-3 rounded-full border-2 py-1 px-2",
+                      "flex cursor-pointer items-center gap-3 rounded-full border-2 px-2 py-1",
                       selectedTag.includes(ele)
                         ? "border-primary-violet bg-white"
                         : "border-white bg-borderColor-gray",

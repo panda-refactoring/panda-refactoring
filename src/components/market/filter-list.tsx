@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
+
 import { useRecoilState } from "recoil";
 import { wordListState } from "../../recoil/filter";
 

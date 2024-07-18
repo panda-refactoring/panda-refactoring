@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useMutation } from "react-query";
-import useFav from "../../hooks/useFav";
+import useFavorite from "../../hooks/useFavorite";
 import { LookbookData } from "../../common/types/data.types";
 
 interface LookItemProps extends LookbookData {
@@ -16,14 +16,18 @@ const LookItem: NextPage<LookItemProps> = ({
   user,
   imgurl,
   id,
-  fav,
+  favorite,
   userId,
   setModal,
 }) => {
-  const { isFavActive, updateFav, changeButtonSytle, initialButtonStyle } =
-    useFav(userId);
+  const {
+    isFavoriteActive,
+    updateFavorite,
+    changeButtonSytle,
+    initialButtonStyle,
+  } = useFavorite(userId);
 
-  const { mutate } = useMutation(updateFav, {
+  const { mutate } = useMutation(updateFavorite, {
     onSuccess: ({ data }) => {
       console.log(data.message);
     },
@@ -32,7 +36,7 @@ const LookItem: NextPage<LookItemProps> = ({
     },
   });
 
-  const toggleFavButton = async () => {
+  const toggleFavoriteButton = async () => {
     if (userId === 0) {
       setModal();
       return;
@@ -42,9 +46,9 @@ const LookItem: NextPage<LookItemProps> = ({
   };
 
   useEffect(() => {
-    if (!fav) return;
-    initialButtonStyle(fav);
-  }, [fav]);
+    if (!favorite) return;
+    initialButtonStyle(favorite);
+  }, [favorite]);
 
   return (
     <li className="flex h-[220px] justify-center border-b border-r border-common-black pt-4">
@@ -62,21 +66,21 @@ const LookItem: NextPage<LookItemProps> = ({
           </div>
         </Link>
         <p className="text-common-black">@{user.nickname}</p>
-        <div className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-full border-[1.5px] border-common-black">
-          {isFavActive ? (
+        <div className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-full border-[1.5px] border-common-black">
+          {isFavoriteActive ? (
             <div className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-[1.5px] border-common-black bg-common-black">
               <Icon
                 icon="icon-park-solid:like"
                 color="#ff5252"
                 className="border border-common-black text-lg"
-                onClick={toggleFavButton}
+                onClick={toggleFavoriteButton}
               />
             </div>
           ) : (
             <Icon
               icon="icon-park-outline:like"
               className="cursor-pointer text-lg transition hover:scale-110"
-              onClick={toggleFavButton}
+              onClick={toggleFavoriteButton}
             />
           )}
         </div>

@@ -10,7 +10,7 @@ import ImageSlide from "../components/market/detail/image-slide";
 import Recommend from "../components/main/recommend";
 import ErrorBoundary from "./error-boundary";
 
-import { bannerImages } from "../common/consts/banner-images";
+import { bannerImages } from "../common/consts/banner";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
 
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
         setModal={setModalState}
       >
         <div className="space-y-10 py-10">
-          <Recommend userData={userData?.user} />
+          <Recommend userData={userData} />
           <RecentStyle />
           <Lookbook />
           <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">

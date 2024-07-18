@@ -14,7 +14,7 @@ export interface MainProductData {
   style: string;
   rental: boolean;
   view?: number;
-  fav: {
+  favorite: {
     id: number;
     productId: number;
     userId: number;
@@ -31,7 +31,7 @@ export interface ProductData {
   view: number;
   style: string;
   rental: boolean;
-  fav: {
+  favorite: {
     id: number;
     productId: number;
     userId: number;
@@ -65,7 +65,7 @@ export interface UserData {
   createdDate: string;
   email: string;
   id: number;
-  fav: {
+  favorite: {
     id: number;
     products: ProductDataMin[];
     looks: LookbookData[];
@@ -94,7 +94,7 @@ export interface LookbookData {
     text: string;
     author: { nickname: string };
   }[];
-  fav: {
+  favorite: {
     id: number;
     productId: number;
     userId: number;

@@ -13,7 +13,7 @@ import { createImageUrl } from "../../common/util/image-url";
 import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
 import useUpload from "../../hooks/useUpload";
 import useOptions from "../../hooks/useOptions";
-import { tabData } from "../../common/consts/fake-data";
+import { tabData } from "../../common/consts/price";
 import { currentUserInfoQuery, userInfoQuery } from "../../recoil/user";
 import Overlay from "../../components/common/overlay";
 import useToast from "../../hooks/useToast";
@@ -155,7 +155,7 @@ const Create: NextPage = () => {
             encodeFile={encodeFile}
             imgsrc={imgsrc}
           />
-          <div className="border-t border-b border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
+          <div className="border-b border-t border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
             <input
               {...register("title", { required: "제목을 입력해주세요." })}
               type="text"
@@ -186,7 +186,7 @@ const Create: NextPage = () => {
                 onChange={textAreaValue}
               />
               <div
-                className="pointer-events-none absolute top-5 left-5 bg-transparent text-common-gray 
+                className="pointer-events-none absolute left-5 top-5 bg-transparent text-common-gray 
               peer-focus:hidden peer-[.is-valid]:hidden"
               >
                 <p>아이템에 대한 설명을 작성해주세요.</p>

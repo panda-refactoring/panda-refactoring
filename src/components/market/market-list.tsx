@@ -1,26 +1,39 @@
 import { NextPage } from "next";
-import { MainProductData } from "../../common/types/data.types";
+import { useEffect, useState } from "react";
+
 import MarketItem from "./market-item";
+import LoadingSpinner from "../common/ui/loading-spinner";
 
-const MarketList: NextPage<{
-  marketData: MainProductData[];
-  isLoading: boolean;
-}> = ({ marketData, isLoading }) => {
-  let list;
+import { MainProductData } from "../../common/types/data.types";
+import { MarketListProps } from "./types";
 
-  if (marketData.length > 0) {
-    const newArray = marketData.slice();
-    const marketList = newArray.reverse();
+const MarketList: NextPage<MarketListProps> = ({ marketData, isLoading }) => {
+  const [marketList, setMarketList] = useState<MainProductData[]>([]);
 
-    list = marketList?.map((product: MainProductData, i) => {
-      const key = `${product.id}-${i}`;
-      return <MarketItem key={key} data={product} />;
-    });
-  } else if (marketData.length === 0 && !isLoading) {
-    list = <p>상품이 존재하지 않습니다 :p</p>;
-  }
+  useEffect(() => {
+    if (isLoading) return;
 
-  return <ul className="flex flex-col gap-3 px-5 pb-16">{list}</ul>;
+    const copiedData = marketData.slice();
+    setMarketList(copiedData.reverse());
+  }, [marketData, isLoading]);
+
+  return (
+    <ul className="flex flex-col gap-3 px-5 pb-16">
+      {isLoading && (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading &&
+        (marketList.length > 0 ? (
+          marketList.map((product: MainProductData) => (
+            <MarketItem key={product.id} data={product} />
+          ))
+        ) : (
+          <p>상품이 존재하지 않습니다</p>
+        ))}
+    </ul>
+  );
 };
 
 export default MarketList;

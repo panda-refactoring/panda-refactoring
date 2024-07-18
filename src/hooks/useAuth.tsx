@@ -17,8 +17,7 @@ const useAuth = () => {
     status: mutateStatus,
   } = useMutation({
     mutationFn: async (email: string) => await apiGet.GET_USER(email),
-    onSuccess: (data) => console.log(data),
-    onError: (err) => console.log(err)
+    onError: err => console.log(err),
   });
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const useAuth = () => {
     }
   }, [session]);
 
-  return { userData: data, status: mutateStatus };
+  return { userData: data?.user, status: mutateStatus };
 };
 
 export default useAuth;

@@ -1,3 +1,12 @@
+export const categoryList = [
+  "전체",
+  "상의",
+  "하의",
+  "아우터",
+  "가방",
+  "기타",
+] as const;
+
 export const tabData = {
   category: ["상의", "하의", "아우터", "가방", "기타"],
   style: [
@@ -61,8 +70,3 @@ export const tabData = {
   ],
   rental: ["대여 가능", "대여 불가능"],
 };
-
-const LOW = "30,000 이하";
-const MEDIUM = "30,000 ~ 100,000";
-const HIGH = "100,000 이상";
-export const priceList = [LOW, MEDIUM, HIGH];
