@@ -13,7 +13,7 @@ import Description from "src/components/market/detail/description";
 import PriceBox from "src/components/market/detail/price-box";
 
 import useAuth from "src/hooks/useAuth";
-import useFav from "../../hooks/useFav";
+import useFavorite from "../../hooks/useFavorite";
 import useModal from "../../hooks/useModal";
 import { updateViews } from "../../common/util/market-view";
 import { ProductData } from "../../common/types/data.types";
@@ -41,24 +41,28 @@ const Product: NextPage = () => {
     },
   );
 
-  const { isFavActive, favCount, toggleFavButton } = useFav({
-    currentUserId: Number(userData?.id),
-    productData: product,
-  });
+  const { isFavoriteActive, favoriteCount, toggleFavoriteButton } = useFavorite(
+    {
+      currentUserId: Number(userData?.id),
+      productData: product,
+    },
+  );
 
-  const toggleFav = () => {
+  const toggleFavorite = () => {
     if (!userData?.id) {
       setLoginModalState();
       return;
     }
 
-    toggleFavButton();
+    toggleFavoriteButton();
   };
 
   useEffect(() => {
     if (!product || !userData) return;
     updateViews(userData.id, Number(productId), product.view);
   }, [product]);
+
+  const hasProduct = !isLoading && product;
 
   return (
     <>
@@ -69,16 +73,16 @@ const Product: NextPage = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && product ? (
+      {hasProduct ? (
         <>
           <ImageSlide images={product.imgurl} isLoading={isLoading} />
           <div className="p-5">
             <TitleArea
               product={product}
-              isFavActive={isFavActive}
-              toggleFav={toggleFav}
+              isFavoriteActive={isFavoriteActive}
+              toggleFavorite={toggleFavorite}
             />
-            <CategoryArea product={product} favCount={favCount} />
+            <CategoryArea product={product} favoriteCount={favoriteCount} />
             <Description product={product} />
             <Seller product={product} />
           </div>

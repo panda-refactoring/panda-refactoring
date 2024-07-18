@@ -9,7 +9,7 @@ export const products = [
     view: 0,
     style: "클래식",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -48,7 +48,7 @@ export const products = [
     view: 0,
     style: "캐주얼",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -84,7 +84,7 @@ export const products = [
     view: 1,
     style: "캐주얼",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -120,7 +120,7 @@ export const products = [
     view: 0,
     style: "미니멀",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -160,7 +160,7 @@ export const products = [
     view: 0,
     style: "캐주얼",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -201,7 +201,7 @@ export const products = [
     view: 5,
     style: "클래식",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -260,7 +260,7 @@ export const products = [
     view: 0,
     style: "빈티지",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -314,7 +314,7 @@ export const products = [
     view: 0,
     style: "페미닌",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -369,7 +369,7 @@ export const products = [
     view: 0,
     style: "스트릿",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -419,7 +419,7 @@ export const products = [
     view: 0,
     style: "빈티지",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -469,7 +469,7 @@ export const products = [
     view: 10,
     style: "미니멀",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -525,7 +525,7 @@ export const products = [
     view: 6,
     style: "빈티지",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -585,7 +585,7 @@ export const products = [
     view: 20,
     style: "시티보이",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -630,7 +630,7 @@ export const products = [
     view: 20,
     style: "빈티지",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -690,7 +690,7 @@ export const products = [
     view: 5,
     style: "클래식",
     rental: true,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -741,7 +741,7 @@ export const products = [
     view: 13,
     style: "스트릿",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -782,7 +782,7 @@ export const products = [
     view: 0,
     style: "레트로",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -838,7 +838,7 @@ export const products = [
     view: 20,
     style: "스트릿",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,
@@ -883,7 +883,7 @@ export const products = [
     view: 0,
     style: "로맨틱",
     rental: false,
-    fav: [
+    favorite: [
       {
         id: 0,
         productId: 0,

@@ -3,7 +3,10 @@ import { NextPage } from "next";
 import { categoryToEng, firstToUppercase } from "src/common/util/markets";
 import { CategoryBoxProps } from "./types";
 
-const CategoryBox: NextPage<CategoryBoxProps> = ({ product, favCount }) => {
+const CategoryBox: NextPage<CategoryBoxProps> = ({
+  product,
+  favoriteCount,
+}) => {
   return (
     <>
       <div className="mb-6 mt-4 flex gap-2">
@@ -18,7 +21,7 @@ const CategoryBox: NextPage<CategoryBoxProps> = ({ product, favCount }) => {
       </div>
       <div className="mb-4 flex text-xs text-common-gray">
         <span className="mr-2">조회 {product.view}</span>
-        <span>찜 {favCount}</span>
+        <span>찜 {favoriteCount}</span>
       </div>
     </>
   );

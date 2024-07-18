@@ -3,14 +3,14 @@ import { NextPage } from "next";
 import { useRecoilState } from "recoil";
 import { categoryNameState } from "../../recoil/filter";
 
-import { categoryList } from "src/common/consts/price";
 import { cls } from "../../common/util/class";
+import { categoryList } from "src/common/consts/market";
 
 const CategoryNavigation: NextPage = () => {
   const [category, setCategory] = useRecoilState(categoryNameState);
 
-  const changeCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { name } = e.target as HTMLButtonElement;
+  const changeCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { name } = event.target as HTMLButtonElement;
     setCategory(name);
   };
 

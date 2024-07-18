@@ -1,8 +1,8 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { Icon } from "@iconify/react";
 import { useMutation } from "react-query";
-import useFav from "../../../hooks/useFav";
+import useFavorite from "../../../hooks/useFavorite";
 import { LookbookData, UserData } from "../../../common/types/data.types";
 import ImageSlide from "../../market/detail/image-slide";
 import TagItem from "./tag-item";
@@ -22,7 +22,7 @@ const PostItem: NextPage<PostItemProps> = ({
   id,
   user,
   imgurl,
-  fav,
+  favorite,
   description,
   hashTag,
   product,
@@ -37,20 +37,20 @@ const PostItem: NextPage<PostItemProps> = ({
   const currentUserNickname = userData ? userData.nickname : "";
   const currentUserId = userData ? userData.id : 0;
   const {
-    isFavActive,
-    favCount,
-    updateFav,
+    isFavoriteActive,
+    favoriteCount,
+    updateFavorite,
     changeCount,
     changeButtonSytle,
-    updateFavCount,
+    updateFavoriteCount,
     initialButtonStyle,
-  } = useFav(currentUserId);
+  } = useFavorite(currentUserId);
 
   const [showComment, setShowComment] = useState<boolean>(false);
 
   const isVisbileComment = showComment && comment.length > 0;
 
-  const { mutate } = useMutation(updateFav, {
+  const { mutate } = useMutation(updateFavorite, {
     onSuccess: ({ data }) => {
       changeCount();
     },
@@ -67,7 +67,7 @@ const PostItem: NextPage<PostItemProps> = ({
     setInput(id, true);
   };
 
-  const toggleFavButton = async () => {
+  const toggleFavoriteButton = async () => {
     if (currentUserId === 0) {
       setModal();
       return;
@@ -77,10 +77,10 @@ const PostItem: NextPage<PostItemProps> = ({
   };
 
   useEffect(() => {
-    if (!fav) return;
-    updateFavCount(fav.length);
-    initialButtonStyle(fav);
-  }, [fav]);
+    if (!favorite) return;
+    updateFavoriteCount(favorite.length);
+    initialButtonStyle(favorite);
+  }, [favorite]);
 
   return (
     <>
@@ -102,7 +102,7 @@ const PostItem: NextPage<PostItemProps> = ({
         <div>
           <div className="mb-3 flex gap-2 text-xs text-common-gray">
             <div>2023.03.11</div>
-            <div>좋아요 {favCount}</div>
+            <div>좋아요 {favoriteCount}</div>
           </div>
           {(description || hashTag[0]?.tag !== "") && (
             <p className="mb-2">
@@ -121,16 +121,19 @@ const PostItem: NextPage<PostItemProps> = ({
             댓글 {comment ? comment.length : 0}개
           </span>
         </div>
-        <div className="absolute top-4 right-4 flex items-center gap-3 text-2xl [&>svg]:cursor-pointer">
+        <div className="absolute right-4 top-4 flex items-center gap-3 text-2xl [&>svg]:cursor-pointer">
           <Icon icon="ci:chat-circle" onClick={clickComment} />
-          {isFavActive ? (
+          {isFavoriteActive ? (
             <Icon
               icon="icon-park-solid:like"
               color="#ff5252"
-              onClick={toggleFavButton}
+              onClick={toggleFavoriteButton}
             />
           ) : (
-            <Icon icon="icon-park-outline:like" onClick={toggleFavButton} />
+            <Icon
+              icon="icon-park-outline:like"
+              onClick={toggleFavoriteButton}
+            />
           )}
         </div>
         {isVisbileComment && (

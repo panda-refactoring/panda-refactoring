@@ -7,11 +7,11 @@ import { cls } from "../../common/util/class";
 const RentButtons = () => {
   const [isRent, setIsRent] = useRecoilState(isRentState);
 
-  const rent = () => setIsRent(true);
+  const handleRent = () => setIsRent(true);
 
-  const sell = () => setIsRent(false);
+  const handleSell = () => setIsRent(false);
 
-  const reset = () => setIsRent("");
+  const handleReset = () => setIsRent("");
 
   return (
     <div className="flex gap-3">
@@ -21,7 +21,7 @@ const RentButtons = () => {
             "absolute z-10 mr-2 h-full w-full rounded-full border border-common-black",
             isRent ? "bg-primary-green text-common-black" : "bg-white px-2",
           )}
-          onClick={rent}
+          onClick={handleRent}
         >
           대여상품
         </button>
@@ -35,13 +35,13 @@ const RentButtons = () => {
               ? "bg-primary-green text-common-black"
               : "bg-white px-2",
           )}
-          onClick={sell}
+          onClick={handleSell}
         >
           판매상품
         </button>
         <span className="absolute left-[2px] top-[2px] h-full w-full rounded-full bg-common-black" />
       </div>
-      <button aria-label="되돌리기" onClick={reset}>
+      <button aria-label="되돌리기" onClick={handleReset}>
         <Icon icon="carbon:reset" className="text-2xl" />
       </button>
     </div>
