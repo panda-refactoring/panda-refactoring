@@ -8,7 +8,8 @@ import { wordListState } from "../../../recoil/filter";
 import Button from "../../common/ui/button";
 import FilterTab from "./filter-tab";
 
-import { priceList, tabData } from "../../../common/consts/fake-data";
+import { priceList } from "../../../common/consts/price";
+import { tabData } from "src/common/consts/market";
 
 const FilterOverlay: NextPage<{
   closeOverlay: () => void;
@@ -47,20 +48,20 @@ const FilterOverlay: NextPage<{
       </div>
       <div>
         <FilterTab
-          onClick={openTab}
           name="STYLE"
           tabData={tabData.style.slice(0, 20)}
+          wordList={filterWords}
           isOpen={isOpen}
           addWords={updateTemporaryList}
-          wordList={filterWords}
+          onClick={openTab}
         />
         <FilterTab
-          onClick={openTab}
-          isOpen={isOpen}
           name="PRICE"
           tabData={priceList}
-          addWords={updateTemporaryList}
           wordList={filterWords}
+          isOpen={isOpen}
+          addWords={updateTemporaryList}
+          onClick={openTab}
         />
         <Button
           type="button"

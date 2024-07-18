@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRecoilState } from "recoil";
 import { categoryNameState } from "../../recoil/filter";
 
-import { categoryList } from "src/common/consts/fake-data";
+import { categoryList } from "src/common/consts/price";
 import { cls } from "../../common/util/class";
 
 const CategoryNavigation: NextPage = () => {

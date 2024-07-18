@@ -10,7 +10,7 @@ import ImageSlide from "../components/market/detail/image-slide";
 import Recommend from "../components/main/recommend";
 import ErrorBoundary from "./error-boundary";
 
-import { bannerImages } from "../common/consts/banner-images";
+import { bannerImages } from "../common/consts/banner";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
 

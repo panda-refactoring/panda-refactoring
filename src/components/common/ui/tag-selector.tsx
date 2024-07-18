@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 import { useState } from "react";
-import { taglist } from "../../../common/consts/tag-data";
+import { taglist } from "../../../common/consts/tags";
 
 const TagSelecotr: NextPage = () => {
   const [selectedTag, setSelectedTag] = useState<string[]>([]);
@@ -23,7 +23,7 @@ const TagSelecotr: NextPage = () => {
         {allSelectedTag.map((ele, index) => {
           return (
             <div
-              className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 border-solid border-black py-1 px-2 ${
+              className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 border-solid border-black px-2 py-1 ${
                 selectedTag.includes(ele) ? "bg-black text-white" : ""
               } `}
               key={index}
