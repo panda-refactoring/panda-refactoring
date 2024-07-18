@@ -6,16 +6,15 @@ import { useRecoilValueLoadable } from "recoil";
 import { filteredMarketListState } from "../../recoil/filter";
 
 import Header from "../../components/common/header";
-import FilterOverlay from "../../components/market/filter/market-filter";
 import Navigation from "../../components/common/navigation";
 import FloatingButton from "../../components/common/ui/floating-button";
+import CategoryNavigation from "../../components/market/category-nav";
+import FilterOverlay from "../../components/market/filter/market-filter";
+import RentButtons from "../../components/market/rent-buttons";
 import FilterList from "../../components/market/filter-list";
 import MarketList from "../../components/market/market-list";
-import CategoryNavigation from "../../components/market/category-nav";
-import RentButtons from "../../components/market/rent-buttons";
 
 import useModal from "../../hooks/useModal";
-import { MainProductData } from "../../common/types/data.types";
 import { cls } from "../../common/util/class";
 
 const Market: NextPage = () => {

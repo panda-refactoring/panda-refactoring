@@ -1,11 +1,14 @@
 import { NextPage } from "next";
-import React, { useState } from "react";
+import { useState } from "react";
+
 import { Icon } from "@iconify/react";
-import Button from "../../common/ui/button";
-import FilterTab from "./filter-tab";
-import { priceList, tabData } from "../../../common/consts/fake-data";
 import { useSetRecoilState } from "recoil";
 import { wordListState } from "../../../recoil/filter";
+
+import Button from "../../common/ui/button";
+import FilterTab from "./filter-tab";
+
+import { priceList, tabData } from "../../../common/consts/fake-data";
 
 const FilterOverlay: NextPage<{
   closeOverlay: () => void;
@@ -16,8 +19,8 @@ const FilterOverlay: NextPage<{
   const setWordList = useSetRecoilState(wordListState);
 
   const openTab = (event: React.MouseEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLDivElement;
-    setIsOpen(target.textContent);
+    const { textContent } = event.target as HTMLDivElement;
+    setIsOpen(textContent);
   };
 
   const updateTemporaryList = (word: string) => {
@@ -28,9 +31,7 @@ const FilterOverlay: NextPage<{
 
   const updateFilterList = () => {
     setWordList(filterWords);
-    setTimeout(() => {
-      closeOverlay();
-    }, 100);
+    closeOverlay();
   };
 
   return (
@@ -48,17 +49,17 @@ const FilterOverlay: NextPage<{
         <FilterTab
           onClick={openTab}
           name="STYLE"
-          data={tabData.style.slice(0, 20)}
+          tabData={tabData.style.slice(0, 20)}
           isOpen={isOpen}
-          setList={updateTemporaryList}
+          addWords={updateTemporaryList}
           wordList={filterWords}
         />
         <FilterTab
           onClick={openTab}
           isOpen={isOpen}
           name="PRICE"
-          data={priceList}
-          setList={updateTemporaryList}
+          tabData={priceList}
+          addWords={updateTemporaryList}
           wordList={filterWords}
         />
         <Button
