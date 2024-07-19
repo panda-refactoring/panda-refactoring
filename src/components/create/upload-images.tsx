@@ -1,25 +1,8 @@
-import { Icon } from "@iconify/react";
 import { NextPage } from "next";
-import { UseFormRegister } from "react-hook-form";
-import { CreateState } from "src/pages/create/types";
+import { Icon } from "@iconify/react";
+import { UploadImagesProps } from "./types";
 
-interface UploadImagesProps {
-  register: UseFormRegister<CreateState>;
-  deleteImage: (selectedImage: string) => void;
-  encodeFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  imgsrc: {
-    name: string;
-    dataUrl: string;
-    file: File;
-  }[];
-}
-
-const UploadImages: NextPage<UploadImagesProps> = ({
-  register,
-  deleteImage,
-  encodeFile,
-  imgsrc,
-}) => {
+const UploadImages: NextPage<UploadImagesProps> = ({ register, deleteImage, encodeFile, imgsrc }) => {
   return (
     <div className="mb-6 flex">
       <label className="mr-2 mt-2 flex h-[100px] w-[100px] flex-shrink-0 cursor-pointer flex-col items-center justify-center gap-1 border bg-gray-100 text-textColor-gray-100">
@@ -44,20 +27,13 @@ const UploadImages: NextPage<UploadImagesProps> = ({
           <ul className="flex gap-2 ">
             {imgsrc.length > 0 &&
               imgsrc.map((item, i) => (
-                <li
-                  key={i}
-                  className="relative h-[100px] w-[100px] flex-shrink-0 border border-borderColor-gray"
-                >
+                <li key={i} className="relative h-[100px] w-[100px] flex-shrink-0 border border-borderColor-gray">
                   <div className="peer">
-                    <img
-                      src={item.dataUrl}
-                      alt={`업로드이미지${i}`}
-                      className="h-[100px] w-[100px] object-cover"
-                    />
+                    <img src={item.dataUrl} alt={`업로드이미지${i}`} className="h-[100px] w-[100px] object-cover" />
                   </div>
                   <Icon
                     icon="ri:close-circle-fill"
-                    className="absolute -top-2 -right-1 z-50 hidden rounded-full bg-white text-xl hover:block hover:cursor-pointer peer-hover:block"
+                    className="absolute -right-1 -top-2 z-50 hidden rounded-full bg-white text-xl hover:block hover:cursor-pointer peer-hover:block"
                     onClick={() => deleteImage(item.dataUrl)}
                   />
                 </li>

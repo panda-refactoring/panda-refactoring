@@ -1,159 +1,69 @@
-import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import React, { ChangeEvent, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useForm, FieldErrors } from "react-hook-form";
-import { useMutation } from "react-query";
-import Button from "../../components/common/ui/button";
+import { useRecoilValueLoadable } from "recoil";
+import { currentUserInfoQuery } from "src/recoil/user";
+
 import Header from "../../components/common/header";
-import UploadImages from "../../components/create/upload-images";
-import OptionTab from "../../components/create/option-tab";
-import { cls } from "../../common/util/class";
-import { createImageUrl } from "../../common/util/image-url";
-import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
-import useUpload from "../../hooks/useUpload";
-import useOptions from "../../hooks/useOptions";
-import { tabData } from "../../common/consts/price";
-import { currentUserInfoQuery, userInfoQuery } from "../../recoil/user";
 import Overlay from "../../components/common/overlay";
-import useToast from "../../hooks/useToast";
-import { apiPost } from "../../service/request";
+import Button from "../../components/common/ui/button";
+import UploadImages from "../../components/create/upload-images";
+import OptionTab from "../../components/create/market/option-tab";
 import noExistUser from "../noExistUser";
-import { credentials } from "../../common/lib/credentials";
-import { CreateState, Options } from "../../common/types/create.types";
 
-const Create: NextPage = () => {
-  const router = useRouter();
+import useTextArea from "src/hooks/useTextArea";
+import useCreatePost from "src/hooks/useCreatePost";
+import useOptions from "../../hooks/useOptions";
+import { cls } from "../../common/util/class";
+import { createValidation } from "src/common/util/validate";
+import { CreateState } from "../../common/types/create.types";
 
+const Create = () => {
   const userData = useRecoilValueLoadable(currentUserInfoQuery);
-  const { state, contents } = userData;
-
-  const refreshUserInfo = useRecoilRefresher_UNSTABLE(
-    userInfoQuery(contents?.email),
-  );
-
-  const { uploadImage, deleteImage, encodeFile, imgsrc } =
-    useUpload(credentials);
 
   const {
-    isTabOpen,
-    options,
-    openOptionItem,
-    selectOptionItem,
-    submitBrand,
-    closeTab,
-  } = useOptions({
-    category: { name: "카테고리", current: false, list: tabData.category },
-    style: { name: "스타일", current: false, list: tabData.style },
-    brand: { name: "브랜드", current: false, list: tabData.brand },
-    rental: { name: "대여 가능", current: false, list: tabData.rental },
-  });
-
-  const { setToast, Toast } = useToast();
+    submit,
+    status: isLoading,
+    ToastUI,
+    setToast,
+    handleImage,
+  } = useCreatePost({ type: "market", userData: userData.contents });
 
   const { register, handleSubmit } = useForm<CreateState>({
     mode: "onSubmit",
   });
 
-  const [isText, setIsText] = useState<boolean>(false);
+  const { options, isTabOpen, handleOption } = useOptions();
 
-  const [isValid, setIsValid] = useState<boolean | null>(null);
-
-  const textAreaValue = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    event.target.value !== "" ? setIsText(true) : setIsText(false);
-  };
-
-  const createProduct = async (payload: {
-    data: any;
-    imageurlList: string[];
-  }) => {
-    const { data, imageurlList } = payload;
-    const response = await apiPost.CREATE_ITEM<{
-      data: FormData;
-      imageurlList: string[];
-      options: Options;
-      userId: number;
-    }>({
-      data,
-      imageurlList,
-      options,
-      userId: contents.id,
-    });
-    return response;
-  };
-
-  const { mutate, isLoading } = useMutation(createProduct, {
-    onSuccess: ({ message }) => {
-      setToast(message, false);
-      refreshUserInfo();
-      setTimeout(() => router.replace("/mypage"), 1500);
-    },
-    onError: ({ response }) => {
-      setToast(response.data.message, true);
-    },
-  });
-
-  const validation = (data: CreateState) => {
-    let isNotTag;
-    if (typeof data.tag === "string" && data.tag.length > 0) {
-      if (data.tag.includes(" ")) isNotTag = true;
-      else
-        isNotTag = !data.tag
-          ?.toString()
-          .trim()
-          .split(" ")
-          .every((tag: string) => tag.includes("#"));
-    }
-    const numberCheck = /[0-9]/g;
-    if (!numberCheck.test(data.price as string)) {
-      return setToast("상품가격을 숫자로 기입해주세요.", true);
-    } else if (options.category.name === "카테고리") {
-      return setToast("카테고리를 선택해 주세요.", true);
-    } else if (isNotTag) {
-      return setToast("태그는 공백을 포함할 수 없습니다.", true);
-    }
-    return true;
-  };
+  const { isFocus, handleTextArea } = useTextArea();
 
   const valid = async (data: CreateState) => {
-    if (!validation(data)) return;
+    const errorMessage = createValidation({ inputData: data, options });
 
-    setIsValid(true);
+    if (typeof errorMessage === "string") {
+      setToast(errorMessage, true);
+      return;
+    }
 
-    const imageurlList: string[] = [];
-    imgsrc.forEach(item => {
-      // s3 upload
-      uploadImage(item.file, "products");
-
-      const imageurl = createImageUrl(item.file, "products");
-      imageurlList.push(imageurl);
-    });
-    mutate({ data, imageurlList });
+    submit({ data, options });
   };
 
   const inValid = (error: FieldErrors) => {
-    setIsValid(false);
-    console.log(error);
-    const message =
-      error.desc?.message ||
-      error.title?.message ||
-      error.price?.message ||
-      error.image?.message;
+    const message = error.desc?.message || error.title?.message || error.price?.message || error.image?.message;
     setToast(message as string, true);
   };
 
   return (
     <>
       <Header goBack />
-      <Toast />
+      <ToastUI />
       {isTabOpen && <Overlay />}
       <div className=" px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
           <UploadImages
             register={register}
-            deleteImage={deleteImage}
-            encodeFile={encodeFile}
-            imgsrc={imgsrc}
+            deleteImage={handleImage.deleteImage}
+            encodeFile={handleImage.encodeFile}
+            imgsrc={handleImage.imgsrc}
           />
           <div className="border-b border-t border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
             <input
@@ -174,25 +84,19 @@ const Create: NextPage = () => {
             <div className="relative h-auto w-full p-5">
               <textarea
                 {...register("desc", {
-                  onChange: e => textAreaValue(e),
                   required: "아이템에 대한 설명을 작성해주세요.",
                 })}
                 name="desc"
                 rows={10}
-                className={cls(
-                  "peer w-full resize-none",
-                  isText ? "is-valid" : "",
-                )}
-                onChange={textAreaValue}
+                className={cls("peer w-full resize-none", isFocus ? "is-focus" : "")}
+                onChange={handleTextArea}
               />
               <div
                 className="pointer-events-none absolute left-5 top-5 bg-transparent text-common-gray 
-              peer-focus:hidden peer-[.is-valid]:hidden"
+              peer-focus:hidden peer-[.is-focus]:hidden"
               >
                 <p>아이템에 대한 설명을 작성해주세요.</p>
-                <p className="mt-3">
-                  작성예시. 제품상태, 사이즈, 소재 등 자세히
-                </p>
+                <p className="mt-3">작성예시. 제품상태, 사이즈, 소재 등 자세히</p>
               </div>
             </div>
             <input
@@ -205,32 +109,26 @@ const Create: NextPage = () => {
             />
           </div>
           <div className="[&>*]:flex [&>*]:h-[52px] [&>*]:items-center [&>*]:justify-between [&>*]:border-b [&>*]:px-4">
-            {Object.values(options).map((value, i, arr) => (
-              <div key={`tab${i}`} onClick={() => openOptionItem(value.name)}>
+            {Object.values(options).map((value, i) => (
+              <div key={`tab${i}`} onClick={() => handleOption.openOptionItem(value.name)}>
                 <span>{value.name}</span>
                 <Icon icon="material-symbols:arrow-outward" />
               </div>
             ))}
           </div>
-          <div className="mt-40">
-            <Button
-              type="submit"
-              text="완료"
-              classes="bg-black"
-              fontColor="text-white"
-              isLoading={isLoading}
+          {isTabOpen && (
+            <OptionTab
+              isTabOpen={isTabOpen}
+              options={options}
+              selectOptionItem={handleOption.selectOptionItem}
+              submitBrand={handleOption.submitBrand}
+              closeTab={handleOption.closeTab}
             />
+          )}
+          <div className="mt-40">
+            <Button type="submit" text="완료" classes="bg-black" fontColor="text-white" isLoading={isLoading} />
           </div>
         </form>
-        {isTabOpen && (
-          <OptionTab
-            isTabOpen={isTabOpen}
-            options={options}
-            selectOptionItem={selectOptionItem}
-            submitBrand={submitBrand}
-            closeTab={closeTab}
-          />
-        )}
       </div>
     </>
   );
