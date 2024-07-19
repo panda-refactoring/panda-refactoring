@@ -20,19 +20,18 @@ import { createImageUrl } from "../../common/util/image-url";
 import { apiPost } from "../../service/request";
 import noExistUser from "../noExistUser";
 import { credentials } from "../../common/lib/credentials";
+import Toast from "src/components/common/ui/toast";
 
 const ProfileEdit: NextPage = () => {
   const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
   const { uploadImage, encodeFile, imgsrc } = useUpload(credentials);
   const { state, contents: userContents } = userInfo;
 
-  const refreshUserInfo = useRecoilRefresher_UNSTABLE(
-    userInfoQuery(userContents?.email),
-  );
+  const refreshUserInfo = useRecoilRefresher_UNSTABLE(userInfoQuery(userContents?.email));
 
   const { register } = useForm({});
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -47,9 +46,7 @@ const ProfileEdit: NextPage = () => {
 
   useEffect(() => {
     if (state === "hasValue") {
-      setSelectedTag(
-        userContents?.keywords?.map(({ tag }: { tag: string }) => tag),
-      );
+      setSelectedTag(userContents?.keywords?.map(({ tag }: { tag: string }) => tag));
       setIsLoading(false);
     }
   }, [state]);
@@ -67,7 +64,7 @@ const ProfileEdit: NextPage = () => {
   const submitNickname = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!nick && isNick) {
-      setToast("변경할 닉네임을 입력해주세요.", true);
+      setToast({ message: "변경할 닉네임을 입력해주세요.", isError: true });
       return;
     }
     setIsNick(true);
@@ -83,17 +80,15 @@ const ProfileEdit: NextPage = () => {
     },
     {
       onSuccess: ({ message }) => {
-        setToast(message, false);
+        setToast({ message });
         setIsLoading(true);
         setIsNick(false);
         setNick("");
         // 중복확인 통과하면 닉네임변경
-        apiPost
-          .UPDATE_NICKNAME(userContents.id, { nickname: nick })
-          .then(() => refreshUserInfo());
+        apiPost.UPDATE_NICKNAME(userContents.id, { nickname: nick }).then(() => refreshUserInfo());
       },
       onError: ({ response }) => {
-        setToast(response.data.message, true);
+        setToast({ message: response.data.message, isError: true });
       },
     },
   );
@@ -101,11 +96,7 @@ const ProfileEdit: NextPage = () => {
   //------------------------------------------------------------
 
   const handleTagSelection = (data: string) => {
-    setSelectedTag(prevTags =>
-      prevTags.includes(data)
-        ? prevTags.filter(tag => tag !== data)
-        : [...prevTags, data],
-    );
+    setSelectedTag(prevTags => (prevTags.includes(data) ? prevTags.filter(tag => tag !== data) : [...prevTags, data]));
   };
 
   const handleTagSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -126,13 +117,13 @@ const ProfileEdit: NextPage = () => {
     },
     {
       onSuccess: ({ message }) => {
-        setToast(message, false);
+        setToast({ message });
         setIsLoading(true);
         setIsTab(false);
         setTimeout(() => refreshUserInfo(), 1000);
       },
       onError: ({ response }) => {
-        setToast(response.data.message, true);
+        setToast({ message: response.data.message, isError: true });
       },
     },
   );
@@ -159,19 +150,19 @@ const ProfileEdit: NextPage = () => {
   const { mutate: profileMutate } = useMutation(changeProfileImage, {
     onSuccess: ({ message }) => {
       imgsrc.length = 0;
-      setToast(message, false);
+      setToast({ message });
       setIsLoading(true);
       setTimeout(() => refreshUserInfo(), 1000);
     },
     onError: ({ response }) => {
-      setToast(response.data.message, true);
+      setToast({ message: response.data.message, isError: true });
     },
   });
 
   return (
     <>
       <Header goBack text="PROFILE" />
-      {!isLoading && <Toast />}
+      {!isLoading && showToast && <Toast {...toastController} />}
       {isTab && <Overlay />}
       {isLoading && (
         <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
@@ -208,10 +199,7 @@ const ProfileEdit: NextPage = () => {
           <div className="px-5 py-10">
             <p className="px-2 text-base font-bold">유저정보 수정</p>
             <p className="text-textColor-gr ay-100 mt-5 px-2 text-sm">닉네임</p>
-            <form
-              className="my-2 flex w-full justify-between px-3"
-              onSubmit={submitNickname}
-            >
+            <form className="my-2 flex w-full justify-between px-3" onSubmit={submitNickname}>
               <input
                 ref={input => input && input.focus()}
                 placeholder={userContents.nickname}
@@ -233,11 +221,7 @@ const ProfileEdit: NextPage = () => {
               <div className="my-2 flex w-full justify-between px-3">
                 <div className="flex w-full items-center whitespace-nowrap border-b-[1px] border-solid border-black  text-textColor-gray-100">
                   {userContents?.keywords?.map(
-                    (
-                      { tag }: { tag: string },
-                      i: number,
-                      self: { id: number; tag: string }[],
-                    ) => {
+                    ({ tag }: { tag: string }, i: number, self: { id: number; tag: string }[]) => {
                       const keyword = tag + ", ";
                       if (i === self.length - 1) return tag;
                       return keyword;
@@ -270,34 +254,22 @@ const ProfileEdit: NextPage = () => {
               icon="carbon:close"
               className="absolute right-4 top-4 z-50 h-7 w-7 cursor-pointer"
               onClick={() => {
-                setIsTab(false),
-                  setSelectedTag(
-                    userContents.keywords.map(
-                      ({ tag }: { tag: string }) => tag,
-                    ),
-                  );
+                setIsTab(false), setSelectedTag(userContents.keywords.map(({ tag }: { tag: string }) => tag));
               }}
             />
-            <button
-              type="submit"
-              className="absolute bottom-5 right-5 z-50 cursor-pointer font-bold"
-            >
+            <button type="submit" className="absolute bottom-5 right-5 z-50 cursor-pointer font-bold">
               완료
             </button>
           </form>
           <div className="h-[390px] w-full bg-white p-5 pt-0">
-            <p className="pl-3 pt-5 text-xs text-textColor-gray-100">
-              키워드를 선택해 주세요.
-            </p>
+            <p className="pl-3 pt-5 text-xs text-textColor-gray-100">키워드를 선택해 주세요.</p>
             <ul className="flex w-full flex-wrap gap-2 px-2 py-3">
               {allSelectedTag.map((ele, index) => {
                 return (
                   <li
                     className={cls(
                       "flex cursor-pointer items-center gap-3 rounded-full border-2 px-2 py-1",
-                      selectedTag.includes(ele)
-                        ? "border-primary-violet bg-white"
-                        : "border-white bg-borderColor-gray",
+                      selectedTag.includes(ele) ? "border-primary-violet bg-white" : "border-white bg-borderColor-gray",
                     )}
                     key={index}
                     onClick={() => handleTagSelection(ele)}

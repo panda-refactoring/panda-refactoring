@@ -8,6 +8,7 @@ import { currentUserInfoQuery } from "src/recoil/user";
 import Overlay from "../../components/common/overlay";
 import Header from "../../components/common/header";
 import Button from "../../components/common/ui/button";
+import Toast from "src/components/common/ui/toast";
 import UploadImages from "../../components/create/upload-images";
 import ProductTagTab from "../../components/create/style-feed/product-tab";
 import noExistUser from "../noExistUser";
@@ -28,8 +29,7 @@ const CreatePost = () => {
   const {
     submit,
     status: isLoading,
-    ToastUI,
-    setToast,
+    toast,
     handleImage,
   } = useCreatePost({ type: "styleFeed", userData: userData.contents });
 
@@ -57,13 +57,13 @@ const CreatePost = () => {
   };
 
   const inValid = (error: FieldErrors) => {
-    setToast(error.image?.message as string, true);
+    toast.setToast({ message: error.image?.message as string, isError: true });
   };
 
   return (
     <>
       <Header goBack />
-      <ToastUI />
+      {toast.showToast && <Toast {...toast.toastController} />}
       {isTabOpen && <Overlay />}
       <div className="px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>

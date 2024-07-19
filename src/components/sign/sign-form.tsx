@@ -8,6 +8,7 @@ import { cls } from "../../common/util/class";
 import { regExgPw, regExpEm } from "../../common/util/regInput";
 import { apiPost } from "../../service/request";
 import Button from "../common/ui/button";
+import Toast from "../common/ui/toast";
 
 export interface SignProps {
   email: string;
@@ -18,7 +19,7 @@ export interface SignProps {
 const SignForm: NextPage = () => {
   const router = useRouter();
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const {
     register,
@@ -47,18 +48,18 @@ const SignForm: NextPage = () => {
       );
     },
     onError: ({ response }) => {
-      setToast(response.data.message, true);
+      setToast({ message: response.data.message, isError: true });
     },
   });
   return (
     <>
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       <form
         onSubmit={handleSubmit(submitData => mutate({ ...submitData }))}
         className="signup-minheight space-y-14 px-8 pt-4"
       >
         <div>
-          <p className="mt-5 mb-4 text-xl">사용하실 이메일을 입력해주세요.</p>
+          <p className="mb-4 mt-5 text-xl">사용하실 이메일을 입력해주세요.</p>
           <input
             {...register("email", { required: true, pattern: regExpEm })}
             placeholder="아이디(이메일)"
@@ -67,16 +68,8 @@ const SignForm: NextPage = () => {
               errors.email ? "mb-2 border-b-error" : "",
             )}
           />
-          {errorMessage(
-            errors?.email?.type,
-            "required",
-            "이메일을 입력해주세요",
-          )}
-          {errorMessage(
-            errors?.email?.type,
-            "pattern",
-            "잘못된 이메일 형식입니다",
-          )}
+          {errorMessage(errors?.email?.type, "required", "이메일을 입력해주세요")}
+          {errorMessage(errors?.email?.type, "pattern", "잘못된 이메일 형식입니다")}
         </div>
         <div>
           <p className="mb-3 text-xl">비밀번호를 입력해주세요.</p>
@@ -94,16 +87,8 @@ const SignForm: NextPage = () => {
               errors.password ? "mb-2 border-b-error" : "",
             )}
           />
-          {errorMessage(
-            errors?.password?.type,
-            "required",
-            "비밀번호를 입력해주세요",
-          )}
-          {errorMessage(
-            errors?.password?.type,
-            "pattern",
-            "잘못된 비밀번호 형식입니다",
-          )}
+          {errorMessage(errors?.password?.type, "required", "비밀번호를 입력해주세요")}
+          {errorMessage(errors?.password?.type, "pattern", "잘못된 비밀번호 형식입니다")}
           <input
             type="password"
             {...register("passwordConfirm", {
@@ -122,14 +107,8 @@ const SignForm: NextPage = () => {
               errors.passwordConfirm ? "mb-2 border-b-error" : "",
             )}
           />
-          {errorMessage(
-            errors?.passwordConfirm?.type,
-            "required",
-            "비밀번호를 다시 입력해주세요",
-          )}
-          <p className="mb-2 px-2 text-error">
-            {errors?.passwordConfirm?.message}
-          </p>
+          {errorMessage(errors?.passwordConfirm?.type, "required", "비밀번호를 다시 입력해주세요")}
+          <p className="mb-2 px-2 text-error">{errors?.passwordConfirm?.message}</p>
         </div>
         <Button
           type="submit"

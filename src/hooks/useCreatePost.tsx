@@ -30,7 +30,7 @@ const useCreatePost = ({ type, userData }: useCreatePostProps) => {
 
   const router = useRouter();
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const { uploadImage, deleteImage, encodeFile, imgsrc } = useUpload(credentials);
 
@@ -46,13 +46,12 @@ const useCreatePost = ({ type, userData }: useCreatePostProps) => {
 
   const { mutate, isLoading } = useMutation(createRequest, {
     onSuccess: ({ message }) => {
-      const toastMessage = message ?? "등록이 완료되었습니다.";
-      setToast(toastMessage, false);
+      setToast({ message: message ?? "등록이 완료되었습니다." });
       refreshUserInfo();
-      router.replace("/mypage");
+      setTimeout(() => router.replace("/mypage"), 1000);
     },
     onError: ({ response }) => {
-      setToast(response.data.message, true);
+      setToast({ message: response.data.message, isError: true });
     },
   });
 
@@ -70,8 +69,7 @@ const useCreatePost = ({ type, userData }: useCreatePostProps) => {
   return {
     submit,
     status: isLoading,
-    ToastUI: Toast,
-    setToast,
+    toast: { setToast, showToast, toastController },
     handleImage: { imgsrc, deleteImage, encodeFile },
   };
 };

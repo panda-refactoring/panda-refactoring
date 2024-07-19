@@ -6,6 +6,7 @@ import { currentUserInfoQuery } from "src/recoil/user";
 import Header from "../../components/common/header";
 import Overlay from "../../components/common/overlay";
 import Button from "../../components/common/ui/button";
+import Toast from "src/components/common/ui/toast";
 import UploadImages from "../../components/create/upload-images";
 import OptionTab from "../../components/create/market/option-tab";
 import noExistUser from "../noExistUser";
@@ -23,8 +24,7 @@ const Create = () => {
   const {
     submit,
     status: isLoading,
-    ToastUI,
-    setToast,
+    toast,
     handleImage,
   } = useCreatePost({ type: "market", userData: userData.contents });
 
@@ -40,7 +40,7 @@ const Create = () => {
     const errorMessage = createValidation({ inputData: data, options });
 
     if (typeof errorMessage === "string") {
-      setToast(errorMessage, true);
+      toast.setToast({ message: errorMessage, isError: true });
       return;
     }
 
@@ -49,13 +49,13 @@ const Create = () => {
 
   const inValid = (error: FieldErrors) => {
     const message = error.desc?.message || error.title?.message || error.price?.message || error.image?.message;
-    setToast(message as string, true);
+    toast.setToast({ message: message as string, isError: true });
   };
 
   return (
     <>
       <Header goBack />
-      <ToastUI />
+      {toast.showToast && <Toast {...toast.toastController} />}
       {isTabOpen && <Overlay />}
       <div className=" px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
