@@ -1,25 +1,29 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import ImageSlide from "../../market/detail/image-slide";
 import TagItem from "./tag-item";
-
-import { PostItemProps } from "./types";
+import Modal from "src/components/common/ui/modal";
 import CommentList from "./comment-list";
 import ContentsBox from "./contents-box";
+
+import { modalContext } from "src/context/modal-context";
+import { PostItemProps } from "./types";
 
 const PostItem: NextPage<PostItemProps> = props => {
   const [showComment, setShowComment] = useState<boolean>(false);
 
-  const { userData, lookbookData, updateComment, deleteComment, isModal, setInput, modal } = props;
+  const { userData, lookbookData, updateComment, deleteComment, setInput } = props;
 
   const { user, imgurl, comment, product } = lookbookData;
 
   const hasComment = comment && comment.length > 0;
 
+  const { isOpen, modal } = useContext(modalContext);
+
   return (
     <>
-      {isModal && modal}
+      <Modal {...modal} isOpen={isOpen} />
       <div className="flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
           <img src={user.profileImg} alt="" className="mr-3 h-10 w-10 rounded-full border-2 border-common-black" />

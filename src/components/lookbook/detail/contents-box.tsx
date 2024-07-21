@@ -1,19 +1,29 @@
-import { Icon } from "@iconify/react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+
+import { Icon } from "@iconify/react";
+
 import useFavorite from "src/hooks/useFavorite";
+import useModal from "src/hooks/useModal";
 import { ContentsBoxProps } from "./types";
 
 const ContentsBox: NextPage<ContentsBoxProps> = ({ userId, lookbookData, setInput, setShowComment }) => {
   const { id, description, hashTag, comment } = lookbookData;
+
+  const router = useRouter();
+
+  const goLoginPage = () => router.push("/login");
 
   const { isFavoriteActive, favoriteCount, toggleFavoriteButton } = useFavorite({
     currentUserId: userId,
     lookbookData,
   });
 
+  const { setLoginModal } = useModal();
+
   const clickComment = () => {
     if (!userId) {
-      // setModal();
+      setLoginModal({ submitFn: goLoginPage });
       return;
     }
 
@@ -22,7 +32,7 @@ const ContentsBox: NextPage<ContentsBoxProps> = ({ userId, lookbookData, setInpu
 
   const clickFavoriteButton = async () => {
     if (!userId) {
-      // setModal();
+      setLoginModal({ submitFn: goLoginPage });
       return;
     }
 

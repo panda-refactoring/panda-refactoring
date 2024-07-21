@@ -19,19 +19,16 @@ interface Comment {
 export interface CommentListProps {
   userData: UserData;
   comment: Comment[] | undefined;
-  updateComment: (commentId: number, text: string) => void;
-  deleteComment: (commentId: number) => void;
+  updateComment: ({ commentId, text }: { commentId: number; text: string }) => void;
+  deleteComment: ({ commentId, userId }: { commentId: number; userId: number }) => void;
 }
 
 export interface PostItemProps {
   userData: UserData;
   lookbookData: LookbookData;
   setInput: (postId: number) => void;
-  updateComment: (commentId: number, text: string) => void;
-  deleteComment: (commentId: number) => void;
-  modal: React.ComponentType | JSX.Element;
-  setModal: () => void;
-  isModal?: boolean;
+  updateComment: ({ commentId, text }: { commentId: number; text: string }) => void;
+  deleteComment: ({ commentId, userId }: { commentId: number; userId: number }) => void;
 }
 
 export interface ContentsBoxProps {

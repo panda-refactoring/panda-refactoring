@@ -9,3 +9,7 @@ export interface ModalProps {
 export interface setModalProps {
   ({ message, btnText, cancelFn, submitFn }: ModalProps): void;
 }
+
+export interface IModal extends ModalProps {
+  isOpen: boolean;
+}

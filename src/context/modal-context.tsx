@@ -1,39 +1,46 @@
-import React, { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { ModalProps } from "src/components/common/ui/types";
 
-import { ModalProps } from "../common/types/modal-type";
+interface ModalContext {
+  isOpen: boolean;
+  modal: ModalProps;
+  cancel: () => void;
+  submit: () => void;
+  setModalState: (props: ModalProps) => void;
+  openModal: (status: boolean) => void;
+}
 
-export const modalContext = createContext({
-  show: false,
-  modal: {},
-  cancel: () => {},
-  submit: () => {},
-  setModalState: (props: ModalProps) => {},
-  openModal: (status: boolean) => {},
-});
-
-const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [show, setShow] = useState<boolean>(false);
-  const [modal, setModal] = useState<ModalProps>({
+export const modalContext = createContext<ModalContext>({
+  isOpen: false,
+  modal: {
     message: "",
     btnText: "",
     cancelText: "",
     cancelFn: null,
     submitFn: null,
+  },
+  cancel: () => {},
+  submit: () => {},
+  setModalState: () => {},
+  openModal: () => {},
+});
+
+const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [modal, setModal] = useState<ModalProps>({
+    message: "",
+    btnText: "",
+    cancelText: "취소",
+    cancelFn: null,
+    submitFn: null,
   });
 
-  const openModal = () => setShow(true);
+  const openModal = () => setIsOpen(true);
 
-  const closeModal = () => setShow(false);
+  const closeModal = () => setIsOpen(false);
 
-  const setModalState = ({
-    message,
-    btnText,
-    cancelText,
-    cancelFn,
-    submitFn,
-  }: ModalProps) => {
+  const setModalState = ({ message, btnText, cancelText, cancelFn, submitFn }: ModalProps) => {
     setModal({ message, btnText, cancelText, cancelFn, submitFn });
-    openModal();
   };
 
   const cancel = () => {
@@ -46,8 +53,12 @@ const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
     closeModal();
   };
 
+  useEffect(() => {
+    openModal();
+  }, [modal]);
+
   const value = {
-    show,
+    isOpen,
     modal,
     cancel,
     submit,
@@ -55,9 +66,7 @@ const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
     openModal,
   };
 
-  return (
-    <modalContext.Provider value={value}>{children}</modalContext.Provider>
-  );
+  return <modalContext.Provider value={value}>{children}</modalContext.Provider>;
 };
 
 export default ModalContextProvider;

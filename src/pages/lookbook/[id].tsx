@@ -12,7 +12,6 @@ import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import PostItem from "../../components/lookbook/detail/post-item";
 import CommentForm from "src/components/lookbook/detail/comment-form";
 
-import useModal from "../../hooks/useModal";
 import useComment from "src/hooks/useComment";
 import { LookbookData } from "../../common/types/data.types";
 import { useGetLookBookList, useGetLookBookPost } from "src/service/query/lookbook";
@@ -27,18 +26,11 @@ const Post: NextPage = () => {
 
   const { ref, inView } = useInView();
 
-  const { ModalUI, setLoginModalState } = useModal();
-
   const { commentValue, showInput, handleComment, mutate } = useComment();
 
   const submit = async (data: FieldValues) => {
-    if (!data.comment) {
-      const payload = { userId: userContents?.id ?? 1 };
-      mutate.deleteComment(payload);
-      return;
-    }
-
     if (data.comment.trim === "") return;
+
     const payload = { userId: userContents?.id ?? 1, comment: data.comment };
     mutate.createComment(payload);
   };
@@ -67,9 +59,6 @@ const Post: NextPage = () => {
           <PostItem
             userData={userContents}
             lookbookData={postData}
-            // isModal={show}
-            modal={<ModalUI />}
-            setModal={setLoginModalState}
             setInput={handleComment.setInput}
             updateComment={handleComment.update}
             deleteComment={handleComment.delete}
@@ -83,9 +72,6 @@ const Post: NextPage = () => {
                   key={look.id}
                   userData={userContents}
                   lookbookData={look}
-                  // isModal={show}
-                  modal={<ModalUI />}
-                  setModal={setLoginModalState}
                   setInput={handleComment.setInput}
                   updateComment={handleComment.update}
                   deleteComment={handleComment.delete}

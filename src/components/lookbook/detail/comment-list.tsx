@@ -18,8 +18,8 @@ const CommentList = ({ userData, comment, updateComment, deleteComment }: Commen
             </div>
             {author.nickname == currentUserNickname && (
               <div className="flex gap-3 text-textColor-gray-100">
-                <button onClick={() => updateComment(id, text)}>수정</button>
-                <button onClick={() => deleteComment(id)}>삭제</button>
+                <button onClick={() => updateComment({ commentId: id, text })}>수정</button>
+                <button onClick={() => deleteComment({ commentId: id, userId: userData?.id })}>삭제</button>
               </div>
             )}
           </li>

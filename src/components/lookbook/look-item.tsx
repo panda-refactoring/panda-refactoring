@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,18 +7,24 @@ import { Icon } from "@iconify/react";
 
 import useFavorite from "../../hooks/useFavorite";
 import { LookbookData } from "../../common/types/data.types";
+import useModal from "src/hooks/useModal";
 
 interface LookItemProps extends LookbookData {
   userId: number;
-  setModal: () => void;
 }
 
-const LookItem: NextPage<LookItemProps> = ({ user, imgurl, id, userId, setModal }) => {
+const LookItem: NextPage<LookItemProps> = ({ user, imgurl, id, userId }) => {
   const { isFavoriteActive, toggleFavoriteButton } = useFavorite({ currentUserId: userId || 1 });
+
+  const { setLoginModal } = useModal();
+
+  const router = useRouter();
+
+  const goLoginPage = () => router.push("/login");
 
   const clickFavoriteButton = async () => {
     if (!userId && userId !== 0) {
-      setModal();
+      setLoginModal({ submitFn: goLoginPage });
       return;
     }
 

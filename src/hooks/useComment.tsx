@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCreateComment, useDeleteComment } from "src/service/query/comment";
+import useModal from "./useModal";
 
 const useComment = () => {
   const [showInput, setShowInput] = useState<boolean>(false);
@@ -10,6 +11,8 @@ const useComment = () => {
   const { mutate: createCommentMutate, status: createCommentStatus } = useCreateComment({ postId });
 
   const { mutate: deleteCommentMutate, status: deleteCommentStatus } = useDeleteComment({ commentId });
+
+  const { setCommentModal } = useModal();
 
   const reset = () => {
     setCommentValue("");
@@ -22,21 +25,24 @@ const useComment = () => {
     setPostId(postId);
   };
 
-  const updateComment = (commentId: number, text: string) => {
+  const updateComment = ({ commentId, text }: { commentId: number; text: string }) => {
     setCommentId(commentId);
     setCommentValue(text);
     setShowInput(true);
   };
 
-  const deleteComment = (commentId: number) => {
+  const deleteComment = ({ commentId, userId }: { commentId: number; userId: number }) => {
     setCommentId(commentId);
-    // setCommentModalState({ cancel: reset, submit: submit });
+    const submitFn = () => {
+      deleteCommentMutate({ userId });
+    };
+    setCommentModal({ submitFn });
   };
 
   useEffect(() => {
     if (createCommentStatus === "success") reset();
     if (createCommentStatus === "error") {
-      // setCommentModalState({ cancel: reset, submit: submit });
+      // TODO: 에러확인 모달 띄우기. (확인버튼만 있는 모달 만들기)
       reset();
     }
   }, [createCommentStatus]);
@@ -44,7 +50,7 @@ const useComment = () => {
   useEffect(() => {
     if (deleteCommentStatus === "success") reset();
     if (deleteCommentStatus === "error") {
-      // setCommentModalState({ cancel: reset, submit: submit });
+      // TODO: 에러확인 모달 띄우기. (확인버튼만 있는 모달 만들기)
       reset();
     }
   }, [deleteCommentStatus]);
