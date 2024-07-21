@@ -1,139 +1,68 @@
-import { Icon } from "@iconify/react";
 import { NextPage } from "next";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
+import { useRouter } from "next/router";
+import { Fragment, useEffect } from "react";
+
+import { useInfiniteQuery, useQuery } from "react-query";
+import { FieldValues } from "react-hook-form";
+import { useInView } from "react-intersection-observer";
+import { useRecoilValueLoadable } from "recoil";
+import { currentUserInfoQuery } from "../../recoil/user";
+
 import Header from "../../components/common/header";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import PostItem from "../../components/lookbook/detail/post-item";
-import { LookbookData } from "../../common/types/data.types";
-import { useInView } from "react-intersection-observer";
-import React, { useEffect, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import { useRecoilValueLoadable } from "recoil";
-import { currentUserInfoQuery } from "../../recoil/user";
-import { useRouter } from "next/router";
+
 import useModal from "../../hooks/useModal";
+import useComment from "src/hooks/useComment";
+import { LookbookData } from "../../common/types/data.types";
 import { apiGet, apiPost } from "../../service/request";
+import CommentForm from "src/components/lookbook/detail/comment-form";
 
 const Post: NextPage = () => {
-  const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
-  const { state, contents: userContents } = userInfo;
-  const [userId, setUserId] = useState<number>(0);
-
-  useEffect(() => {
-    if (userContents) setUserId(userContents.id);
-  }, [state]);
-
   const router = useRouter();
   const { id: lookbookId } = router.query;
 
-  const queryClient = useQueryClient();
+  const userInfo = useRecoilValueLoadable(currentUserInfoQuery);
+
+  const { contents: userContents } = userInfo;
 
   const { ref, inView } = useInView();
-  const { register, handleSubmit } = useForm();
 
-  const { ModalUI, setLoginModalState, setCommentModalState } = useModal();
+  const { ModalUI, setLoginModalState } = useModal();
 
-  const [showInput, setShowInput] = useState<boolean>(false);
-  const [commentValue, setCommentValue] = useState<string>("");
-  const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [postId, setPostId] = useState<number>(0);
-  const [commentId, setCommentId] = useState<number>(0);
-
-  const { data: postData, isLoading } = useQuery<LookbookData>(
-    "getPost",
-    () => apiGet.GET_POST(lookbookId as string),
-    {
-      enabled: !!lookbookId,
-      notifyOnChangeProps: "tracked",
-    },
-  );
-
-  const getAllPost = ({ pageParam = "" }: { pageParam: string }) => {
-    const response = apiPost.GET_ALL_POST(lookbookId as string, pageParam);
-    return response;
-  };
-
-  const {
-    data: posts,
-    isLoading: isFetching,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery(
-    "posts",
-    ({ pageParam = 1 }) => getAllPost({ pageParam }),
-    {
-      getNextPageParam: lastPage => lastPage?.nextId ?? false,
-      enabled: !!lookbookId,
-      notifyOnChangeProps: "tracked",
-    },
-  );
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView]);
-
-  const reset = () => {
-    setCommentValue("");
-    setIsUpdating(false);
-    setShowInput(false);
-  };
-
-  const submitComment = async (comment?: string) => {
-    const payload = { comment, userId };
-    const response = !isUpdating
-      ? await apiPost.CREATE_COMMENT(postId, payload)
-      : await apiPost.UPDATE_COMMENT(commentId, payload);
-    return response;
-  };
-
-  const { mutate: commentMutate, isLoading: loadingComment } = useMutation(
-    "comment",
-    submitComment,
-    {
-      onSuccess: ({ message }) => {
-        queryClient.invalidateQueries("getPost");
-        reset();
-      },
-      onError: () => {
-        reset();
-      },
-    },
-  );
-
-  const updateComment = (commentId: number, text: string) => {
-    setCommentValue(text);
-    setCommentId(commentId);
-    setShowInput(true);
-    setIsUpdating(true);
-  };
-
-  const setInput = (postId: number, val?: boolean) => {
-    reset();
-    setShowInput(val as boolean);
-    setPostId(postId);
-  };
+  const { commentMutate, commentValue, setInput, showInput, handleComment } = useComment({ userId: userContents?.id });
 
   const submit = async (data: FieldValues) => {
     if (!data?.comment) {
       commentMutate(undefined);
       return;
     }
+
     if (data.comment.trim === "") return;
     commentMutate(data.comment);
   };
 
-  const deleteComment = (commentId: number) => {
-    setCommentModalState({ cancel: reset, submit: submit });
-    setIsUpdating(true);
-    setCommentId(commentId);
-  };
+  const { data: postData, isLoading } = useQuery<LookbookData>("getPost", () => apiGet.GET_POST(lookbookId as string), {
+    enabled: !!lookbookId,
+    notifyOnChangeProps: "tracked",
+  });
+
+  const {
+    data: posts,
+    isLoading: isFetching,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery("posts", ({ pageParam = 1 }) => apiPost.GET_ALL_POST(lookbookId as string, pageParam), {
+    getNextPageParam: lastPage => lastPage?.nextId ?? false,
+    enabled: !!lookbookId,
+    notifyOnChangeProps: "tracked",
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   return (
     <div>
@@ -143,32 +72,32 @@ const Post: NextPage = () => {
         {postData && (
           <PostItem
             userData={userContents}
+            lookbookData={postData}
             setInput={setInput}
             // isModal={show}
             modal={<ModalUI />}
             setModal={setLoginModalState}
-            updateComment={updateComment}
-            deleteComment={deleteComment}
-            {...postData}
+            updateComment={handleComment.update}
+            deleteComment={handleComment.delete}
           />
         )}
         {!isFetching &&
           posts?.pages.map(page => (
-            <React.Fragment key={page?.nextId ?? "lastPage"}>
+            <Fragment key={page?.nextId ?? "lastPage"}>
               {page?.posts.map((look: LookbookData) => (
                 <PostItem
                   key={look.id}
                   userData={userContents}
+                  lookbookData={look}
                   setInput={setInput}
                   // isModal={show}
                   modal={<ModalUI />}
                   setModal={setLoginModalState}
-                  updateComment={updateComment}
-                  deleteComment={deleteComment}
-                  {...look}
+                  updateComment={handleComment.update}
+                  deleteComment={handleComment.delete}
                 />
               ))}
-            </React.Fragment>
+            </Fragment>
           ))}
       </div>
       {hasNextPage && (
@@ -176,25 +105,7 @@ const Post: NextPage = () => {
           <LoadingSpinner />
         </span>
       )}
-      {showInput && (
-        <form
-          onSubmit={handleSubmit(submit)}
-          className="fixed bottom-0 z-10 flex h-[60px] w-[390px] items-center justify-between border-t border-borderColor-gray bg-white px-5"
-        >
-          <input
-            type="text"
-            placeholder="댓글을 입력해주세요."
-            value={commentValue}
-            {...register("comment", {
-              onChange: e => setCommentValue(e.target.value),
-            })}
-          />
-          <Icon
-            icon="tabler:mood-smile"
-            className="cursor-pointer text-xl text-textColor-gray-100"
-          />
-        </form>
-      )}
+      {showInput && <CommentForm commentValue={commentValue} submit={submit} onChange={handleComment.onChange} />}
     </div>
   );
 };

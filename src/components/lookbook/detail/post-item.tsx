@@ -1,97 +1,28 @@
-import { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { Icon } from "@iconify/react";
-import { useMutation } from "react-query";
-import useFavorite from "../../../hooks/useFavorite";
-import { LookbookData, UserData } from "../../../common/types/data.types";
+import { useState } from "react";
+
 import ImageSlide from "../../market/detail/image-slide";
 import TagItem from "./tag-item";
 
-interface PostItemProps extends LookbookData {
-  userData: UserData;
-  setInput: (postId: number, val?: boolean) => void;
-  updateComment: (commentId: number, text: string) => void;
-  deleteComment: (commentId: number) => void;
-  isModal?: boolean;
-  modal: React.ComponentType | JSX.Element;
-  setModal: () => void;
-}
+import { PostItemProps } from "./types";
+import CommentList from "./comment-list";
+import ContentsBox from "./contents-box";
 
-const PostItem: NextPage<PostItemProps> = ({
-  userData,
-  id,
-  user,
-  imgurl,
-  favorite,
-  description,
-  hashTag,
-  product,
-  comment = [],
-  updateComment,
-  deleteComment,
-  isModal,
-  setInput,
-  modal,
-  setModal,
-}) => {
-  const currentUserNickname = userData ? userData.nickname : "";
-  const currentUserId = userData ? userData.id : 0;
-  const {
-    isFavoriteActive,
-    favoriteCount,
-    updateFavorite,
-    changeCount,
-    changeButtonSytle,
-    updateFavoriteCount,
-    initialButtonStyle,
-  } = useFavorite(currentUserId);
-
+const PostItem: NextPage<PostItemProps> = props => {
   const [showComment, setShowComment] = useState<boolean>(false);
 
-  const isVisbileComment = showComment && comment.length > 0;
+  const { userData, lookbookData, updateComment, deleteComment, isModal, setInput, modal } = props;
 
-  const { mutate } = useMutation(updateFavorite, {
-    onSuccess: ({ data }) => {
-      changeCount();
-    },
-    onError: ({ response }) => {
-      console.log(response.data.message);
-    },
-  });
+  const { user, imgurl, comment, product } = lookbookData;
 
-  const clickComment = () => {
-    if (!currentUserId) {
-      setModal();
-      return;
-    }
-    setInput(id, true);
-  };
-
-  const toggleFavoriteButton = async () => {
-    if (currentUserId === 0) {
-      setModal();
-      return;
-    }
-    changeButtonSytle();
-    mutate({ currentUserId, lookId: id });
-  };
-
-  useEffect(() => {
-    if (!favorite) return;
-    updateFavoriteCount(favorite.length);
-    initialButtonStyle(favorite);
-  }, [favorite]);
+  const hasComment = comment && comment.length > 0;
 
   return (
     <>
       {isModal && modal}
       <div className="flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
-          <img
-            src={user.profileImg}
-            alt=""
-            className="mr-3 h-10 w-10 rounded-full border-2 border-common-black"
-          />
+          <img src={user.profileImg} alt="" className="mr-3 h-10 w-10 rounded-full border-2 border-common-black" />
           <div>
             <p className="text-sm font-bold">{user.nickname}</p>
           </div>
@@ -99,68 +30,19 @@ const PostItem: NextPage<PostItemProps> = ({
       </div>
       <ImageSlide images={imgurl} />
       <div className="relative p-5">
-        <div>
-          <div className="mb-3 flex gap-2 text-xs text-common-gray">
-            <div>2023.03.11</div>
-            <div>좋아요 {favoriteCount}</div>
-          </div>
-          {(description || hashTag[0]?.tag !== "") && (
-            <p className="mb-2">
-              {description && <span className="mr-2">{description}</span>}
-              {hashTag?.map(({ tag }, i) => (
-                <span key={`태그${i}`} className="mr-1">
-                  {tag !== "" && `#${tag}`}
-                </span>
-              ))}
-            </p>
-          )}
-          <span
-            className="cursor-pointer text-common-gray hover:underline"
-            onClick={() => setShowComment(true)}
-          >
-            댓글 {comment ? comment.length : 0}개
-          </span>
-        </div>
-        <div className="absolute right-4 top-4 flex items-center gap-3 text-2xl [&>svg]:cursor-pointer">
-          <Icon icon="ci:chat-circle" onClick={clickComment} />
-          {isFavoriteActive ? (
-            <Icon
-              icon="icon-park-solid:like"
-              color="#ff5252"
-              onClick={toggleFavoriteButton}
-            />
-          ) : (
-            <Icon
-              icon="icon-park-outline:like"
-              onClick={toggleFavoriteButton}
-            />
-          )}
-        </div>
-        {isVisbileComment && (
-          <div className="py-4">
-            <div>
-              <h2 className="mr-2 inline-block text-lg">comments</h2>
-              <span className="text-base font-bold">{comment?.length}</span>
-            </div>
-            <ul className="mt-3">
-              {comment?.map(({ id, author, text }, i) => (
-                <li key={`코멘트${i}`} className="flex justify-between">
-                  <div className="flex gap-3">
-                    <b className="text-base font-bold">{author.nickname}</b>
-                    {text}
-                  </div>
-                  {author.nickname == currentUserNickname && (
-                    <div className="flex gap-3 text-textColor-gray-100">
-                      <button onClick={() => updateComment(id, text)}>
-                        수정
-                      </button>
-                      <button onClick={() => deleteComment(id)}>삭제</button>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <ContentsBox
+          userId={userData?.id}
+          lookbookData={lookbookData}
+          setInput={setInput}
+          setShowComment={setShowComment}
+        />
+        {showComment && hasComment && (
+          <CommentList
+            userData={userData}
+            comment={comment}
+            updateComment={updateComment}
+            deleteComment={deleteComment}
+          />
         )}
         {product.length > 0 && (
           <div className="mt-3 border-t border-borderColor-gray">
