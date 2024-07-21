@@ -31,7 +31,7 @@ const PostItem: NextPage<PostItemProps> = props => {
       <ImageSlide images={imgurl} />
       <div className="relative p-5">
         <ContentsBox
-          userId={userData?.id}
+          userId={userData?.id ?? 1}
           lookbookData={lookbookData}
           setInput={setInput}
           setShowComment={setShowComment}

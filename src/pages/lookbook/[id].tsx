@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Fragment, useEffect } from "react";
 
-import { useInfiniteQuery, useQuery } from "react-query";
 import { FieldValues } from "react-hook-form";
 import { useInView } from "react-intersection-observer";
 import { useRecoilValueLoadable } from "recoil";
@@ -11,12 +10,12 @@ import { currentUserInfoQuery } from "../../recoil/user";
 import Header from "../../components/common/header";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import PostItem from "../../components/lookbook/detail/post-item";
+import CommentForm from "src/components/lookbook/detail/comment-form";
 
 import useModal from "../../hooks/useModal";
 import useComment from "src/hooks/useComment";
 import { LookbookData } from "../../common/types/data.types";
-import { apiGet, apiPost } from "../../service/request";
-import CommentForm from "src/components/lookbook/detail/comment-form";
+import { useGetLookBookList, useGetLookBookPost } from "src/service/query/lookbook";
 
 const Post: NextPage = () => {
   const router = useRouter();
@@ -30,33 +29,28 @@ const Post: NextPage = () => {
 
   const { ModalUI, setLoginModalState } = useModal();
 
-  const { commentMutate, commentValue, setInput, showInput, handleComment } = useComment({ userId: userContents?.id });
+  const { commentValue, showInput, handleComment, mutate } = useComment();
 
   const submit = async (data: FieldValues) => {
-    if (!data?.comment) {
-      commentMutate(undefined);
+    if (!data.comment) {
+      const payload = { userId: userContents?.id ?? 1 };
+      mutate.deleteComment(payload);
       return;
     }
 
     if (data.comment.trim === "") return;
-    commentMutate(data.comment);
+    const payload = { userId: userContents?.id ?? 1, comment: data.comment };
+    mutate.createComment(payload);
   };
 
-  const { data: postData, isLoading } = useQuery<LookbookData>("getPost", () => apiGet.GET_POST(lookbookId as string), {
-    enabled: !!lookbookId,
-    notifyOnChangeProps: "tracked",
-  });
+  const { data: postData, isLoading } = useGetLookBookPost({ lookbookId: lookbookId?.toString() ?? "1" });
 
   const {
     data: posts,
-    isLoading: isFetching,
+    isLoading: isListLoading,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery("posts", ({ pageParam = 1 }) => apiPost.GET_ALL_POST(lookbookId as string, pageParam), {
-    getNextPageParam: lastPage => lastPage?.nextId ?? false,
-    enabled: !!lookbookId,
-    notifyOnChangeProps: "tracked",
-  });
+  } = useGetLookBookList({ lookbookId: lookbookId?.toString() ?? "1" });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -73,15 +67,15 @@ const Post: NextPage = () => {
           <PostItem
             userData={userContents}
             lookbookData={postData}
-            setInput={setInput}
             // isModal={show}
             modal={<ModalUI />}
             setModal={setLoginModalState}
+            setInput={handleComment.setInput}
             updateComment={handleComment.update}
             deleteComment={handleComment.delete}
           />
         )}
-        {!isFetching &&
+        {!isListLoading &&
           posts?.pages.map(page => (
             <Fragment key={page?.nextId ?? "lastPage"}>
               {page?.posts.map((look: LookbookData) => (
@@ -89,10 +83,10 @@ const Post: NextPage = () => {
                   key={look.id}
                   userData={userContents}
                   lookbookData={look}
-                  setInput={setInput}
                   // isModal={show}
                   modal={<ModalUI />}
                   setModal={setLoginModalState}
+                  setInput={handleComment.setInput}
                   updateComment={handleComment.update}
                   deleteComment={handleComment.delete}
                 />
