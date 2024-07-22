@@ -1,15 +1,9 @@
 import { NextPage } from "next";
-import { Icon } from "@iconify/react";
 import { useRef } from "react";
-import { OptionTabProps } from "src/pages/create/types";
+import { Icon } from "@iconify/react";
+import { OptionTabProps } from "src/common/types/create.types";
 
-const OptionTab: NextPage<OptionTabProps> = ({
-  options,
-  selectOptionItem,
-  submitBrand,
-  isTabOpen,
-  closeTab,
-}) => {
+const OptionTab: NextPage<OptionTabProps> = ({ options, selectOptionItem, submitBrand, isTabOpen, closeTab }) => {
   const brandRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -24,7 +18,7 @@ const OptionTab: NextPage<OptionTabProps> = ({
               <span className="text-xl">{key.toUpperCase()}</span>
               <Icon
                 icon="carbon:close"
-                className="absolute top-4 right-5 z-50 h-7 w-7 cursor-pointer"
+                className="absolute right-5 top-4 z-50 h-7 w-7 cursor-pointer"
                 onClick={closeTab}
               />
             </div>
@@ -40,19 +34,14 @@ const OptionTab: NextPage<OptionTabProps> = ({
                 <div className="h-[350px] w-full bg-white p-5">
                   <ul className="h-[295px] w-full overflow-y-scroll [&>li]:text-textColor-gray-100">
                     {key === "brand" && (
-                      <form
-                        className="relative mb-16"
-                        onSubmit={e => submitBrand(e, brandRef.current!.value)}
-                      >
+                      <form className="relative mb-16" onSubmit={e => submitBrand(e, brandRef.current!.value)}>
                         <input
                           type="text"
                           placeholder="해당하는 브랜드가 없는 경우 입력해주세요."
                           className="absolute left-0 rounded-md bg-gray-100 p-4 pr-14"
                           ref={brandRef}
                         />
-                        <button className="text-md absolute right-3 top-4 font-bold hover:cursor-pointer">
-                          완료
-                        </button>
+                        <button className="text-md absolute right-3 top-4 font-bold hover:cursor-pointer">완료</button>
                       </form>
                     )}
                     {list.map((listItem, i) => (

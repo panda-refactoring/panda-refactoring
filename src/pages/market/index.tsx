@@ -18,13 +18,12 @@ import useModal from "../../hooks/useModal";
 import { cls } from "../../common/util/class";
 
 const Market: NextPage = () => {
-  const marketList = useRecoilValueLoadable(filteredMarketListState);
-  const { state, contents: filteredList } = marketList;
-
-  const { ModalUI } = useModal();
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFilterOpen, setFilterOpen] = useState<boolean>(false);
+
+  const { state, contents: filteredList } = useRecoilValueLoadable(filteredMarketListState);
+
+  const { ModalUI } = useModal();
 
   const openFilterOverlay = () => setFilterOpen(true);
 
@@ -68,7 +67,7 @@ const Market: NextPage = () => {
       </div>
       <MarketList marketData={filteredList} isLoading={isLoading} />
       <Navigation />
-      <FloatingButton path="/create" />
+      <FloatingButton path="/create/market" />
     </div>
   );
 };

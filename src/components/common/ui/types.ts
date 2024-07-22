@@ -13,3 +13,9 @@ export interface setModalProps {
 export interface IModal extends ModalProps {
   isOpen: boolean;
 }
+
+export interface ToastProps {
+  toastMessage: string[];
+  isError?: boolean;
+  closeToast: () => void;
+}

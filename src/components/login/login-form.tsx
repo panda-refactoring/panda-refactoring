@@ -8,6 +8,7 @@ import { errorMessage } from "../common/error";
 import { cls } from "../../common/util/class";
 import createHashedPassword from "../../common/util/hash";
 import { regExgPw, regExpEm } from "../../common/util/regInput";
+import Toast from "../common/ui/toast";
 
 interface LoginProps {
   email: string;
@@ -18,7 +19,7 @@ interface LoginProps {
 const LoginForm: NextPage = () => {
   const router = useRouter();
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const {
     register,
@@ -36,11 +37,11 @@ const LoginForm: NextPage = () => {
       nickname: data.nickname,
     });
 
-    !result?.error ? router.replace("/") : setToast(result.error, true);
+    !result?.error ? router.replace("/") : setToast({ message: result.error, isError: true });
   };
   return (
     <>
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       <form onSubmit={handleSubmit(onSubmit)} className="px-3">
         <input
           {...register("email", { required: true, pattern: regExpEm })}
@@ -51,11 +52,7 @@ const LoginForm: NextPage = () => {
           )}
         />
         {errorMessage(errors?.email?.type, "required", "이메일을 입력해주세요")}
-        {errorMessage(
-          errors?.email?.type,
-          "pattern",
-          "잘못된 이메일 형식입니다",
-        )}
+        {errorMessage(errors?.email?.type, "pattern", "잘못된 이메일 형식입니다")}
         <input
           type="password"
           {...register("password", { required: true, pattern: regExgPw })}
@@ -66,30 +63,16 @@ const LoginForm: NextPage = () => {
             errors.email ? "border-b-error" : "",
           )}
         />
-        {errorMessage(
-          errors?.password?.type,
-          "required",
-          "비밀번호를 입력해주세요",
-        )}
-        {errorMessage(
-          errors?.password?.type,
-          "pattern",
-          "잘못된 비밀번호 형식입니다",
-        )}
+        {errorMessage(errors?.password?.type, "required", "비밀번호를 입력해주세요")}
+        {errorMessage(errors?.password?.type, "pattern", "잘못된 비밀번호 형식입니다")}
         <button
           type="submit"
-          className={cls(
-            "mt-3 h-12 w-full text-base text-black",
-            isValid ? "bg-primary-green" : "bg-common-gray",
-          )}
+          className={cls("mt-3 h-12 w-full text-base text-black", isValid ? "bg-primary-green" : "bg-common-gray")}
           disabled={!isValid}
         >
           SIGN IN
         </button>
-        <button
-          type="button"
-          className="mt-3 h-12 w-full bg-transparent text-white hover:underline"
-        >
+        <button type="button" className="mt-3 h-12 w-full bg-transparent text-white hover:underline">
           <Link href="/sign">회원가입</Link>
         </button>
       </form>

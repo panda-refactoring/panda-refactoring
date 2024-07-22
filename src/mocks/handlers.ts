@@ -72,7 +72,7 @@ export const handlers = [
 
       const { lookbookId } = await request.json();
 
-      const take = 3;
+      const TAKE_COUNT = 3;
       const cursorQuery = (pageParam as string) === "1" ? undefined : pageParam;
       const cursorId = cursorQuery ? parseInt(pageParam as string) : 1;
 
@@ -80,11 +80,30 @@ export const handlers = [
 
       const cursor = cursorId - 1;
 
-      const posts = filterPosts.slice(cursor, cursor + take);
+      const posts = filterPosts.slice(cursor, cursor + TAKE_COUNT);
 
-      const nextId = posts.length < take ? undefined : posts[take - 1].id;
+      const nextId =
+        posts.length < TAKE_COUNT ? undefined : posts[TAKE_COUNT - 1].id;
 
       return HttpResponse.json({ posts, nextId });
     },
   ),
+  http.post("/api/products", async ({ request }) => {
+    const payload = await request.json();
+
+    if (!payload) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json(payload);
+  }),
+  http.post("/api/look", async ({ request }) => {
+    const payload = await request.json();
+
+    if (!payload) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json(payload);
+  }),
 ];

@@ -1,151 +1,107 @@
-import type { NextPage } from "next";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useState } from "react";
+
 import { Icon } from "@iconify/react";
 import { useForm, FieldErrors } from "react-hook-form";
-import { useMutation } from "react-query";
-import Button from "../../components/common/ui/button";
-import Header from "../../components/common/header";
-import UploadImages from "../../components/create/upload-images";
-import OptionTab from "../../components/create/option-tab";
-import { cls } from "../../common/util/class";
-import { createImageUrl } from "../../common/util/image-url";
 import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
-import useUpload from "../../hooks/useUpload";
-import useOptions from "../../hooks/useOptions";
-import { tabData } from "../../common/consts/price";
-import { currentUserInfoQuery, userInfoQuery } from "../../recoil/user";
-import Overlay from "../../components/common/overlay";
-import useToast from "../../hooks/useToast";
-import { apiPost } from "../../service/request";
-import noExistUser from "../noExistUser";
-import { credentials } from "../../common/lib/credentials";
-import { CreateState, Options } from "../../common/types/create.types";
+import { currentUserInfoQuery, userInfoQuery } from "src/recoil/user";
 
-const Create: NextPage = () => {
+import Header from "../../components/common/header";
+import Overlay from "../../components/common/overlay";
+import Button from "../../components/common/ui/button";
+import Toast from "src/components/common/ui/toast";
+import UploadImages from "../../components/create/upload-images";
+import OptionTab from "../../components/create/market/option-tab";
+import noExistUser from "../noExistUser";
+
+import useTextArea from "src/hooks/useTextArea";
+import useOptions from "../../hooks/useOptions";
+import useToast from "src/hooks/useToast";
+import useUpload from "src/hooks/useUpload";
+import { cls } from "../../common/util/class";
+import { createValidation } from "src/common/util/validate";
+import { credentials } from "src/common/lib/credentials";
+import { useCreateMarket } from "src/service/query/create";
+import { UserData } from "src/common/types/data.types";
+import { CreateState } from "../../common/types/create.types";
+import { createImageUrl } from "src/common/util/image-url";
+
+const Create = () => {
+  const userData = useRecoilValueLoadable<UserData>(currentUserInfoQuery);
+  const refreshUserInfo = useRecoilRefresher_UNSTABLE(
+    userInfoQuery(userData?.contents?.email),
+  );
+
   const router = useRouter();
 
-  const userData = useRecoilValueLoadable(currentUserInfoQuery);
-  const { state, contents } = userData;
-
-  const refreshUserInfo = useRecoilRefresher_UNSTABLE(
-    userInfoQuery(contents?.email),
-  );
+  const { setToast, showToast, toastController } = useToast();
 
   const { uploadImage, deleteImage, encodeFile, imgsrc } =
     useUpload(credentials);
-
-  const {
-    isTabOpen,
-    options,
-    openOptionItem,
-    selectOptionItem,
-    submitBrand,
-    closeTab,
-  } = useOptions({
-    category: { name: "카테고리", current: false, list: tabData.category },
-    style: { name: "스타일", current: false, list: tabData.style },
-    brand: { name: "브랜드", current: false, list: tabData.brand },
-    rental: { name: "대여 가능", current: false, list: tabData.rental },
-  });
-
-  const { setToast, Toast } = useToast();
 
   const { register, handleSubmit } = useForm<CreateState>({
     mode: "onSubmit",
   });
 
-  const [isText, setIsText] = useState<boolean>(false);
+  const { options, isTabOpen, handleOption } = useOptions();
 
-  const [isValid, setIsValid] = useState<boolean | null>(null);
+  const { isFocus, handleTextArea } = useTextArea();
 
-  const textAreaValue = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    event.target.value !== "" ? setIsText(true) : setIsText(false);
-  };
-
-  const createProduct = async (payload: {
-    data: any;
-    imageurlList: string[];
-  }) => {
-    const { data, imageurlList } = payload;
-    const response = await apiPost.CREATE_ITEM<{
-      data: FormData;
-      imageurlList: string[];
-      options: Options;
-      userId: number;
-    }>({
-      data,
-      imageurlList,
-      options,
-      userId: contents.id,
-    });
-    return response;
-  };
-
-  const { mutate, isLoading } = useMutation(createProduct, {
-    onSuccess: ({ message }) => {
-      setToast(message, false);
-      refreshUserInfo();
-      setTimeout(() => router.replace("/mypage"), 1500);
-    },
-    onError: ({ response }) => {
-      setToast(response.data.message, true);
-    },
-  });
-
-  const validation = (data: CreateState) => {
-    let isNotTag;
-    if (typeof data.tag === "string" && data.tag.length > 0) {
-      if (data.tag.includes(" ")) isNotTag = true;
-      else
-        isNotTag = !data.tag
-          ?.toString()
-          .trim()
-          .split(" ")
-          .every((tag: string) => tag.includes("#"));
-    }
-    const numberCheck = /[0-9]/g;
-    if (!numberCheck.test(data.price as string)) {
-      return setToast("상품가격을 숫자로 기입해주세요.", true);
-    } else if (options.category.name === "카테고리") {
-      return setToast("카테고리를 선택해 주세요.", true);
-    } else if (isNotTag) {
-      return setToast("태그는 공백을 포함할 수 없습니다.", true);
-    }
-    return true;
-  };
+  const {
+    mutate: marketMutate,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useCreateMarket();
 
   const valid = async (data: CreateState) => {
-    if (!validation(data)) return;
+    const errorMessage = createValidation({ inputData: data, options });
 
-    setIsValid(true);
+    if (typeof errorMessage === "string") {
+      setToast({ message: errorMessage, isError: true });
+      return;
+    }
 
-    const imageurlList: string[] = [];
+    const imageUrlList: string[] = [];
     imgsrc.forEach(item => {
-      // s3 upload
-      uploadImage(item.file, "products");
-
-      const imageurl = createImageUrl(item.file, "products");
-      imageurlList.push(imageurl);
+      // uploadImage(item.file, type); // s3로 업로드하는 함수 임시 주석.
+      const imageurl = createImageUrl(item.file, "market");
+      imageUrlList.push(imageurl);
     });
-    mutate({ data, imageurlList });
+
+    marketMutate({ data, options, imageUrlList });
   };
 
   const inValid = (error: FieldErrors) => {
-    setIsValid(false);
-    console.log(error);
     const message =
       error.desc?.message ||
       error.title?.message ||
       error.price?.message ||
       error.image?.message;
-    setToast(message as string, true);
+    setToast({ message: message as string, isError: true });
   };
+
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    setToast({ message: "게시글 등록이 완료되었습니다." });
+    refreshUserInfo();
+    setTimeout(() => router.replace("/mypage"), 1000);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (!isError) return;
+
+    setToast({
+      message: ["게시글 등록에 실패했어요😥!", "다시 시도해주세요."],
+      isError: true,
+    });
+  }, [isError]);
 
   return (
     <>
       <Header goBack />
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       {isTabOpen && <Overlay />}
       <div className=" px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
@@ -174,20 +130,19 @@ const Create: NextPage = () => {
             <div className="relative h-auto w-full p-5">
               <textarea
                 {...register("desc", {
-                  onChange: e => textAreaValue(e),
                   required: "아이템에 대한 설명을 작성해주세요.",
                 })}
                 name="desc"
                 rows={10}
                 className={cls(
                   "peer w-full resize-none",
-                  isText ? "is-valid" : "",
+                  isFocus ? "is-focus" : "",
                 )}
-                onChange={textAreaValue}
+                onChange={handleTextArea}
               />
               <div
                 className="pointer-events-none absolute left-5 top-5 bg-transparent text-common-gray 
-              peer-focus:hidden peer-[.is-valid]:hidden"
+              peer-focus:hidden peer-[.is-focus]:hidden"
               >
                 <p>아이템에 대한 설명을 작성해주세요.</p>
                 <p className="mt-3">
@@ -205,13 +160,25 @@ const Create: NextPage = () => {
             />
           </div>
           <div className="[&>*]:flex [&>*]:h-[52px] [&>*]:items-center [&>*]:justify-between [&>*]:border-b [&>*]:px-4">
-            {Object.values(options).map((value, i, arr) => (
-              <div key={`tab${i}`} onClick={() => openOptionItem(value.name)}>
+            {Object.values(options).map((value, i) => (
+              <div
+                key={`tab${i}`}
+                onClick={() => handleOption.openOptionItem(value.name)}
+              >
                 <span>{value.name}</span>
                 <Icon icon="material-symbols:arrow-outward" />
               </div>
             ))}
           </div>
+          {isTabOpen && (
+            <OptionTab
+              isTabOpen={isTabOpen}
+              options={options}
+              selectOptionItem={handleOption.selectOptionItem}
+              submitBrand={handleOption.submitBrand}
+              closeTab={handleOption.closeTab}
+            />
+          )}
           <div className="mt-40">
             <Button
               type="submit"
@@ -222,15 +189,6 @@ const Create: NextPage = () => {
             />
           </div>
         </form>
-        {isTabOpen && (
-          <OptionTab
-            isTabOpen={isTabOpen}
-            options={options}
-            selectOptionItem={selectOptionItem}
-            submitBrand={submitBrand}
-            closeTab={closeTab}
-          />
-        )}
       </div>
     </>
   );

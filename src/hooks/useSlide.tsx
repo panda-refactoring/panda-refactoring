@@ -44,10 +44,12 @@ const useSlide = ({
   }, [slideCount]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (slideTime) {
-      const timer = setTimeout(() => countUp(), slideTime);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => countUp(), slideTime);
     }
+
+    return () => clearTimeout(timer);
   }, [isMoving]);
 
   return {

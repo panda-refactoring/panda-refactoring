@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import useTimeout from "src/hooks/useTimeout";
 
 //관리 page : login , mypage, sign, signprofile, signtag, create, mypageprofile
 
@@ -13,11 +13,13 @@ const existUser = (WrappedComponent: NextPage) => {
     const { data: session, status } = useSession();
     const router = useRouter();
 
-    useEffect(() => {
-      setTimeout(() => {
+    useTimeout(
+      () => {
         session !== null && status === "authenticated" && router.push("/");
-      }, 1000);
-    }, [session, status]);
+      },
+      1000,
+      [session, status],
+    );
 
     return session !== null ? null : <WrappedComponent {...props} />;
   };

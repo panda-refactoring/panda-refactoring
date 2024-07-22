@@ -17,7 +17,7 @@ const Sign: NextPage = () => {
 
   const alerted = useRef(false);
 
-  const { setToast, Toast } = useToast();
+  const { setToast } = useToast();
 
   const findUser = async (findUser: string) => {
     const { data: response } = await axios.get(`/api/user?email=${findUser}`);
@@ -53,7 +53,7 @@ const Sign: NextPage = () => {
         );
         return;
       } else {
-        setToast("유저 정보가 이미 존재하여 로그인처리 됩니다.");
+        setToast({ message: "유저 정보가 이미 존재하여 로그인처리 됩니다." });
         setTimeout(() => router.replace("/"), 2500);
         return;
       }
