@@ -1,54 +1,62 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 import { Icon } from "@iconify/react";
-import { NextPage } from "next";
-import { ChangeEvent, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
-import { currentUserInfoQuery, userInfoQuery } from "../../recoil/user";
-import Button from "../../components/common/ui/button";
-import UploadImages from "../../components/create/upload-images";
-import Header from "../../components/common/header";
-import useOptions from "../../hooks/useOptions";
-import useUpload from "../../hooks/useUpload";
-import { ProductDataMin } from "../../common/types/data.types";
-import { cls } from "../../common/util/class";
-import ProductTagTab from "../../components/create/product-tab";
-import { createImageUrl } from "../../common/util/image-url";
-import { useMutation } from "react-query";
-import { useRouter } from "next/router";
+import { currentUserInfoQuery, userInfoQuery } from "src/recoil/user";
+
 import Overlay from "../../components/common/overlay";
-import useToast from "../../hooks/useToast";
-import { apiPost } from "../../service/request";
+import Header from "../../components/common/header";
+import Button from "../../components/common/ui/button";
+import Toast from "src/components/common/ui/toast";
+import UploadImages from "../../components/create/upload-images";
+import ProductTagTab from "../../components/create/style-feed/product-tab";
+import TagItem from "src/components/create/style-feed/tag-item";
 import noExistUser from "../noExistUser";
-import { credentials } from "../../common/lib/credentials";
+
+import useToast from "src/hooks/useToast";
+import useUpload from "src/hooks/useUpload";
+import useTextArea from "src/hooks/useTextArea";
+import { cls } from "../../common/util/class";
+import { createImageUrl } from "src/common/util/image-url";
+import { credentials } from "src/common/lib/credentials";
+import { ProductDataMin } from "../../common/types/data.types";
 import { CreateState } from "../../common/types/create.types";
+import { useCreateStyleFeed } from "src/service/query/create";
 
-const CreatePost: NextPage = () => {
+const CreatePost = () => {
+  const [tagItems, setTagItems] = useState<ProductDataMin[]>([]);
+  const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
+
   const userData = useRecoilValueLoadable(currentUserInfoQuery);
-  const { state, contents } = userData;
-
   const refreshUserInfo = useRecoilRefresher_UNSTABLE(
-    userInfoQuery(contents?.email),
+    userInfoQuery(userData?.contents?.email),
   );
 
   const router = useRouter();
 
-  const [isText, setIsText] = useState<boolean>(false);
-  const [tagItems, setTagItems] = useState<ProductDataMin[]>([]);
+  const { setToast, showToast, toastController } = useToast();
+
+  const { uploadImage, deleteImage, encodeFile, imgsrc } =
+    useUpload(credentials);
 
   const { register, handleSubmit } = useForm<CreateState>({
     mode: "onSubmit",
   });
 
-  const { uploadImage, deleteImage, encodeFile, imgsrc } =
-    useUpload(credentials);
+  const { isFocus, handleTextArea } = useTextArea();
 
-  const { isTabOpen, openTab, closeTab } = useOptions({});
+  const {
+    mutate: mutateStyleFeed,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useCreateStyleFeed();
 
-  const { setToast, Toast } = useToast();
+  const openTab = () => setIsTabOpen(true);
 
-  const textAreaValue = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    event.target.value !== "" ? setIsText(true) : setIsText(false);
-  };
+  const closeTab = () => setIsTabOpen(false);
 
   const setTagItemList = (list: ProductDataMin[]) => {
     setTagItems(list);
@@ -58,58 +66,40 @@ const CreatePost: NextPage = () => {
     setTagItems(prev => prev.filter(item => item.id !== id));
   };
 
-  const createPost = async (payload: {
-    data: CreateState;
-    imageurlList: string[];
-    tagIdList: number[];
-  }) => {
-    const { data, imageurlList, tagIdList } = payload;
-    const response = await apiPost.CREATE_POST<{
-      data: CreateState;
-      imageurlList: string[];
-      tagIdList: number[];
-      userId: number;
-    }>({
-      data,
-      imageurlList,
-      tagIdList,
-      userId: contents.id,
-    });
-    return response;
-  };
-
-  const { mutate, isLoading } = useMutation(createPost, {
-    onSuccess: ({ message }) => {
-      setToast(message, false);
-      refreshUserInfo();
-      setTimeout(() => router.replace("/mypage"), 2500);
-    },
-    onError: ({ response }) => {
-      setToast(response.data.message, true);
-    },
-  });
-
   const valid = async (data: CreateState) => {
-    const imageurlList: string[] = [];
+    const tagIdList = tagItems.map(item => +item.id);
+
+    const imageUrlList: string[] = [];
     imgsrc.forEach(item => {
-      // s3 upload
-      uploadImage(item.file, "lookbook");
-      const imageurl = createImageUrl(item.file, "lookbook");
-      imageurlList.push(imageurl);
+      // uploadImage(item.file, type); // s3로 업로드하는 함수 임시 주석.
+      const imageurl = createImageUrl(item.file, "market");
+      imageUrlList.push(imageurl);
     });
 
-    const tagIdList = tagItems.map(item => +item.id);
-    mutate({ data, imageurlList, tagIdList });
+    mutateStyleFeed({ data, tagIdList, imageUrlList });
   };
 
   const inValid = (error: FieldErrors) => {
-    setToast(error.image?.message as string, true);
+    setToast({ message: error.image?.message as string, isError: true });
   };
+
+  useEffect(() => {
+    setToast({ message: "게시글 등록이 완료되었습니다." });
+    refreshUserInfo();
+    setTimeout(() => router.replace("/mypage"), 1000);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    setToast({
+      message: ["게시글 등록에 실패했어요😥!", "다시 시도해주세요."],
+      isError: true,
+    });
+  }, [isError]);
 
   return (
     <>
       <Header goBack />
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       {isTabOpen && <Overlay />}
       <div className="px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
@@ -119,21 +109,19 @@ const CreatePost: NextPage = () => {
             encodeFile={encodeFile}
             imgsrc={imgsrc}
           />
-          <div className="border-t border-b border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
+          <div className="border-b border-t border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
             <div className="relative h-auto w-full p-5">
               <textarea
-                {...register("desc", {
-                  onChange: e => textAreaValue(e),
-                })}
+                {...register("desc")}
                 name="desc"
                 rows={10}
                 className={cls(
                   "peer w-full resize-none",
-                  isText ? "is-valid" : "",
+                  isFocus ? "is-valid" : "",
                 )}
-                onChange={textAreaValue}
+                onChange={handleTextArea}
               />
-              <div className="pointer-events-none absolute top-5 left-5 bg-transparent text-common-gray peer-focus:hidden peer-[.is-valid]:hidden">
+              <div className="pointer-events-none absolute left-5 top-5 bg-transparent text-common-gray peer-focus:hidden peer-[.is-valid]:hidden">
                 <p>문구를 작성해주세요.</p>
               </div>
             </div>
@@ -165,7 +153,7 @@ const CreatePost: NextPage = () => {
         </form>
         {isTabOpen && (
           <ProductTagTab
-            product={contents.product}
+            product={userData?.contents?.product}
             tagItems={tagItems}
             closeTab={closeTab}
             onSetItems={setTagItemList}
@@ -174,27 +162,7 @@ const CreatePost: NextPage = () => {
         {tagItems.length > 0 && (
           <ul className="mt-5 h-80 w-full space-y-4 overflow-hidden overflow-y-scroll">
             {tagItems.map(item => (
-              <li key={item.id} className="flex items-center justify-between">
-                <div className="flex">
-                  <img
-                    src={item.imgurl[0].img}
-                    alt={item.title}
-                    className="mr-3 h-[62px] w-[62px] border border-common-black object-cover"
-                  />
-                  <div className="text-common-black">
-                    <p>{item.brand}</p>
-                    <p className="mb-2 text-xs text-textColor-gray-100">
-                      {item.title}
-                    </p>
-                    <p className="font-bold">{item.price}</p>
-                  </div>
-                </div>
-                <Icon
-                  icon="ri:close-circle-fill"
-                  className="rounded-full bg-white text-xl"
-                  onClick={() => removeTagItem(+item.id)}
-                />
-              </li>
+              <TagItem tagItem={item} removeItem={removeTagItem} />
             ))}
           </ul>
         )}

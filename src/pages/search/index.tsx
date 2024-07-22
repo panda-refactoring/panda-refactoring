@@ -9,6 +9,7 @@ import ProductItem from "../../components/main/product-item";
 import useToast from "../../hooks/useToast";
 import { ProductDataMin } from "../../common/types/data.types";
 import { apiGet } from "../../service/request";
+import Toast from "src/components/common/ui/toast";
 
 interface KeywordInterface {
   id: number;
@@ -19,7 +20,7 @@ const Search: NextPage = () => {
   const session = useSession();
   const router = useRouter();
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const [keywords, setKeywords] = useState<string[]>([]);
 
@@ -63,10 +64,7 @@ const Search: NextPage = () => {
           headers: cacheHeaders,
         };
         const uniqueSearches = [...new Set(searches)]; // 중복 제거
-        cache.put(
-          new Request(CACHE_KEY),
-          new Response(JSON.stringify(uniqueSearches), cacheOptions),
-        );
+        cache.put(new Request(CACHE_KEY), new Response(JSON.stringify(uniqueSearches), cacheOptions));
       });
     }
   }, [searches]);
@@ -90,9 +88,7 @@ const Search: NextPage = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
     setInputValue(value);
-    const matched = keywords.filter(keyword =>
-      keyword.toLowerCase().includes(value),
-    );
+    const matched = keywords.filter(keyword => keyword.toLowerCase().includes(value));
     setMatchedKeywords(matched);
     setFocus(true);
   };
@@ -108,7 +104,7 @@ const Search: NextPage = () => {
         setSearchData(data);
       },
       onError: ({ message }) => {
-        setToast(message, true);
+        setToast({ message, isError: true });
       },
     },
   );
@@ -133,7 +129,7 @@ const Search: NextPage = () => {
   return (
     <>
       <Header text="SEARCH" goBack goHome />
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       <div className="px-5 py-5">
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input
@@ -173,35 +169,30 @@ const Search: NextPage = () => {
                 {session.status !== "unauthenticated" && (
                   <ul className="cursor-pointer space-y-2 text-lg text-textColor-gray-50">
                     <>
-                      {[...new Set(searches)]
-                        .slice(0, 10)
-                        .map((query, index) => (
-                          <li
-                            className="flex items-center justify-between"
-                            key={query}
+                      {[...new Set(searches)].slice(0, 10).map((query, index) => (
+                        <li className="flex items-center justify-between" key={query}>
+                          <span
+                            onClick={() =>
+                              router.push({
+                                pathname: router.pathname,
+                                query: { word: query },
+                              })
+                            }
+                            className=" w-full text-common-black"
                           >
-                            <span
-                              onClick={() =>
-                                router.push({
-                                  pathname: router.pathname,
-                                  query: { word: query },
-                                })
-                              }
-                              className=" w-full text-common-black"
-                            >
-                              {query}
-                            </span>
-                            <Icon
-                              icon="ic:baseline-clear"
-                              aria-label="검색어 삭제"
-                              onClick={() => {
-                                const newSearches = [...searches];
-                                newSearches.splice(index, 1);
-                                setSearches(newSearches);
-                              }}
-                            />
-                          </li>
-                        ))}
+                            {query}
+                          </span>
+                          <Icon
+                            icon="ic:baseline-clear"
+                            aria-label="검색어 삭제"
+                            onClick={() => {
+                              const newSearches = [...searches];
+                              newSearches.splice(index, 1);
+                              setSearches(newSearches);
+                            }}
+                          />
+                        </li>
+                      ))}
                     </>
                   </ul>
                 )}
@@ -210,14 +201,7 @@ const Search: NextPage = () => {
           ) : (
             <ul className="mt-5 grid grid-cols-2 gap-3">
               {!isLoading ? (
-                searchData.map(data => (
-                  <ProductItem
-                    key={data.id}
-                    {...data}
-                    imgw="w-full"
-                    imgh="h-[190px]"
-                  />
-                ))
+                searchData.map(data => <ProductItem key={data.id} {...data} imgw="w-full" imgh="h-[190px]" />)
               ) : searchData.length === 0 ? (
                 <li>검색결과가 없습니다</li>
               ) : (
@@ -225,30 +209,24 @@ const Search: NextPage = () => {
               )}
             </ul>
           )}
-          {focus &&
-            matchedKeywords.length > 0 &&
-            matchedKeywords.length !== keywords.length && (
-              <div>
-                <ul className="pt-5">
-                  {matchedKeywords.map(keyword => (
-                    <li
-                      key={keyword}
-                      className="flex h-12 w-full cursor-pointer items-center gap-2 overflow-hidden p-2 pt-2 text-lg"
-                      onMouseDown={() => {
-                        searchKeyword(keyword);
-                      }}
-                    >
-                      <Icon
-                        icon="ion:search-sharp"
-                        className="text-common-gray"
-                        aria-label="검색하기"
-                      />
-                      {keyword}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          {focus && matchedKeywords.length > 0 && matchedKeywords.length !== keywords.length && (
+            <div>
+              <ul className="pt-5">
+                {matchedKeywords.map(keyword => (
+                  <li
+                    key={keyword}
+                    className="flex h-12 w-full cursor-pointer items-center gap-2 overflow-hidden p-2 pt-2 text-lg"
+                    onMouseDown={() => {
+                      searchKeyword(keyword);
+                    }}
+                  >
+                    <Icon icon="ion:search-sharp" className="text-common-gray" aria-label="검색하기" />
+                    {keyword}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </>

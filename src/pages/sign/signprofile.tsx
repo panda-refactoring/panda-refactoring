@@ -15,6 +15,7 @@ import useToast from "../../hooks/useToast";
 import { apiGet, apiPost } from "../../service/request";
 import existUser from "../existUser";
 import { credentials } from "../../common/lib/credentials";
+import Toast from "src/components/common/ui/toast";
 
 const SignProfile: NextPage = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const SignProfile: NextPage = () => {
 
   const { uploadImage, encodeFile, imgsrc } = useUpload(credentials);
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const [pass, setPass] = useState<boolean>(false); //닉네임 중복 통과 state
 
@@ -54,19 +55,16 @@ const SignProfile: NextPage = () => {
     return response;
   };
 
-  const { mutate: nickMutate, isLoading: nickLoading } = useMutation(
-    createNickName,
-    {
-      onSuccess: ({ message }) => {
-        setToast(message, false);
-        setPass(true);
-      },
-      onError: ({ response }) => {
-        setToast(response.data.message, true);
-        setPass(false);
-      },
+  const { mutate: nickMutate, isLoading: nickLoading } = useMutation(createNickName, {
+    onSuccess: ({ message }) => {
+      setToast({ message });
+      setPass(true);
     },
-  );
+    onError: ({ response }) => {
+      setToast({ message: response.data.message, isError: true });
+      setPass(false);
+    },
+  });
 
   //프로필 이미지 등록
   const createProfile = async (userProfile: FieldValues) => {
@@ -86,32 +84,25 @@ const SignProfile: NextPage = () => {
     return response;
   };
 
-  const { mutate: profileMutate, isLoading: profileLoading } = useMutation(
-    createProfile,
-    {
-      onSuccess: () => {
-        router.replace("/sign/welcome");
-        signOut({ redirect: false }); //회원가입을 할 경우에 로그인 되어있어서 강제 로그아웃시킴
-      },
-      onError: ({ response }) => {
-        alert(response.data.message);
-      },
+  const { mutate: profileMutate, isLoading: profileLoading } = useMutation(createProfile, {
+    onSuccess: () => {
+      router.replace("/sign/welcome");
+      signOut({ redirect: false }); //회원가입을 할 경우에 로그인 되어있어서 강제 로그아웃시킴
     },
-  );
+    onError: ({ response }) => {
+      alert(response.data.message);
+    },
+  });
 
   return (
     <>
       <Header text="SIGNUP" goBack noGoBack />
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       <div className="px-8">
         <p className="mb-1 mt-7 text-xl">마지막이에요!</p>
-        <p className="text-textColor-gray-100">
-          사용하실 닉네임과 프로필사진을 설정해주세요.
-        </p>
+        <p className="text-textColor-gray-100">사용하실 닉네임과 프로필사진을 설정해주세요.</p>
       </div>
-      <form
-        onSubmit={handleSubmit(submitData => profileMutate({ ...submitData }))}
-      >
+      <form onSubmit={handleSubmit(submitData => profileMutate({ ...submitData }))}>
         <div className="signup-minheight mt-24 flex flex-col items-center px-5">
           <label className="relative h-[178px] w-[178px] cursor-pointer rounded-full bg-textColor-gray-100">
             {imgsrc.length !== 0 ? (
@@ -128,7 +119,7 @@ const SignProfile: NextPage = () => {
                 alt="기본이미지"
                 width={160}
                 height={160}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
               />
             )}
             <input
@@ -145,10 +136,7 @@ const SignProfile: NextPage = () => {
             <input
               {...register("nickname", { minLength: 1 })}
               placeholder="닉네임"
-              className={cls(
-                "h-[42px] w-full border-b border-black",
-                errors.nickname ? "border-error" : "",
-              )}
+              className={cls("h-[42px] w-full border-b border-black", errors.nickname ? "border-error" : "")}
             />
             <Button
               type="button"

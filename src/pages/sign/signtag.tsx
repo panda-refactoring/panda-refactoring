@@ -9,6 +9,7 @@ import Button from "../../components/common/ui/button";
 import useToast from "../../hooks/useToast";
 import { apiGet, apiPost } from "../../service/request";
 import existUser from "../existUser";
+import Toast from "src/components/common/ui/toast";
 
 interface TagData {
   userId: number;
@@ -20,7 +21,7 @@ const SignTag: NextPage = () => {
   const router = useRouter();
   const userEmail = router.query.email;
 
-  const { setToast, Toast } = useToast();
+  const { setToast, showToast, toastController } = useToast();
 
   const [selectedTag, setSelectedTag] = useState<string[]>([]);
 
@@ -52,7 +53,7 @@ const SignTag: NextPage = () => {
       );
     },
     onError: ({ response }) => {
-      setToast(response.data.message, true);
+      setToast({ message: response.data.message, isError: true });
     },
   });
 
@@ -70,24 +71,18 @@ const SignTag: NextPage = () => {
   };
 
   const handleTagSelection = (data: string) => {
-    setSelectedTag(prevTags =>
-      prevTags.includes(data)
-        ? prevTags.filter(tag => tag !== data)
-        : [...prevTags, data],
-    );
+    setSelectedTag(prevTags => (prevTags.includes(data) ? prevTags.filter(tag => tag !== data) : [...prevTags, data]));
   };
 
   return (
     <>
       <Header text="SIGNUP" goBack noGoBack />
-      <Toast />
+      {showToast && <Toast {...toastController} />}
       <div className="signup-minheight px-8 pt-4">
         <div className="flex items-end justify-between">
           <div>
             <p className="mb-1 mt-5 text-xl">어울리는 무드를 골라보세요!</p>
-            <p className="text-textColor-gray-100">
-              1개 이상의 키워드나 브랜드를 선택해주세요.
-            </p>
+            <p className="text-textColor-gray-100">1개 이상의 키워드나 브랜드를 선택해주세요.</p>
           </div>
           <div className="flex flex-col items-center">
             <button onClick={onResetBtn} className="px-2 text-3xl">
@@ -123,10 +118,7 @@ const SignTag: NextPage = () => {
           })}
         </ul>
       </div>
-      <form
-        onSubmit={handleFormSubmit}
-        className="mx-6 flex items-center justify-center"
-      >
+      <form onSubmit={handleFormSubmit} className="mx-6 flex items-center justify-center">
         <Button
           type="submit"
           classes="bg-black px-2"
