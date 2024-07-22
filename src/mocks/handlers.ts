@@ -63,27 +63,31 @@ export const handlers = [
 
     return HttpResponse.json({ message: "유저정보 업데이트가 완료됨." });
   }),
-  http.post<any, { lookbookId: string }, any>("/api/look/post", async ({ request }) => {
-    const url = new URL(request?.url);
+  http.post<any, { lookbookId: string }, any>(
+    "/api/look/post",
+    async ({ request }) => {
+      const url = new URL(request?.url);
 
-    const pageParam = url.searchParams.get("pageParam");
+      const pageParam = url.searchParams.get("pageParam");
 
-    const { lookbookId } = await request.json();
+      const { lookbookId } = await request.json();
 
-    const take = 3;
-    const cursorQuery = (pageParam as string) === "1" ? undefined : pageParam;
-    const cursorId = cursorQuery ? parseInt(pageParam as string) : 1;
+      const TAKE_COUNT = 3;
+      const cursorQuery = (pageParam as string) === "1" ? undefined : pageParam;
+      const cursorId = cursorQuery ? parseInt(pageParam as string) : 1;
 
-    const filterPosts = looks.filter(({ id }) => +lookbookId !== id);
+      const filterPosts = looks.filter(({ id }) => +lookbookId !== id);
 
-    const cursor = cursorId - 1;
+      const cursor = cursorId - 1;
 
-    const posts = filterPosts.slice(cursor, cursor + take);
+      const posts = filterPosts.slice(cursor, cursor + TAKE_COUNT);
 
-    const nextId = posts.length < take ? undefined : posts[take - 1].id;
+      const nextId =
+        posts.length < TAKE_COUNT ? undefined : posts[TAKE_COUNT - 1].id;
 
-    return HttpResponse.json({ posts, nextId });
-  }),
+      return HttpResponse.json({ posts, nextId });
+    },
+  ),
   http.post("/api/products", async ({ request }) => {
     const payload = await request.json();
 

@@ -1,28 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { NextPage } from "next";
 
 import { Icon } from "@iconify/react";
 
+import useTimeout from "src/hooks/useTimeout";
 import { cls } from "src/common/util/class";
 import { ToastProps } from "./types";
 
 const Toast: NextPage<ToastProps> = ({ toastMessage, isError, closeToast }) => {
   const [isHide, setIsHide] = useState<boolean>(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsHide(true);
-    }, 2500);
-
-    const timer2 = setTimeout(() => {
-      closeToast();
-    }, 3000);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(timer2);
-    };
-  }, []);
+  useTimeout(() => setIsHide(true), 2500);
+  useTimeout(() => closeToast(), 3000);
 
   return (
     <div
@@ -41,7 +30,10 @@ const Toast: NextPage<ToastProps> = ({ toastMessage, isError, closeToast }) => {
         )}
         {isError && (
           <div className="relative h-4 w-4 rounded-full bg-error">
-            <Icon icon="mdi:exclamation-thick" className="absolute left-[1px] top-[1px] text-black" />
+            <Icon
+              icon="mdi:exclamation-thick"
+              className="absolute left-[1px] top-[1px] text-black"
+            />
           </div>
         )}
         <div>
@@ -50,7 +42,10 @@ const Toast: NextPage<ToastProps> = ({ toastMessage, isError, closeToast }) => {
           ))}
         </div>
       </div>
-      <button className="absolute right-3 top-0 cursor-pointer" onClick={closeToast}>
+      <button
+        className="absolute right-3 top-0 cursor-pointer"
+        onClick={closeToast}
+      >
         <Icon icon="ic:baseline-clear" />
       </button>
     </div>
