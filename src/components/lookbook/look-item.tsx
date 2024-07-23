@@ -1,54 +1,35 @@
-import { Icon } from "@iconify/react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useMutation } from "react-query";
+
+import { Icon } from "@iconify/react";
+
 import useFavorite from "../../hooks/useFavorite";
 import { LookbookData } from "../../common/types/data.types";
+import useModal from "src/hooks/useModal";
 
 interface LookItemProps extends LookbookData {
   userId: number;
-  setModal: () => void;
 }
 
-const LookItem: NextPage<LookItemProps> = ({
-  user,
-  imgurl,
-  id,
-  favorite,
-  userId,
-  setModal,
-}) => {
-  const {
-    isFavoriteActive,
-    updateFavorite,
-    changeButtonSytle,
-    initialButtonStyle,
-  } = useFavorite(userId);
+const LookItem: NextPage<LookItemProps> = ({ user, imgurl, id, userId }) => {
+  const { isFavoriteActive, toggleFavoriteButton } = useFavorite({ currentUserId: userId || 1 });
 
-  const { mutate } = useMutation(updateFavorite, {
-    onSuccess: ({ data }) => {
-      console.log(data.message);
-    },
-    onError: ({ response }) => {
-      console.log(response.data.message);
-    },
-  });
+  const { setLoginModal } = useModal();
 
-  const toggleFavoriteButton = async () => {
-    if (userId === 0) {
-      setModal();
+  const router = useRouter();
+
+  const goLoginPage = () => router.push("/login");
+
+  const clickFavoriteButton = async () => {
+    if (!userId && userId !== 0) {
+      setLoginModal({ submitFn: goLoginPage });
       return;
     }
-    changeButtonSytle();
-    mutate({ currentUserId: userId, lookId: id });
-  };
 
-  useEffect(() => {
-    if (!favorite) return;
-    initialButtonStyle(favorite);
-  }, [favorite]);
+    toggleFavoriteButton();
+  };
 
   return (
     <li className="flex h-[220px] justify-center border-b border-r border-common-black pt-4">
@@ -73,14 +54,14 @@ const LookItem: NextPage<LookItemProps> = ({
                 icon="icon-park-solid:like"
                 color="#ff5252"
                 className="border border-common-black text-lg"
-                onClick={toggleFavoriteButton}
+                onClick={clickFavoriteButton}
               />
             </div>
           ) : (
             <Icon
               icon="icon-park-outline:like"
               className="cursor-pointer text-lg transition hover:scale-110"
-              onClick={toggleFavoriteButton}
+              onClick={clickFavoriteButton}
             />
           )}
         </div>

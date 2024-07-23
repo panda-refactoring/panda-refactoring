@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import React from "react";
+
 import { ProductDataMin } from "../../../common/types/data.types";
 import { priceAddComma } from "../../../common/util/markets";
 
@@ -8,10 +8,7 @@ const TagItem: NextPage<ProductDataMin[]> = product => {
   return (
     <>
       {Object.values(product).map(({ id, imgurl, title, brand, price }) => (
-        <li
-          key={id}
-          className="flex min-w-[200px] items-center justify-between"
-        >
+        <li key={id} className="flex min-w-[200px] items-center justify-between">
           <Link href={`/market/${id}`} className="flex">
             <img
               src={imgurl[0]?.img}
@@ -20,9 +17,7 @@ const TagItem: NextPage<ProductDataMin[]> = product => {
             />
             <div className="text-common-black">
               <p className="text-sm">{brand}</p>
-              <p className="mb-2 w-32 truncate text-xs text-textColor-gray-100">
-                {title}
-              </p>
+              <p className="mb-2 w-32 truncate text-xs text-textColor-gray-100">{title}</p>
               <p className="font-bold">{priceAddComma(price)}</p>
             </div>
           </Link>

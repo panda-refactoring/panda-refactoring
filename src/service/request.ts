@@ -43,37 +43,28 @@ const apiPost = {
 
   CREATE_POST: <T extends object>(data: T) => axiosPost("/api/look", data),
 
-  CREATE_TAG: (data: string[], queryKey: number) =>
-    axiosPost(`/api/user/tag?post=${queryKey}`, data),
+  CREATE_TAG: (data: string[], queryKey: number) => axiosPost(`/api/user/tag?post=${queryKey}`, data),
 
-  CREATE_NICKNAME: (data: { nickname: string }) =>
-    axiosPost("/api/user/nickname", data),
+  CREATE_NICKNAME: (data: { nickname: string }) => axiosPost("/api/user/nickname", data),
 
-  CREATE_PROFILE: <T extends object>(data: T) =>
-    axiosPost("/api/auth/profile", data),
+  CREATE_PROFILE: <T extends object>(data: T) => axiosPost("/api/auth/profile", data),
 
-  CREATE_COMMENT: (id: number, data: { comment: any; userId: number }) =>
+  CREATE_COMMENT: (id: number, data: { comment: string; userId: number }) =>
     axiosPost(`/api/look/comment?postId=${id}`, data),
 
-  UPDATE_USER: (
-    queryKey: number,
-    data: { productId: number } | { lookId: number | undefined },
-  ) => axiosPost(`/api/user/${queryKey}`, data),
+  UPDATE_USER: (queryKey: number, data: { productId: number } | { lookId: number | undefined }) =>
+    axiosPost(`/api/user/${queryKey}`, data),
 
-  UPDATE_NICKNAME: (id: string, data: { nickname: string }) =>
-    axiosPost(`/api/user/nickname?id=${id}`, data),
+  UPDATE_NICKNAME: (id: string, data: { nickname: string }) => axiosPost(`/api/user/nickname?id=${id}`, data),
 
-  UPDATE_COMMENT: (id: number, data: { comment: any; userId: number }) =>
+  UPDATE_COMMENT: (id: number, data: { userId: number; comment?: string }) =>
     axiosPost(`/api/look/comment?commentId=${id}`, data),
 
-  UPDATE_VIEWS: (id: number, view: { currentView: number }) =>
-    axiosPost(`/api/products/${id}`, view),
+  UPDATE_VIEWS: (id: number, view: { currentView: number }) => axiosPost(`/api/products/${id}`, view),
 
-  UPDATE_TAG: (id: number, tags: string[]) =>
-    axiosPost(`/api/user/tag?update=${id}`, tags),
+  UPDATE_TAG: (id: number, tags: string[]) => axiosPost(`/api/user/tag?update=${id}`, tags),
 
-  UPDATE_PROFILE: (data: { imageurl: string; userData: number }) =>
-    axiosPost("/api/user/image", data),
+  UPDATE_PROFILE: (data: { imageurl: string; userData: number }) => axiosPost("/api/user/image", data),
 
   GET_ALL_POST: (id: string, pageParam: string) =>
     axiosPost(`/api/look/post?pageParam=${pageParam}`, { lookbookId: id }),

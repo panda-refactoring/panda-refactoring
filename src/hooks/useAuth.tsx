@@ -9,7 +9,7 @@ import { isCookie, setCookie } from "../common/util/cookie";
 const useAuth = () => {
   const { data: userEmail, status: session } = useSession();
 
-  const { setAuthModalState } = useModal();
+  const { setAuthModal } = useModal();
 
   const {
     data,
@@ -30,7 +30,7 @@ const useAuth = () => {
       const visitor = isCookie("panda_visitor"); // 쿠키 확인 ~> panda_visitor
       if (!visitor) {
         console.log("사용자 인증 오류!");
-        setAuthModalState({ cancel: setCookie });
+        setAuthModal({ cancelFn: setCookie });
         return;
       }
       console.log("유효한 방문자");

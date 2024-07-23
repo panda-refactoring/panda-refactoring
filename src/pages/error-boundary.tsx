@@ -1,7 +1,6 @@
 import Error from "next/error";
-import React, { ErrorInfo, ReactNode } from "react";
-
-import { setModalProps } from "../common/types/modal-type";
+import { Component, ErrorInfo, ReactNode } from "react";
+import { setModalProps } from "src/components/common/ui/types";
 
 interface Props {
   children: ReactNode;
@@ -15,7 +14,7 @@ interface State {
   axiosError: boolean;
 }
 
-class ErrorBoundary extends React.Component<Props, State> {
+class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

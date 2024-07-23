@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 
 import Header from "../../components/common/header";
@@ -18,39 +18,39 @@ import useModal from "../../hooks/useModal";
 import { updateViews } from "../../common/util/market-view";
 import { ProductData } from "../../common/types/data.types";
 import { apiGet } from "../../service/request";
+import Modal from "src/components/common/ui/modal";
+import { modalContext } from "src/context/modal-context";
 
 const Product: NextPage = () => {
   const router = useRouter();
   const { id: productId } = router.query;
 
+  const goLoginPage = () => router.push("/login");
+
   const { userData } = useAuth();
 
-  const { ModalUI, setLoginModalState } = useModal();
+  const { modal, isOpen } = useContext(modalContext);
+
+  const { setLoginModal } = useModal();
 
   const getProduct = async () => {
     const data = await apiGet.GET_ITEM(productId as string);
     return data;
   };
 
-  const { data: product, isLoading } = useQuery<ProductData>(
-    "getData",
-    getProduct,
-    {
-      enabled: !!productId,
-      notifyOnChangeProps: "tracked",
-    },
-  );
+  const { data: product, isLoading } = useQuery<ProductData>("getData", getProduct, {
+    enabled: !!productId,
+    notifyOnChangeProps: "tracked",
+  });
 
-  const { isFavoriteActive, favoriteCount, toggleFavoriteButton } = useFavorite(
-    {
-      currentUserId: Number(userData?.id),
-      productData: product,
-    },
-  );
+  const { isFavoriteActive, favoriteCount, toggleFavoriteButton } = useFavorite({
+    currentUserId: Number(userData?.id),
+    productData: product,
+  });
 
   const toggleFavorite = () => {
     if (!userData?.id) {
-      setLoginModalState();
+      setLoginModal({ submitFn: goLoginPage });
       return;
     }
 
@@ -67,7 +67,7 @@ const Product: NextPage = () => {
   return (
     <>
       <Header goBack />
-      <ModalUI />
+      <Modal isOpen={isOpen} {...modal} />
       {isLoading && (
         <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <LoadingSpinner />
@@ -77,11 +77,7 @@ const Product: NextPage = () => {
         <>
           <ImageSlide images={product.imgurl} isLoading={isLoading} />
           <div className="p-5">
-            <TitleArea
-              product={product}
-              isFavoriteActive={isFavoriteActive}
-              toggleFavorite={toggleFavorite}
-            />
+            <TitleArea product={product} isFavoriteActive={isFavoriteActive} toggleFavorite={toggleFavorite} />
             <CategoryArea product={product} favoriteCount={favoriteCount} />
             <Description product={product} />
             <Seller product={product} />
