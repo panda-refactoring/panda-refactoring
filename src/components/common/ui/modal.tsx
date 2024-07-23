@@ -17,11 +17,7 @@ const Modal: NextPage<IModal> = ({ message, btnText, cancelText, submitFn, cance
         <>
           <div className="fixed bottom-1/2 left-1/2 z-50 w-80 -translate-x-1/2 translate-y-1/2 rounded-lg bg-black py-5 text-center text-white shadow-md">
             <div className="mb-4 px-5">
-              {message.split(",").map((text, i) => (
-                <p key={`${text}-${i}`} className="whitespace-nowrap">
-                  {text}
-                </p>
-              ))}
+              <p className="whitespace-pre-wrap">{message}</p>
             </div>
             <div className="flex w-full gap-2 px-5">
               <button

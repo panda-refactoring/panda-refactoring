@@ -9,21 +9,28 @@ import FloatingButton from "../components/common/ui/floating-button";
 import ImageSlide from "../components/market/detail/image-slide";
 import Recommend from "../components/main/recommend";
 import ErrorBoundary from "./error-boundary";
+import { useContext } from "react";
+import { modalContext } from "src/context/modal-context";
 
-import { bannerImages } from "../common/consts/banner";
+import Modal from "src/components/common/ui/modal";
+
 import useAuth from "../hooks/useAuth";
-import useModal from "../hooks/useModal";
+import useModal from "src/hooks/useModal";
+import { bannerImages } from "../common/consts/banner";
 
 const Home: NextPage = () => {
   const { userData } = useAuth();
-  const { ModalUI, setModalState } = useModal();
+
+  const { isOpen, modal } = useContext(modalContext);
+
+  const { setModal } = useModal();
 
   return (
     <>
       <Header />
-      <ModalUI />
+      <Modal isOpen={isOpen} {...modal} />
       <ImageSlide images={bannerImages} imgH="h-72" propH={288} slideTime={5500} />
-      <ErrorBoundary errorFallback={<p>something went wrong...</p>} setModal={setModalState}>
+      <ErrorBoundary errorFallback={<p>something went wrong...</p>} setModal={setModal}>
         <div className="space-y-10 py-10">
           <Recommend userData={userData} />
           <RecentStyle />

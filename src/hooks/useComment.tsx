@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useCreateComment, useDeleteComment } from "src/service/query/comment";
 import useModal from "./useModal";
+import { useCreateComment, useDeleteComment } from "src/service/query/comment";
 
 const useComment = () => {
   const [showInput, setShowInput] = useState<boolean>(false);
+  /**
+   * TODO:
+   * react-hook-form으로 input관리
+   */
   const [commentValue, setCommentValue] = useState<string>("");
   const [postId, setPostId] = useState<number>(0);
   const [commentId, setCommentId] = useState<number>(0);
@@ -40,16 +44,16 @@ const useComment = () => {
   };
 
   useEffect(() => {
-    if (createCommentStatus === "success") reset();
-    if (createCommentStatus === "error") {
+    if (createCommentStatus === STATUS.SUCCESS) reset();
+    if (createCommentStatus === STATUS.ERROR) {
       // TODO: 에러확인 모달 띄우기. (확인버튼만 있는 모달 만들기)
       reset();
     }
   }, [createCommentStatus]);
 
   useEffect(() => {
-    if (deleteCommentStatus === "success") reset();
-    if (deleteCommentStatus === "error") {
+    if (deleteCommentStatus === STATUS.SUCCESS) reset();
+    if (deleteCommentStatus === STATUS.ERROR) {
       // TODO: 에러확인 모달 띄우기. (확인버튼만 있는 모달 만들기)
       reset();
     }

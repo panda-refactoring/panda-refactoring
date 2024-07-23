@@ -49,7 +49,7 @@ const apiPost = {
 
   CREATE_PROFILE: <T extends object>(data: T) => axiosPost("/api/auth/profile", data),
 
-  CREATE_COMMENT: (id: number, data: { comment: any; userId: number }) =>
+  CREATE_COMMENT: (id: number, data: { comment: string; userId: number }) =>
     axiosPost(`/api/look/comment?postId=${id}`, data),
 
   UPDATE_USER: (queryKey: number, data: { productId: number } | { lookId: number | undefined }) =>
@@ -57,7 +57,7 @@ const apiPost = {
 
   UPDATE_NICKNAME: (id: string, data: { nickname: string }) => axiosPost(`/api/user/nickname?id=${id}`, data),
 
-  UPDATE_COMMENT: (id: number, data: { userId: number; comment?: any }) =>
+  UPDATE_COMMENT: (id: number, data: { userId: number; comment?: string }) =>
     axiosPost(`/api/look/comment?commentId=${id}`, data),
 
   UPDATE_VIEWS: (id: number, view: { currentView: number }) => axiosPost(`/api/products/${id}`, view),

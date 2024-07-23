@@ -2,13 +2,18 @@ import { useContext } from "react";
 import { modalContext } from "../context/modal-context";
 import { modalState } from "src/common/consts/modal";
 
+interface SetModalProps {
+  submitFn: () => void;
+  cancelFn?: () => void;
+}
+
 const useModal = () => {
   const { setModalState } = useContext(modalContext);
 
-  const setLoginModal = ({ submitFn, cancelFn }: { submitFn: () => void; cancelFn?: () => void }) =>
+  const setLoginModal = ({ submitFn, cancelFn }: SetModalProps) =>
     setModalState(Object.assign(modalState.login, { submitFn, cancelFn }));
 
-  const setSigninModal = ({ submitFn, cancelFn }: { submitFn: () => void; cancelFn?: () => void }) =>
+  const setSigninModal = ({ submitFn, cancelFn }: SetModalProps) =>
     setModalState(Object.assign(modalState.signin, { submitFn, cancelFn }));
 
   const setAuthModal = ({ cancelFn }: { cancelFn: (name: string, val: any, time: number) => void }) => {
@@ -16,7 +21,7 @@ const useModal = () => {
     setModalState(newModalState);
   };
 
-  const setCommentModal = ({ submitFn, cancelFn }: { submitFn: () => void; cancelFn?: () => void }) => {
+  const setCommentModal = ({ submitFn, cancelFn }: SetModalProps) => {
     const newModalState = Object.assign(modalState.comment, { submitFn, cancelFn });
     setModalState(newModalState);
   };
