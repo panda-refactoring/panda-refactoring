@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Icon } from "@iconify/react";
 import { useRecoilValueLoadable } from "recoil";
@@ -16,15 +16,12 @@ import FilterList from "../../components/market/filter-list";
 import MarketList from "../../components/market/market-list";
 
 import { cls } from "../../common/util/class";
-import { modalContext } from "src/context/modal-context";
 
 const Market: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFilterOpen, setFilterOpen] = useState<boolean>(false);
 
   const { state, contents: filteredList } = useRecoilValueLoadable(filteredMarketListState);
-
-  const { isOpen, modal, cancel, submit } = useContext(modalContext);
 
   const openFilterOverlay = () => setFilterOpen(true);
 
@@ -47,7 +44,7 @@ const Market: NextPage = () => {
         </div>
       )}
       <Header />
-      <Modal isOpen={isOpen} {...modal} cancelFn={cancel} submitFn={submit} />
+      <Modal />
       <CategoryNavigation />
       <div>
         <div className="mb-3 px-5 py-4">

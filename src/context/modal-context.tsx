@@ -40,7 +40,7 @@ const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const closeModal = () => setIsOpen(false);
 
   const setModalState = ({ message, btnText, cancelText, cancelFn, submitFn }: ModalProps) => {
-    setModal({ message, btnText, cancelText: cancelText || "취소", cancelFn, submitFn });
+    setModal({ message, btnText, cancelText, cancelFn, submitFn });
   };
 
   const cancel = () => {

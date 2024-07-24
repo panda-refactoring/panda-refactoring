@@ -18,8 +18,17 @@ const useModal = () => {
     setModalState(Object.assign(modalState.signin, { submitFn, cancelFn }));
   };
 
-  const setAuthModal = ({ cancelFn }: { cancelFn: (name: string, val: any, time: number) => void }) => {
-    const newModalState = Object.assign(modalState.auth, { cancelFn: () => cancelFn("panda_visitor", true, 3) });
+  const setAuthModal = ({
+    submitFn,
+    cancelFn,
+  }: {
+    submitFn: () => void;
+    cancelFn: (name: string, val: any, time: number) => void;
+  }) => {
+    const newModalState = Object.assign(modalState.auth, {
+      submitFn,
+      cancelFn: () => cancelFn("panda_visitor", true, 3),
+    });
     setModalState(newModalState);
   };
 

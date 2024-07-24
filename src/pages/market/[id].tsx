@@ -1,8 +1,9 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 
+import Modal from "src/components/common/ui/modal";
 import Header from "../../components/common/header";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import ImageSlide from "../../components/market/detail/image-slide";
@@ -18,8 +19,6 @@ import useModal from "../../hooks/useModal";
 import { updateViews } from "../../common/util/market-view";
 import { ProductData } from "../../common/types/data.types";
 import { apiGet } from "../../service/request";
-import Modal from "src/components/common/ui/modal";
-import { modalContext } from "src/context/modal-context";
 import { useUpdateProductFavorite } from "src/service/query/favorite";
 
 const Product: NextPage = () => {
@@ -29,8 +28,6 @@ const Product: NextPage = () => {
   const goLoginPage = () => router.push("/login");
 
   const { userData } = useAuth();
-
-  const { modal, isOpen, cancel, submit } = useContext(modalContext);
 
   const { setLoginModal } = useModal();
 
@@ -77,7 +74,7 @@ const Product: NextPage = () => {
   return (
     <>
       <Header goBack />
-      <Modal isOpen={isOpen} {...modal} cancelFn={cancel} submitFn={submit} />
+      <Modal />
       {isLoading && (
         <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <LoadingSpinner />
