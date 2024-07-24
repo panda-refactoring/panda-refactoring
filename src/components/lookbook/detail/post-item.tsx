@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import ImageSlide from "../../market/detail/image-slide";
 import TagItem from "./tag-item";
@@ -7,7 +7,6 @@ import Modal from "src/components/common/ui/modal";
 import CommentList from "./comment-list";
 import ContentsBox from "./contents-box";
 
-import { modalContext } from "src/context/modal-context";
 import { PostItemProps } from "./types";
 
 const PostItem: NextPage<PostItemProps> = props => {
@@ -19,11 +18,9 @@ const PostItem: NextPage<PostItemProps> = props => {
 
   const hasComment = comment && comment.length > 0;
 
-  const { isOpen, modal } = useContext(modalContext);
-
   return (
     <>
-      <Modal {...modal} isOpen={isOpen} />
+      <Modal />
       <div className="flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
           <img src={user.profileImg} alt="" className="mr-3 h-10 w-10 rounded-full border-2 border-common-black" />
@@ -35,7 +32,7 @@ const PostItem: NextPage<PostItemProps> = props => {
       <ImageSlide images={imgurl} />
       <div className="relative p-5">
         <ContentsBox
-          userId={userData?.id ?? 1}
+          userId={userData?.id}
           lookbookData={lookbookData}
           setInput={setInput}
           setShowComment={setShowComment}

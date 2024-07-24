@@ -1,7 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
-import { useMutation } from "react-query";
-import { apiPost } from "../service/request";
-import { LookbookData, ProductData } from "src/common/types/data.types";
+import { useEffect, useState } from "react";
 
 interface Favorite {
   id: number;
@@ -11,31 +8,16 @@ interface Favorite {
 
 interface useFavoriteProps {
   currentUserId: number;
-  productData?: ProductData;
-  lookbookData?: LookbookData;
+  favorite: {
+    id: number;
+    productId: number;
+    userId: number;
+  }[];
 }
 
-const useFavorite = ({ currentUserId, productData, lookbookData }: useFavoriteProps) => {
+const useFavorite = ({ currentUserId, favorite }: useFavoriteProps) => {
   const [isFavoriteActive, setIsFavoriteActive] = useState<boolean>(false);
-  const [favoriteCount, setFavoriteCount] = useState<number>(0);
-
-  const updateFavorite = useCallback(
-    async (favoriteConfig: { currentUserId: number; lookId?: number; productId?: number }) => {
-      const { currentUserId, productId, lookId } = favoriteConfig;
-      const payload = productId ? { productId } : { lookId };
-
-      const data = apiPost.UPDATE_USER(currentUserId, payload); // 행위는 같다. (end point가 같다.)
-      return data;
-    },
-    [],
-  );
-
-  const { mutate } = useMutation(updateFavorite, {
-    onSuccess: () => changeCount(),
-    onError: ({ response }) => {
-      console.log(response.data.message);
-    },
-  });
+  const [favoriteCount, setFavoriteCount] = useState<number>(favorite?.length);
 
   const changeButtonSytle = () => {
     setIsFavoriteActive(prev => !prev);
@@ -45,16 +27,9 @@ const useFavorite = ({ currentUserId, productData, lookbookData }: useFavoritePr
     isFavoriteActive ? setFavoriteCount(prev => prev - 1) : setFavoriteCount(prev => prev + 1);
   };
 
-  const updateFavoriteCount = (count: number) => setFavoriteCount(count);
-
-  const toggleFavoriteButton = () => {
+  const updateFavorite = () => {
+    changeCount();
     changeButtonSytle();
-
-    const id = productData ? "productId" : "lookId";
-    mutate({
-      currentUserId,
-      [id]: productData?.id ?? lookbookData?.id,
-    });
   };
 
   const initialButtonStyle = (favorite: Favorite[]) => {
@@ -64,25 +39,15 @@ const useFavorite = ({ currentUserId, productData, lookbookData }: useFavoritePr
   };
 
   useEffect(() => {
-    if (!productData) return;
-    const favorite = productData.favorite;
+    if (!favorite) return;
 
-    updateFavoriteCount(favorite.length);
     initialButtonStyle(favorite);
-  }, [productData]);
-
-  useEffect(() => {
-    if (!lookbookData) return;
-    const favorite = lookbookData.favorite;
-
-    updateFavoriteCount(favorite.length);
-    initialButtonStyle(favorite);
-  }, [lookbookData]);
+  }, [favorite]);
 
   return {
     isFavoriteActive,
     favoriteCount,
-    toggleFavoriteButton,
+    updateFavorite,
   };
 };
 

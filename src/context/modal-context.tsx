@@ -30,7 +30,7 @@ const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [modal, setModal] = useState<ModalProps>({
     message: "",
     btnText: "",
-    cancelText: "취소",
+    cancelText: "",
     cancelFn: null,
     submitFn: null,
   });
@@ -54,7 +54,7 @@ const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    openModal();
+    if (modal.message !== "") openModal();
   }, [modal]);
 
   const value = {

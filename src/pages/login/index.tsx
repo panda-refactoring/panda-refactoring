@@ -11,9 +11,8 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useMutation } from "react-query";
-import axios from "axios";
-import useModal from "../../hooks/useModal";
 import existUser from "../existUser";
+import useModal from "../../hooks/useModal";
 import { apiGet } from "../../service/request";
 
 const Login: NextPage = () => {
@@ -21,10 +20,12 @@ const Login: NextPage = () => {
   const alerted = useRef(false);
   const router = useRouter();
 
-  const { setSigninModalState } = useModal();
+  const goSigninPage = () => router.push("/sign");
+
+  const { setSigninModal } = useModal();
 
   const findUser = async (userEmail: string) => {
-    const { data } = await apiGet.GET_USER(userEmail)
+    const { data } = await apiGet.GET_USER(userEmail);
     return data;
   };
 
@@ -33,6 +34,7 @@ const Login: NextPage = () => {
   const GoogleLogin = async () => {
     await signIn("google");
   };
+
   const KakaoLogin = async () => {
     await signIn("kakao");
   };
@@ -45,7 +47,7 @@ const Login: NextPage = () => {
     if (session && data) {
       if (data.user.keywords.length === 0 && !alerted.current) {
         alerted.current = true;
-        setSigninModalState();
+        setSigninModal({ submitFn: goSigninPage });
         return;
       } else {
         router.push("/");
@@ -56,18 +58,13 @@ const Login: NextPage = () => {
 
   return (
     <div className="relative h-screen w-full bg-black">
-      <Image src={graphic1} alt="" className="absolute -top-3 -left-3 w-1/2" />
-      <Image src={graphic2} alt="" className="absolute top-20 right-0 w-1/4" />
-      <Image src={graphic3} alt="" className="absolute top-1/2 right-0 w-1/2" />
-      <Image src={graphic4} alt="" className="absolute bottom-0 -left-10" />
+      <Image src={graphic1} alt="" className="absolute -left-3 -top-3 w-1/2" />
+      <Image src={graphic2} alt="" className="absolute right-0 top-20 w-1/4" />
+      <Image src={graphic3} alt="" className="absolute right-0 top-1/2 w-1/2" />
+      <Image src={graphic4} alt="" className="absolute -left-10 bottom-0" />
       <div className="absolute top-1/2 z-10 h-4/5 w-full -translate-y-1/2 px-5">
         <div className="mt-10 pb-10">
-          <Image
-            src={logo}
-            alt="logo"
-            className="m-auto h-28 w-auto"
-            priority
-          />
+          <Image src={logo} alt="logo" className="m-auto h-28 w-auto" priority />
         </div>
         <LoginForm />
         <Button
