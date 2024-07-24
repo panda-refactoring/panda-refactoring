@@ -7,7 +7,7 @@ interface SetModalProps {
   cancelFn?: () => void;
 }
 
-interface AuthConfigProps extends Omit<SetModalProps, "cancleFn"> {
+interface AuthConfigProps extends Omit<SetModalProps, "cancelFn"> {
   cancelFn: (name: string, val: any, time: number) => void;
 }
 
