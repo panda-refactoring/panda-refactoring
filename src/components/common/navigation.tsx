@@ -6,36 +6,27 @@ import Link from "next/link";
 import useModal from "../../hooks/useModal";
 
 const Navigation: NextPage = () => {
-  const { pathname } = useRouter();
+  const router = useRouter();
+  const { pathname } = router;
   const { data: session } = useSession();
-  const { setLoginModalState } = useModal();
+  const { setLoginModal } = useModal();
+
+  const goLoginPage = () => router.push("/login");
 
   const modalHandler = () => {
-    if (!session) setLoginModalState();
+    if (!session) setLoginModal({ submitFn: goLoginPage });
   };
 
   return (
     <div className="fixed bottom-0 z-20 flex h-12 w-[390px] items-center justify-between bg-black p-5 text-lg shadow dark:border-gray-600 dark:bg-gray-800">
       <div>
         <Link href="/market">
-          <button
-            className={`${
-              pathname === "/market" ? "text-primary-violet" : "text-white"
-            }`}
-          >
-            MARKET
-          </button>
+          <button className={`${pathname === "/market" ? "text-primary-violet" : "text-white"}`}>MARKET</button>
         </Link>
       </div>
       <div>
         <Link href="/lookbook">
-          <button
-            className={`${
-              pathname === "/lookbook" ? "text-primary-violet" : "text-white"
-            }`}
-          >
-            STYLE
-          </button>
+          <button className={`${pathname === "/lookbook" ? "text-primary-violet" : "text-white"}`}>STYLE</button>
         </Link>
       </div>
       <div>
@@ -43,9 +34,7 @@ const Navigation: NextPage = () => {
           <Link href="/mypage">
             <button
               className={`${
-                pathname === "/mypage" || pathname === "/mypage/profile"
-                  ? "text-primary-violet"
-                  : "text-white"
+                pathname === "/mypage" || pathname === "/mypage/profile" ? "text-primary-violet" : "text-white"
               }`}
             >
               MYPAGE
@@ -54,9 +43,7 @@ const Navigation: NextPage = () => {
         ) : (
           <button
             className={`${
-              pathname === "/mypage" || pathname === "/mypage/profile"
-                ? "text-primary-violet"
-                : "text-white"
+              pathname === "/mypage" || pathname === "/mypage/profile" ? "text-primary-violet" : "text-white"
             }`}
             onClick={modalHandler}
           >
@@ -66,13 +53,7 @@ const Navigation: NextPage = () => {
       </div>
       <div>
         <Link href={session?.user ? "/dm" : "/login"}>
-          <button
-            className={`${
-              pathname === "/login" || pathname === "dm"
-                ? "text-primary-violet"
-                : "text-white"
-            }`}
-          >
+          <button className={`${pathname === "/login" || pathname === "dm" ? "text-primary-violet" : "text-white"}`}>
             {session?.user ? "DM" : "LOGIN"}
           </button>
         </Link>

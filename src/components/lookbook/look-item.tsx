@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -6,15 +7,16 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 
 import useFavorite from "../../hooks/useFavorite";
-import { LookbookData } from "../../common/types/data.types";
 import useModal from "src/hooks/useModal";
+import { LookbookData } from "../../common/types/data.types";
+import { useUpdateLookbookFavorite } from "src/service/query/favorite";
 
 interface LookItemProps extends LookbookData {
   userId: number;
 }
 
-const LookItem: NextPage<LookItemProps> = ({ user, imgurl, id, userId }) => {
-  const { isFavoriteActive, toggleFavoriteButton } = useFavorite({ currentUserId: userId || 1 });
+const LookItem: NextPage<LookItemProps> = ({ user, imgurl, id, favorite, userId }) => {
+  const { isFavoriteActive, updateFavorite } = useFavorite({ currentUserId: userId || 1, favorite: favorite ?? [] });
 
   const { setLoginModal } = useModal();
 
@@ -22,14 +24,23 @@ const LookItem: NextPage<LookItemProps> = ({ user, imgurl, id, userId }) => {
 
   const goLoginPage = () => router.push("/login");
 
+  const { mutate, isSuccess } = useUpdateLookbookFavorite();
+
   const clickFavoriteButton = async () => {
     if (!userId && userId !== 0) {
       setLoginModal({ submitFn: goLoginPage });
       return;
     }
 
-    toggleFavoriteButton();
+    mutate({
+      currentUserId: userId,
+      lookId: id,
+    });
   };
+
+  useEffect(() => {
+    if (isSuccess) updateFavorite();
+  }, [isSuccess]);
 
   return (
     <li className="flex h-[220px] justify-center border-b border-r border-common-black pt-4">

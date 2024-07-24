@@ -21,14 +21,14 @@ import { bannerImages } from "../common/consts/banner";
 const Home: NextPage = () => {
   const { userData } = useAuth();
 
-  const { isOpen, modal } = useContext(modalContext);
+  const { isOpen, modal, cancel, submit } = useContext(modalContext);
 
   const { setModal } = useModal();
 
   return (
     <>
       <Header />
-      <Modal isOpen={isOpen} {...modal} />
+      <Modal isOpen={isOpen} {...modal} cancelFn={cancel} submitFn={submit} />
       <ImageSlide images={bannerImages} imgH="h-72" propH={288} slideTime={5500} />
       <ErrorBoundary errorFallback={<p>something went wrong...</p>} setModal={setModal}>
         <div className="space-y-10 py-10">

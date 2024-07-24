@@ -10,11 +10,13 @@ interface SetModalProps {
 const useModal = () => {
   const { setModalState } = useContext(modalContext);
 
-  const setLoginModal = ({ submitFn, cancelFn }: SetModalProps) =>
+  const setLoginModal = ({ submitFn, cancelFn }: SetModalProps) => {
     setModalState(Object.assign(modalState.login, { submitFn, cancelFn }));
+  };
 
-  const setSigninModal = ({ submitFn, cancelFn }: SetModalProps) =>
+  const setSigninModal = ({ submitFn, cancelFn }: SetModalProps) => {
     setModalState(Object.assign(modalState.signin, { submitFn, cancelFn }));
+  };
 
   const setAuthModal = ({ cancelFn }: { cancelFn: (name: string, val: any, time: number) => void }) => {
     const newModalState = Object.assign(modalState.auth, { cancelFn: () => cancelFn("panda_visitor", true, 3) });

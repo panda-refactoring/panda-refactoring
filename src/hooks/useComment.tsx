@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useModal from "./useModal";
 import { useCreateComment, useDeleteComment } from "src/service/query/comment";
+import { STATUS } from "src/common/consts/status";
 
 const useComment = () => {
   const [showInput, setShowInput] = useState<boolean>(false);

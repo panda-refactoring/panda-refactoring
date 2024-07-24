@@ -1,10 +1,11 @@
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Icon } from "@iconify/react";
 import { useRecoilValueLoadable } from "recoil";
 import { filteredMarketListState } from "../../recoil/filter";
 
+import Modal from "src/components/common/ui/modal";
 import Header from "../../components/common/header";
 import Navigation from "../../components/common/navigation";
 import FloatingButton from "../../components/common/ui/floating-button";
@@ -14,8 +15,8 @@ import RentButtons from "../../components/market/rent-buttons";
 import FilterList from "../../components/market/filter-list";
 import MarketList from "../../components/market/market-list";
 
-import useModal from "../../hooks/useModal";
 import { cls } from "../../common/util/class";
+import { modalContext } from "src/context/modal-context";
 
 const Market: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,7 +24,7 @@ const Market: NextPage = () => {
 
   const { state, contents: filteredList } = useRecoilValueLoadable(filteredMarketListState);
 
-  const { ModalUI } = useModal();
+  const { isOpen, modal, cancel, submit } = useContext(modalContext);
 
   const openFilterOverlay = () => setFilterOpen(true);
 
@@ -46,7 +47,7 @@ const Market: NextPage = () => {
         </div>
       )}
       <Header />
-      <ModalUI />
+      <Modal isOpen={isOpen} {...modal} cancelFn={cancel} submitFn={submit} />
       <CategoryNavigation />
       <div>
         <div className="mb-3 px-5 py-4">

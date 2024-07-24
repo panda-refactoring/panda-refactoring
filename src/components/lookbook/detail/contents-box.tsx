@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -6,6 +7,7 @@ import { Icon } from "@iconify/react";
 import useFavorite from "src/hooks/useFavorite";
 import useModal from "src/hooks/useModal";
 import { ContentsBoxProps } from "./types";
+import { useUpdateLookbookFavorite } from "src/service/query/favorite";
 
 const ContentsBox: NextPage<ContentsBoxProps> = ({ userId, lookbookData, setInput, setShowComment }) => {
   const { id, description, hashTag, comment } = lookbookData;
@@ -14,12 +16,14 @@ const ContentsBox: NextPage<ContentsBoxProps> = ({ userId, lookbookData, setInpu
 
   const goLoginPage = () => router.push("/login");
 
-  const { isFavoriteActive, favoriteCount, toggleFavoriteButton } = useFavorite({
+  const { isFavoriteActive, favoriteCount, updateFavorite } = useFavorite({
     currentUserId: userId,
-    lookbookData,
+    favorite: lookbookData?.favorite ?? [],
   });
 
   const { setLoginModal } = useModal();
+
+  const { mutate, isSuccess } = useUpdateLookbookFavorite();
 
   const clickComment = () => {
     if (!userId) {
@@ -36,8 +40,15 @@ const ContentsBox: NextPage<ContentsBoxProps> = ({ userId, lookbookData, setInpu
       return;
     }
 
-    toggleFavoriteButton();
+    mutate({
+      currentUserId: userId,
+      lookId: id,
+    });
   };
+
+  useEffect(() => {
+    if (isSuccess) updateFavorite();
+  }, [isSuccess]);
 
   return (
     <>

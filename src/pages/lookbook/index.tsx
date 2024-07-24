@@ -21,14 +21,14 @@ const Lookbook: NextPage = () => {
   const { contents: userContents } = userInfo;
   const userId = userContents?.id ?? 1;
 
-  const { isOpen, modal } = useContext(modalContext);
+  const { isOpen, modal, cancel, submit } = useContext(modalContext);
 
   const { data: allLookbookData, isLoading } = useQuery("lookbooks", apiGet.GET_LOOKS);
 
   return (
     <>
       <Header />
-      <Modal isOpen={isOpen} {...modal} />
+      <Modal isOpen={isOpen} {...modal} cancelFn={cancel} submitFn={submit} />
       {isLoading && (
         <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <LoadingSpinner />

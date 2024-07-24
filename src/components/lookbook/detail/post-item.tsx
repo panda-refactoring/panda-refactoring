@@ -19,11 +19,11 @@ const PostItem: NextPage<PostItemProps> = props => {
 
   const hasComment = comment && comment.length > 0;
 
-  const { isOpen, modal } = useContext(modalContext);
+  const { isOpen, modal, cancel, submit } = useContext(modalContext);
 
   return (
     <>
-      <Modal {...modal} isOpen={isOpen} />
+      <Modal {...modal} isOpen={isOpen} cancelFn={cancel} submitFn={submit} />
       <div className="flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
           <img src={user.profileImg} alt="" className="mr-3 h-10 w-10 rounded-full border-2 border-common-black" />
@@ -35,7 +35,7 @@ const PostItem: NextPage<PostItemProps> = props => {
       <ImageSlide images={imgurl} />
       <div className="relative p-5">
         <ContentsBox
-          userId={userData?.id ?? 1}
+          userId={userData?.id}
           lookbookData={lookbookData}
           setInput={setInput}
           setShowComment={setShowComment}
