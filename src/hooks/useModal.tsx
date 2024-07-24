@@ -7,6 +7,10 @@ interface SetModalProps {
   cancelFn?: () => void;
 }
 
+interface AuthConfigProps extends Omit<SetModalProps, "cancleFn"> {
+  cancelFn: (name: string, val: any, time: number) => void;
+}
+
 const useModal = () => {
   const { setModalState } = useContext(modalContext);
 
@@ -18,13 +22,7 @@ const useModal = () => {
     setModalState(Object.assign(modalState.signin, { submitFn, cancelFn }));
   };
 
-  const setAuthModal = ({
-    submitFn,
-    cancelFn,
-  }: {
-    submitFn: () => void;
-    cancelFn: (name: string, val: any, time: number) => void;
-  }) => {
+  const setAuthModal = ({ submitFn, cancelFn }: AuthConfigProps) => {
     const newModalState = Object.assign(modalState.auth, {
       submitFn,
       cancelFn: () => cancelFn("panda_visitor", true, 3),

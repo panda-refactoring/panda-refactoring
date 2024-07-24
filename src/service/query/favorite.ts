@@ -43,10 +43,3 @@ export const useUpdateLookbookFavorite = () => {
     },
   });
 };
-
-// const { mutate } = useMutation(updateFavorite, {
-//   onSuccess: () => updateStyle(),
-//   onError: ({ response }) => {
-//     console.log(response.data.message);
-//   },
-// });
