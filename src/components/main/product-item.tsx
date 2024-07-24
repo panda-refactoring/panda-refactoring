@@ -10,13 +10,7 @@ const ProductItem: NextPage<ProductItemProps> = props => {
     <div>
       <Link href={`/market/${id}`}>
         <div className="mb-2 border border-common-black bg-slate-200">
-          {imgurl && (
-            <img
-              src={imgurl[0]?.img}
-              alt={title}
-              className={`w-full ${imgh} object-cover`}
-            />
-          )}
+          {imgurl && <img src={imgurl[0]?.img} alt={title} className={`w-full ${imgh} object-cover`} />}
         </div>
       </Link>
       <dl className={imgw}>
