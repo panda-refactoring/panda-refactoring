@@ -1,4 +1,4 @@
-export const taglist = {
+export const allKeywords = {
   value: [
     "미니멀",
     "클래식",
