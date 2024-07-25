@@ -50,7 +50,46 @@ export const handlers = [
 
     return HttpResponse.json(result);
   }),
-  http.post("/api/user/:id", ({ request }) => {
+  http.post<any, { nickname: string }, any>("/api/user/nickname", async ({ request }) => {
+    const url = new URL(request.url);
+
+    const userId = url.searchParams.get("id");
+
+    const { nickname: enteredNickname } = await request.json();
+
+    const existedNickname = users.find(user => user.nickname === enteredNickname);
+
+    const isExistedNickname = !userId && existedNickname;
+    const isAvailableNickname = !userId && !existedNickname;
+    const userIdError = isAvailableNickname && enteredNickname;
+    const enteredNameError = userId && !enteredNickname;
+    const isUpdateAvailable = userId && enteredNickname;
+
+    if (isAvailableNickname || isUpdateAvailable) return HttpResponse.json({ status: "ok" });
+    if (isExistedNickname) return new HttpResponse("이미 존재하는 닉네임입니다.", { status: 401 });
+    if (enteredNameError) return new HttpResponse("닉네임을 다시 입력해주세요.", { status: 404 });
+    if (userIdError) return new HttpResponse("유저 아이디를 찾을 수 없습니다.", { status: 404 });
+  }),
+  http.post<any, { tags: string[] }, any>("/api/user/tag", async ({ request }) => {
+    const url = new URL(request.url);
+
+    const userId = url.searchParams.get("update");
+
+    const targetUser = users.find(user => user.id === Number(userId));
+
+    if (!targetUser) {
+      return new HttpResponse("유저 아이디를 찾을 수 없습니다.", { status: 404 });
+    }
+
+    const { tags } = await request.json();
+
+    const newKeywords = tags.map((tag, index) => ({ id: index, tag }));
+
+    targetUser.keywords = newKeywords;
+
+    return HttpResponse.json("유저정보 업데이트가 완료됨.", { status: 200 });
+  }),
+  http.post("/api/user/:id", async ({ request }) => {
     const url = new URL(request.url);
 
     const splitUrl = url?.pathname?.split("/");
@@ -63,31 +102,27 @@ export const handlers = [
 
     return HttpResponse.json({ message: "유저정보 업데이트가 완료됨." });
   }),
-  http.post<any, { lookbookId: string }, any>(
-    "/api/look/post",
-    async ({ request }) => {
-      const url = new URL(request?.url);
+  http.post<any, { lookbookId: string }, any>("/api/look/post", async ({ request }) => {
+    const url = new URL(request?.url);
 
-      const pageParam = url.searchParams.get("pageParam");
+    const pageParam = url.searchParams.get("pageParam");
 
-      const { lookbookId } = await request.json();
+    const { lookbookId } = await request.json();
 
-      const TAKE_COUNT = 3;
-      const cursorQuery = (pageParam as string) === "1" ? undefined : pageParam;
-      const cursorId = cursorQuery ? parseInt(pageParam as string) : 1;
+    const TAKE_COUNT = 3;
+    const cursorQuery = (pageParam as string) === "1" ? undefined : pageParam;
+    const cursorId = cursorQuery ? parseInt(pageParam as string) : 1;
 
-      const filterPosts = looks.filter(({ id }) => +lookbookId !== id);
+    const filterPosts = looks.filter(({ id }) => +lookbookId !== id);
 
-      const cursor = cursorId - 1;
+    const cursor = cursorId - 1;
 
-      const posts = filterPosts.slice(cursor, cursor + TAKE_COUNT);
+    const posts = filterPosts.slice(cursor, cursor + TAKE_COUNT);
 
-      const nextId =
-        posts.length < TAKE_COUNT ? undefined : posts[TAKE_COUNT - 1].id;
+    const nextId = posts.length < TAKE_COUNT ? undefined : posts[TAKE_COUNT - 1].id;
 
-      return HttpResponse.json({ posts, nextId });
-    },
-  ),
+    return HttpResponse.json({ posts, nextId });
+  }),
   http.post("/api/products", async ({ request }) => {
     const payload = await request.json();
 

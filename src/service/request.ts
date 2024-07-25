@@ -62,7 +62,7 @@ const apiPost = {
 
   UPDATE_VIEWS: (id: number, view: { currentView: number }) => axiosPost(`/api/products/${id}`, view),
 
-  UPDATE_TAG: (id: number, tags: string[]) => axiosPost(`/api/user/tag?update=${id}`, tags),
+  UPDATE_TAG: (id: number, data: { tags: string[] }) => axiosPost(`/api/user/tag?update=${id}`, data),
 
   UPDATE_PROFILE: (data: { imageurl: string; userData: number }) => axiosPost("/api/user/image", data),
 

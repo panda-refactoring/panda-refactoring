@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
-import { UserData } from "../../common/types/data.types";
 import { axiosDelete } from "../../service/request";
 import { UserManageProps } from "./types";
 

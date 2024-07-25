@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { FormEvent, useState } from "react";
-import { taglist } from "../../common/consts/tags";
+import { allKeywords } from "../../common/consts/keywords";
 import { Icon } from "@iconify/react";
 import Header from "../../components/common/header";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ const SignTag: NextPage = () => {
 
   const [selectedTag, setSelectedTag] = useState<string[]>([]);
 
-  const allSelectedTag = taglist.value;
+  const allSelectedTag = allKeywords.value;
 
   const getUser = () => apiGet.GET_USER(userEmail as string);
 
@@ -88,7 +88,7 @@ const SignTag: NextPage = () => {
             <button onClick={onResetBtn} className="px-2 text-3xl">
               <Icon icon="carbon:reset" />
             </button>
-            <p>{`${selectedTag.length}/${taglist.value.length}`}</p>
+            <p>{`${selectedTag.length}/${allKeywords.value.length}`}</p>
           </div>
         </div>
         <ul className="mt-10 grid w-full grid-cols-2 gap-3">

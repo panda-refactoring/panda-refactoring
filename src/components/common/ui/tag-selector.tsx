@@ -1,21 +1,17 @@
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
 import { useState } from "react";
-import { taglist } from "../../../common/consts/tags";
+import { allKeywords } from "../../../common/consts/keywords";
 
 const TagSelecotr: NextPage = () => {
   const [selectedTag, setSelectedTag] = useState<string[]>([]);
   const onResetBtn = () => {
     setSelectedTag([]);
   };
-  const allSelectedTag = taglist.value;
+  const allSelectedTag = allKeywords.value;
 
   const handleTagSelection = (data: string) => {
-    setSelectedTag(prevTags =>
-      prevTags.includes(data)
-        ? prevTags.filter(tag => tag !== data)
-        : [...prevTags, data],
-    );
+    setSelectedTag(prevTags => (prevTags.includes(data) ? prevTags.filter(tag => tag !== data) : [...prevTags, data]));
   };
   return (
     <div>

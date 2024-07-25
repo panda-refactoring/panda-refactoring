@@ -14,6 +14,7 @@ import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import noExistUser from "../noExistUser";
 
 import useAuth from "src/hooks/useAuth";
+import { STATUS } from "src/common/consts/status";
 
 const MyPage: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -29,9 +30,8 @@ const MyPage: NextPage = () => {
   };
 
   useEffect(() => {
-    if (status === "success") {
+    if (status === STATUS.SUCCESS) {
       setIsLoading(false);
-      console.log(userData);
     }
   }, [status]);
 
