@@ -50,6 +50,35 @@ export const handlers = [
 
     return HttpResponse.json(result);
   }),
+  http.get("/api/search", ({ request }) => {
+    const url = new URL(request.url);
+
+    const enteredWord = url.searchParams.get("keyword");
+
+    if (!enteredWord) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    const matchFortitles = products.filter(({ title }) => title.includes(enteredWord));
+    const matchForTags = products.filter(product => {
+      const tags = product.hashTag.map(tag => tag);
+      const isMatch = tags.some(({ tag }) => tag === enteredWord);
+      if (isMatch) return product;
+    });
+
+    const matchedItems = Array.from(new Set([...matchFortitles, ...matchForTags]));
+
+    return HttpResponse.json(matchedItems);
+  }),
+  http.get("/api/search/hashtag", ({ request }) => {
+    const hashTags = products.map(({ hashTag }) => hashTag);
+
+    if (!hashTags) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json(hashTags);
+  }),
   http.post<any, { nickname: string }, any>("/api/user/nickname", async ({ request }) => {
     const url = new URL(request.url);
 
