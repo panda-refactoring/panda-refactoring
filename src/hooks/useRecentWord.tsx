@@ -35,7 +35,7 @@ const useRecentWord = () => {
         const cacheOptions = {
           headers: cacheHeaders,
         };
-        const uniqueSearches = [...new Set(recentWords)]; // 중복 제거
+        const uniqueSearches = [...new Set(recentWords)];
         cache.put(new Request(CACHE_KEY), new Response(JSON.stringify(uniqueSearches), cacheOptions));
       });
     }
