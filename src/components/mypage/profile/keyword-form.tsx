@@ -49,8 +49,8 @@ const KeywordForm = ({ userData, setToast }: ProfileFormProps) => {
     <>
       {isTabOpen && (
         <>
-          <Overlay />
-          <div className="fixed bottom-0 left-0 z-50 w-[390px]">
+          <div className="fixed top-0 z-40 h-screen w-[390px] translate-x-[-20px] bg-black pt-10 opacity-40" />
+          <div className="fixed bottom-0 z-50 w-[390px] translate-x-[-20px]">
             <form
               onSubmit={handleSubmit}
               className="h-16 w-full justify-center border-b-[1px] border-solid border-black bg-white p-5 text-center shadow-2xl shadow-black "
