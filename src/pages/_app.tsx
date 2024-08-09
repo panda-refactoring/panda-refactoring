@@ -1,30 +1,32 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
+import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 
-import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 
-import ModalContextProvider from "../context/modal-context";
-import MSWProvider from "../mocks/msw-provider";
 import MainLayout from "../layout/main-layout";
+import ModalContextProvider from "../context/modal-context";
+import ToastContextProvider from "src/context/toast-context";
+import MSWProvider from "../mocks/msw-provider";
+import QueryProvider from "./query-provider-wrapper";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider session={session}>
-        <RecoilRoot>
-          <ModalContextProvider>
-            <MainLayout>
-              <MSWProvider>
-                <Component {...pageProps} />
-              </MSWProvider>
-            </MainLayout>
-          </ModalContextProvider>
-        </RecoilRoot>
-      </SessionProvider>
-    </QueryClientProvider>
+    <ModalContextProvider>
+      <ToastContextProvider>
+        <SessionProvider session={session}>
+          <RecoilRoot>
+            <MSWProvider>
+              <MainLayout>
+                <QueryProvider>
+                  <Component {...pageProps} />
+                </QueryProvider>
+              </MainLayout>
+            </MSWProvider>
+          </RecoilRoot>
+        </SessionProvider>
+      </ToastContextProvider>
+    </ModalContextProvider>
   );
 }
 

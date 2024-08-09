@@ -26,20 +26,18 @@ const Home: NextPage = () => {
       <Header />
       <Modal />
       <ImageSlide images={bannerImages} imgH="h-72" propH={288} slideTime={5500} />
-      <ErrorBoundary errorFallback={<p>something went wrong...</p>} setModal={setModal}>
-        <div className="space-y-10 py-10">
-          <Recommend userData={userData} />
-          <RecentStyle />
-          <Lookbook />
-          <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">
-            <p className="text-base">매일 수익이 발생하는 옷장공유</p>
-            <p className="mb-5 mt-1 text-2xl">지금 시작해보세요!</p>
-            <Button type="button" text="바로가기" fontColor="text-white" classes="bg-black" divWidth="w-32" />
-          </div>
+      <div className="space-y-10 py-10">
+        <Recommend userData={userData} />
+        <RecentStyle />
+        <Lookbook />
+        <div className="flex h-52 w-full flex-col items-center justify-center bg-gradient py-10 text-white">
+          <p className="text-base">매일 수익이 발생하는 옷장공유</p>
+          <p className="mb-5 mt-1 text-2xl">지금 시작해보세요!</p>
+          <Button type="button" text="바로가기" fontColor="text-white" classes="bg-black" divWidth="w-32" />
         </div>
-        <Navigation />
-        <FloatingButton path="/create/market" />
-      </ErrorBoundary>
+      </div>
+      <Navigation />
+      <FloatingButton path="/create/market" />
     </>
   );
 };

@@ -1,12 +1,10 @@
 import Error from "next/error";
 import { Component, ErrorInfo, ReactNode } from "react";
-import { setModalProps } from "src/components/common/ui/types";
 
 interface Props {
   children: ReactNode;
+  modalFallback: ReactNode;
   errorFallback: ReactNode;
-  setModal?: setModalProps;
-  reTryFn?: () => void;
 }
 
 interface State {
@@ -32,19 +30,9 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: any, errorInfo: ErrorInfo) {
     // You can use your own error logging service here
-    console.log({ error, errorInfo });
-
-    if (error.code === "ERR_BAD_REQUEST") {
-      if (this.props.setModal)
-        this.props.setModal({
-          message: "네트워크 오류가 발생했습니다.",
-          btnText: "다시시도",
-          submitFn: () => {
-            this.setState({ hasError: false });
-            window.location.replace("/");
-          },
-        });
-      this.setState({ axiosError: true });
+    switch (error) {
+      case "AxiosError":
+        this.setState({ axiosError: true });
     }
   }
 
@@ -52,6 +40,8 @@ class ErrorBoundary extends Component<Props, State> {
     // Check if the error is thrown
     if (this.state.hasError) {
       // You can render any custom fallback UI
+      if (this.state.axiosError) return this.props.modalFallback;
+
       return this.props.errorFallback;
     }
 
