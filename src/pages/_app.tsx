@@ -9,6 +9,7 @@ import ModalContextProvider from "../context/modal-context";
 import ToastContextProvider from "src/context/toast-context";
 import MSWProvider from "../mocks/msw-provider";
 import QueryProvider from "./query-provider-wrapper";
+import Toast from "src/components/common/ui/toast";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (

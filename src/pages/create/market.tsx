@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { Icon } from "@iconify/react";
@@ -7,7 +7,6 @@ import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
 import { currentUserInfoQuery, userInfoQuery } from "src/recoil/user";
 
 import Header from "../../components/common/header";
-import Overlay from "../../components/common/overlay";
 import Button from "../../components/common/ui/button";
 import Toast from "src/components/common/ui/toast";
 import UploadImages from "../../components/create/upload-images";
@@ -16,7 +15,6 @@ import noExistUser from "../noExistUser";
 
 import useTextArea from "src/hooks/useTextArea";
 import useOptions from "../../hooks/useOptions";
-import useToast from "src/hooks/useToast";
 import useUpload from "src/hooks/useUpload";
 import { cls } from "../../common/util/class";
 import { createValidation } from "src/common/util/validate";
@@ -25,6 +23,7 @@ import { useCreateMarket } from "src/service/query/create";
 import { UserData } from "src/common/types/data.types";
 import { CreateState } from "../../common/types/create.types";
 import { createImageUrl } from "src/common/util/image-url";
+import { toastContext } from "src/context/toast-context";
 
 const Create = () => {
   const userData = useRecoilValueLoadable<UserData>(currentUserInfoQuery);
@@ -32,7 +31,7 @@ const Create = () => {
 
   const router = useRouter();
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const { deleteImage, encodeFile, imgsrc } = useUpload(credentials);
 
@@ -65,6 +64,7 @@ const Create = () => {
   };
 
   const inValid = (error: FieldErrors) => {
+    console.log(error);
     const message = error.desc?.message || error.title?.message || error.price?.message || error.image?.message;
     setToast({ message: message as string, isError: true });
   };
@@ -81,7 +81,7 @@ const Create = () => {
     if (!isError) return;
 
     setToast({
-      message: ["게시글 등록에 실패했어요😥!", "다시 시도해주세요."],
+      message: "게시글 등록에 실패했어요😥!\n다시 시도해주세요.",
       isError: true,
     });
   }, [isError]);
@@ -89,8 +89,7 @@ const Create = () => {
   return (
     <>
       <Header goBack />
-      {showToast && <Toast {...toastController} />}
-      {isTabOpen && <Overlay />}
+      <Toast />
       <div className=" px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
           <UploadImages register={register} deleteImage={deleteImage} encodeFile={encodeFile} imgsrc={imgsrc} />

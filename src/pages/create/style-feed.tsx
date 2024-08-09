@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Icon } from "@iconify/react";
@@ -15,7 +15,6 @@ import ProductTagTab from "../../components/create/style-feed/product-tab";
 import TagItem from "src/components/create/style-feed/tag-item";
 import noExistUser from "../noExistUser";
 
-import useToast from "src/hooks/useToast";
 import useUpload from "src/hooks/useUpload";
 import useTextArea from "src/hooks/useTextArea";
 import { cls } from "../../common/util/class";
@@ -24,6 +23,7 @@ import { credentials } from "src/common/lib/credentials";
 import { ProductDataMin } from "../../common/types/data.types";
 import { CreateState } from "../../common/types/create.types";
 import { useCreateStyleFeed } from "src/service/query/create";
+import { toastContext } from "src/context/toast-context";
 
 const CreatePost = () => {
   const [tagItems, setTagItems] = useState<ProductDataMin[]>([]);
@@ -34,7 +34,7 @@ const CreatePost = () => {
 
   const router = useRouter();
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const { deleteImage, encodeFile, imgsrc } = useUpload(credentials);
 
@@ -83,7 +83,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     setToast({
-      message: ["게시글 등록에 실패했어요😥!", "다시 시도해주세요."],
+      message: "게시글 등록에 실패했어요😥!\n다시 시도해주세요.",
       isError: true,
     });
   }, [isError]);
@@ -91,7 +91,7 @@ const CreatePost = () => {
   return (
     <>
       <Header goBack />
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       {isTabOpen && <Overlay />}
       <div className="px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>

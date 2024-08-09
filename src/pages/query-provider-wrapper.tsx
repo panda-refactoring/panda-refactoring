@@ -17,8 +17,6 @@ const QueryProvider = ({ children }: PropsWithChildren) => {
 
   const { reset } = useQueryErrorResetBoundary();
   const queryErrorHandler = (error: any) => {
-    console.log(error.name);
-
     switch (error?.name) {
       case "AxiosError":
         setModal({

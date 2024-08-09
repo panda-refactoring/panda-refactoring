@@ -1,14 +1,18 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import useToast from "../../hooks/useToast";
+
+import Button from "../common/ui/button";
+import Toast from "../common/ui/toast";
+
 import { errorMessage } from "../common/error";
 import { cls } from "../../common/util/class";
 import { regExgPw, regExpEm } from "../../common/util/regInput";
 import { apiPost } from "../../service/request";
-import Button from "../common/ui/button";
-import Toast from "../common/ui/toast";
+import { toastContext } from "src/context/toast-context";
 
 export interface SignProps {
   email: string;
@@ -19,7 +23,7 @@ export interface SignProps {
 const SignForm: NextPage = () => {
   const router = useRouter();
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const {
     register,
@@ -53,7 +57,7 @@ const SignForm: NextPage = () => {
   });
   return (
     <>
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       <form
         onSubmit={handleSubmit(submitData => mutate({ ...submitData }))}
         className="signup-minheight space-y-14 px-8 pt-4"

@@ -2,13 +2,17 @@ import { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+
 import { useForm } from "react-hook-form";
-import useToast from "../../hooks/useToast";
+
+import Toast from "../common/ui/toast";
+
 import { errorMessage } from "../common/error";
 import { cls } from "../../common/util/class";
 import createHashedPassword from "../../common/util/hash";
 import { regExgPw, regExpEm } from "../../common/util/regInput";
-import Toast from "../common/ui/toast";
+import { toastContext } from "src/context/toast-context";
 
 interface LoginProps {
   email: string;
@@ -19,7 +23,7 @@ interface LoginProps {
 const LoginForm: NextPage = () => {
   const router = useRouter();
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const {
     register,
@@ -41,7 +45,7 @@ const LoginForm: NextPage = () => {
   };
   return (
     <>
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       <form onSubmit={handleSubmit(onSubmit)} className="px-3">
         <input
           {...register("email", { required: true, pattern: regExpEm })}
