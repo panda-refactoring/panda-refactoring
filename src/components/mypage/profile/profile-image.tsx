@@ -12,14 +12,14 @@ import { ProfileImageProps } from "./types";
 const ProfileImage = ({ userData, setLoading }: ProfileImageProps) => {
   const { register } = useForm({});
 
-  const { uploadImage, encodeFile, imgsrc } = useUpload(credentials);
+  const { encodeFile, imgsrc } = useUpload(credentials);
 
   const { mutate: profileImageMutation, isSuccess } = useUpdateProfileImage({ userId: userData?.id });
 
   useEffect(() => {
     if (imgsrc.length === 0) return;
 
-    uploadImage(imgsrc[0]?.file, "profile");
+    // uploadImage(imgsrc[0]?.file, "profile");
     const imageurl = createImageUrl(imgsrc[0]?.file, "profile");
 
     profileImageMutation({ imageurl });

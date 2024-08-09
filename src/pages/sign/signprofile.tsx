@@ -21,7 +21,7 @@ const SignProfile: NextPage = () => {
   const router = useRouter();
   const userEmail = router.query.email;
 
-  const { uploadImage, encodeFile, imgsrc } = useUpload(credentials);
+  const { encodeFile, imgsrc } = useUpload(credentials);
 
   const { setToast, showToast, toastController } = useToast();
 
@@ -69,7 +69,7 @@ const SignProfile: NextPage = () => {
   //프로필 이미지 등록
   const createProfile = async (userProfile: FieldValues) => {
     const enteredImage = imgsrc[imgsrc.length - 1];
-    uploadImage(enteredImage.file, "profile");
+    // uploadImage(enteredImage.file, "profile");
     const imageurl = createImageUrl(enteredImage.file, "profile");
     userProfile.image = imageurl;
 

@@ -30,16 +30,13 @@ const CreatePost = () => {
   const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
 
   const userData = useRecoilValueLoadable(currentUserInfoQuery);
-  const refreshUserInfo = useRecoilRefresher_UNSTABLE(
-    userInfoQuery(userData?.contents?.email),
-  );
+  const refreshUserInfo = useRecoilRefresher_UNSTABLE(userInfoQuery(userData?.contents?.email));
 
   const router = useRouter();
 
   const { setToast, showToast, toastController } = useToast();
 
-  const { uploadImage, deleteImage, encodeFile, imgsrc } =
-    useUpload(credentials);
+  const { deleteImage, encodeFile, imgsrc } = useUpload(credentials);
 
   const { register, handleSubmit } = useForm<CreateState>({
     mode: "onSubmit",
@@ -47,12 +44,7 @@ const CreatePost = () => {
 
   const { isFocus, handleTextArea } = useTextArea();
 
-  const {
-    mutate: mutateStyleFeed,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useCreateStyleFeed();
+  const { mutate: mutateStyleFeed, isLoading, isSuccess, isError } = useCreateStyleFeed();
 
   const openTab = () => setIsTabOpen(true);
 
@@ -103,22 +95,14 @@ const CreatePost = () => {
       {isTabOpen && <Overlay />}
       <div className="px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
-          <UploadImages
-            register={register}
-            deleteImage={deleteImage}
-            encodeFile={encodeFile}
-            imgsrc={imgsrc}
-          />
+          <UploadImages register={register} deleteImage={deleteImage} encodeFile={encodeFile} imgsrc={imgsrc} />
           <div className="border-b border-t border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
             <div className="relative h-auto w-full p-5">
               <textarea
                 {...register("desc")}
                 name="desc"
                 rows={10}
-                className={cls(
-                  "peer w-full resize-none",
-                  isFocus ? "is-valid" : "",
-                )}
+                className={cls("peer w-full resize-none", isFocus ? "is-valid" : "")}
                 onChange={handleTextArea}
               />
               <div className="pointer-events-none absolute left-5 top-5 bg-transparent text-common-gray peer-focus:hidden peer-[.is-valid]:hidden">
@@ -162,7 +146,7 @@ const CreatePost = () => {
         {tagItems.length > 0 && (
           <ul className="mt-5 h-80 w-full space-y-4 overflow-hidden overflow-y-scroll">
             {tagItems.map(item => (
-              <TagItem tagItem={item} removeItem={removeTagItem} />
+              <TagItem key={item.id} tagItem={item} removeItem={removeTagItem} />
             ))}
           </ul>
         )}
