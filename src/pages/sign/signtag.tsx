@@ -1,15 +1,18 @@
 import { NextPage } from "next";
-import { FormEvent, useState } from "react";
-import { allKeywords } from "../../common/consts/keywords";
-import { Icon } from "@iconify/react";
-import Header from "../../components/common/header";
 import { useRouter } from "next/router";
+import { FormEvent, useContext, useState } from "react";
+
+import { Icon } from "@iconify/react";
 import { useMutation, useQuery } from "react-query";
-import Button from "../../components/common/ui/button";
-import useToast from "../../hooks/useToast";
-import { apiGet, apiPost } from "../../service/request";
-import existUser from "../existUser";
+
+import Header from "../../components/common/header";
 import Toast from "src/components/common/ui/toast";
+import Button from "../../components/common/ui/button";
+import existUser from "../existUser";
+
+import { allKeywords } from "../../common/consts/keywords";
+import { apiGet, apiPost } from "../../service/request";
+import { toastContext } from "src/context/toast-context";
 
 interface TagData {
   userId: number;
@@ -21,7 +24,7 @@ const SignTag: NextPage = () => {
   const router = useRouter();
   const userEmail = router.query.email;
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const [selectedTag, setSelectedTag] = useState<string[]>([]);
 
@@ -77,7 +80,7 @@ const SignTag: NextPage = () => {
   return (
     <>
       <Header text="SIGNUP" goBack noGoBack />
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       <div className="signup-minheight px-8 pt-4">
         <div className="flex items-end justify-between">
           <div>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Axios, AxiosError } from "axios";
 import { SignProps } from "../components/sign/sign-form";
 
 const client = axios.create({
@@ -11,8 +11,12 @@ const axiosPost = async <T>(url: string, payload: T) => {
 };
 
 const axiosGet = async (url: string) => {
-  const { data } = await client.get(url);
-  return data;
+  try {
+    const { data } = await client.get(url);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const axiosDelete = async (id: string) => {
@@ -25,7 +29,7 @@ const apiGet = {
 
   GET_LOOKS: () => axiosGet("/api/look"),
 
-  GET_ITEM: (id: string) => axiosGet(`/api/products/${id}`),
+  GET_ITEM: async (id: string) => await axiosGet(`/api/products/${id}`),
 
   GET_POST: (id: string) => axiosGet(`/api/look/${id}`),
 

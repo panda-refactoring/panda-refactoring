@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Icon } from "@iconify/react";
@@ -15,7 +15,6 @@ import ProductTagTab from "../../components/create/style-feed/product-tab";
 import TagItem from "src/components/create/style-feed/tag-item";
 import noExistUser from "../noExistUser";
 
-import useToast from "src/hooks/useToast";
 import useUpload from "src/hooks/useUpload";
 import useTextArea from "src/hooks/useTextArea";
 import { cls } from "../../common/util/class";
@@ -24,22 +23,20 @@ import { credentials } from "src/common/lib/credentials";
 import { ProductDataMin } from "../../common/types/data.types";
 import { CreateState } from "../../common/types/create.types";
 import { useCreateStyleFeed } from "src/service/query/create";
+import { toastContext } from "src/context/toast-context";
 
 const CreatePost = () => {
   const [tagItems, setTagItems] = useState<ProductDataMin[]>([]);
   const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
 
   const userData = useRecoilValueLoadable(currentUserInfoQuery);
-  const refreshUserInfo = useRecoilRefresher_UNSTABLE(
-    userInfoQuery(userData?.contents?.email),
-  );
+  const refreshUserInfo = useRecoilRefresher_UNSTABLE(userInfoQuery(userData?.contents?.email));
 
   const router = useRouter();
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
-  const { uploadImage, deleteImage, encodeFile, imgsrc } =
-    useUpload(credentials);
+  const { deleteImage, encodeFile, imgsrc } = useUpload(credentials);
 
   const { register, handleSubmit } = useForm<CreateState>({
     mode: "onSubmit",
@@ -47,12 +44,7 @@ const CreatePost = () => {
 
   const { isFocus, handleTextArea } = useTextArea();
 
-  const {
-    mutate: mutateStyleFeed,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useCreateStyleFeed();
+  const { mutate: mutateStyleFeed, isLoading, isSuccess, isError } = useCreateStyleFeed();
 
   const openTab = () => setIsTabOpen(true);
 
@@ -91,7 +83,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     setToast({
-      message: ["게시글 등록에 실패했어요😥!", "다시 시도해주세요."],
+      message: "게시글 등록에 실패했어요😥!\n다시 시도해주세요.",
       isError: true,
     });
   }, [isError]);
@@ -99,26 +91,18 @@ const CreatePost = () => {
   return (
     <>
       <Header goBack />
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       {isTabOpen && <Overlay />}
       <div className="px-5 py-5">
         <form onSubmit={handleSubmit(valid, inValid)}>
-          <UploadImages
-            register={register}
-            deleteImage={deleteImage}
-            encodeFile={encodeFile}
-            imgsrc={imgsrc}
-          />
+          <UploadImages register={register} deleteImage={deleteImage} encodeFile={encodeFile} imgsrc={imgsrc} />
           <div className="border-b border-t border-borderColor-gray pb-2 [&>input]:h-[52px] [&>input]:border-b [&>input]:px-4">
             <div className="relative h-auto w-full p-5">
               <textarea
                 {...register("desc")}
                 name="desc"
                 rows={10}
-                className={cls(
-                  "peer w-full resize-none",
-                  isFocus ? "is-valid" : "",
-                )}
+                className={cls("peer w-full resize-none", isFocus ? "is-valid" : "")}
                 onChange={handleTextArea}
               />
               <div className="pointer-events-none absolute left-5 top-5 bg-transparent text-common-gray peer-focus:hidden peer-[.is-valid]:hidden">
@@ -162,7 +146,7 @@ const CreatePost = () => {
         {tagItems.length > 0 && (
           <ul className="mt-5 h-80 w-full space-y-4 overflow-hidden overflow-y-scroll">
             {tagItems.map(item => (
-              <TagItem tagItem={item} removeItem={removeTagItem} />
+              <TagItem key={item.id} tagItem={item} removeItem={removeTagItem} />
             ))}
           </ul>
         )}

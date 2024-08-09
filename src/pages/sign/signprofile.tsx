@@ -1,29 +1,32 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FieldValues, useForm } from "react-hook-form";
-import Header from "../../components/common/header";
-import profile from "public/asset/image/addprofile.png";
 import Image from "next/image";
-import { FormEvent, useState } from "react";
-import useUpload from "../../hooks/useUpload";
-import { useMutation, useQuery } from "react-query";
-import { createImageUrl } from "../../common/util/image-url";
 import { signOut } from "next-auth/react";
+import { FormEvent, useContext, useState } from "react";
+import profile from "public/asset/image/addprofile.png";
+
+import { FieldValues, useForm } from "react-hook-form";
+import { useMutation, useQuery } from "react-query";
+
+import Header from "../../components/common/header";
 import Button from "../../components/common/ui/button";
-import { cls } from "../../common/util/class";
-import useToast from "../../hooks/useToast";
-import { apiGet, apiPost } from "../../service/request";
-import existUser from "../existUser";
-import { credentials } from "../../common/lib/credentials";
 import Toast from "src/components/common/ui/toast";
+import existUser from "../existUser";
+
+import useUpload from "../../hooks/useUpload";
+import { createImageUrl } from "../../common/util/image-url";
+import { cls } from "../../common/util/class";
+import { credentials } from "../../common/lib/credentials";
+import { toastContext } from "src/context/toast-context";
+import { apiGet, apiPost } from "../../service/request";
 
 const SignProfile: NextPage = () => {
   const router = useRouter();
   const userEmail = router.query.email;
 
-  const { uploadImage, encodeFile, imgsrc } = useUpload(credentials);
+  const { encodeFile, imgsrc } = useUpload(credentials);
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const [pass, setPass] = useState<boolean>(false); //닉네임 중복 통과 state
 
@@ -69,7 +72,7 @@ const SignProfile: NextPage = () => {
   //프로필 이미지 등록
   const createProfile = async (userProfile: FieldValues) => {
     const enteredImage = imgsrc[imgsrc.length - 1];
-    uploadImage(enteredImage.file, "profile");
+    // uploadImage(enteredImage.file, "profile");
     const imageurl = createImageUrl(enteredImage.file, "profile");
     userProfile.image = imageurl;
 
@@ -97,7 +100,7 @@ const SignProfile: NextPage = () => {
   return (
     <>
       <Header text="SIGNUP" goBack noGoBack />
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       <div className="px-8">
         <p className="mb-1 mt-7 text-xl">마지막이에요!</p>
         <p className="text-textColor-gray-100">사용하실 닉네임과 프로필사진을 설정해주세요.</p>

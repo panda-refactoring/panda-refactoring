@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -9,10 +9,10 @@ import ProductItem from "../../components/main/product-item";
 import Toast from "src/components/common/ui/toast";
 import SearchWords from "src/components/search/search-words";
 
-import useToast from "../../hooks/useToast";
 import useRecentWord from "src/hooks/useRecentWord";
 import { ProductDataMin } from "../../common/types/data.types";
 import { useSearchProduct } from "src/service/query/search";
+import { toastContext } from "src/context/toast-context";
 
 const Search: NextPage = () => {
   const [inputValue, setInputValue] = useState<string>("");
@@ -23,7 +23,7 @@ const Search: NextPage = () => {
 
   const enteredWord = router.query.word as string;
 
-  const { setToast, showToast, toastController } = useToast();
+  const { setToast } = useContext(toastContext);
 
   const { recentWords, setRecentWords } = useRecentWord();
 
@@ -78,7 +78,7 @@ const Search: NextPage = () => {
   return (
     <>
       <Header text="SEARCH" goBack goHome />
-      {showToast && <Toast {...toastController} />}
+      <Toast />
       <div className="px-5 py-5">
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input

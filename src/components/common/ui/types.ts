@@ -11,7 +11,7 @@ export interface setModalProps {
 }
 
 export interface ToastProps {
-  toastMessage: string[];
+  toastMessage?: string[];
   isError?: boolean;
-  closeToast: () => void;
+  closeToast?: () => void;
 }

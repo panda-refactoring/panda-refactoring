@@ -1,10 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const useTimeout = (
-  timerFn: () => void,
-  delay: number = 0,
-  dependancy?: any[],
-) => {
+const useTimeout = (timerFn: () => void, delay: number, dependancy?: any[]) => {
   const callback = useRef<() => void>();
 
   useEffect(() => {
@@ -15,7 +11,7 @@ const useTimeout = (
     () => {
       const timer = setTimeout(() => {
         if (callback.current) timerFn();
-      }, delay);
+      }, delay ?? 0);
 
       return () => clearTimeout(timer);
     },

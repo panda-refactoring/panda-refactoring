@@ -20,6 +20,8 @@ export const handlers = [
   }),
   http.get("/api/products", () => HttpResponse.json(products)),
   http.get("/api/products/:id", ({ request }) => {
+    return new HttpResponse(null, { status: 404 });
+
     const url = new URL(request.url);
 
     const splitUrl = url?.pathname?.split("/");
@@ -70,7 +72,7 @@ export const handlers = [
 
     return HttpResponse.json(matchedItems);
   }),
-  http.get("/api/search/hashtag", ({ request }) => {
+  http.get("/api/search/hashtag", () => {
     const hashTags = products.map(({ hashTag }) => hashTag);
 
     if (!hashTags) {

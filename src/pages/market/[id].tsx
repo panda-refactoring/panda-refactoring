@@ -1,9 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useQuery } from "react-query";
 
-import Modal from "src/components/common/ui/modal";
 import Header from "../../components/common/header";
 import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import ImageSlide from "../../components/market/detail/image-slide";
@@ -17,9 +15,8 @@ import useAuth from "src/hooks/useAuth";
 import useFavorite from "../../hooks/useFavorite";
 import useModal from "../../hooks/useModal";
 import { updateViews } from "../../common/util/market-view";
-import { ProductData } from "../../common/types/data.types";
-import { apiGet } from "../../service/request";
 import { useUpdateProductFavorite } from "src/service/query/favorite";
+import { useGetProduct } from "src/service/query/product";
 
 const Product: NextPage = () => {
   const router = useRouter();
@@ -31,15 +28,7 @@ const Product: NextPage = () => {
 
   const { setLoginModal } = useModal();
 
-  const getProduct = async () => {
-    const data = await apiGet.GET_ITEM(productId as string);
-    return data;
-  };
-
-  const { data: product, isLoading } = useQuery<ProductData>("getData", getProduct, {
-    enabled: !!productId,
-    notifyOnChangeProps: "tracked",
-  });
+  const { data: product, isLoading } = useGetProduct({ productId: productId as string });
 
   const { isFavoriteActive, favoriteCount, updateFavorite } = useFavorite({
     currentUserId: Number(userData?.id),
@@ -74,7 +63,6 @@ const Product: NextPage = () => {
   return (
     <>
       <Header goBack />
-      <Modal />
       {isLoading && (
         <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <LoadingSpinner />
