@@ -8,6 +8,7 @@ import ErrorBoundary from "./error-boundary";
 
 import { toastContext } from "src/context/toast-context";
 import useModal from "src/hooks/useModal";
+import { ErrorType } from "src/common/consts/error-type";
 
 const QueryProvider = ({ children }: PropsWithChildren) => {
   const { setToast } = useContext(toastContext);
@@ -18,7 +19,7 @@ const QueryProvider = ({ children }: PropsWithChildren) => {
   const { reset } = useQueryErrorResetBoundary();
   const queryErrorHandler = (error: any) => {
     switch (error?.name) {
-      case "AxiosError":
+      case ErrorType.AXIOS_ERROR:
         setModal({
           message: "게시물 정보를 가져올 수 없습니다.",
           btnText: "재시도",
