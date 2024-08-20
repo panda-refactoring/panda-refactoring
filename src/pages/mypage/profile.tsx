@@ -1,14 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { NextPage } from "next";
 
+import Loading from "src/components/common/ui/loading";
 import Header from "../../components/common/header";
 import Navigation from "../../components/common/navigation";
 import UserManage from "../../components/user/manage";
 import Toast from "src/components/common/ui/toast";
-import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import ProfileImage from "src/components/mypage/profile/profile-image";
 import NicknameForm from "src/components/mypage/profile/nickname-form";
-
 import noExistUser from "../noExistUser";
 
 import useAuth from "src/hooks/useAuth";
@@ -30,11 +29,7 @@ const EditProfile: NextPage = () => {
     <>
       <Header goBack text="PROFILE" />
       <Toast />
-      {isLoading && (
-        <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
-          <LoadingSpinner />
-        </div>
-      )}
+      {isLoading && <Loading />}
       {!isLoading && (
         <>
           <ProfileImage userData={userData} setLoading={setIsLoading} />
