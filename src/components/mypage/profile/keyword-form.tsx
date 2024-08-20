@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 
 import Button from "src/components/common/ui/button";
-import Overlay from "src/components/common/overlay";
 import Keyword from "./keyword";
 
 import { allKeywords } from "src/common/consts/keywords";
@@ -14,7 +13,7 @@ const KeywordForm = ({ userData, setToast }: ProfileFormProps) => {
   const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
 
-  const { mutate, data, error, isSuccess, isError, isLoading } = useUpdateUserKeywords({ userId: userData?.id });
+  const { mutate, data, isSuccess, isLoading } = useUpdateUserKeywords({ userId: userData?.id });
 
   const handleKeywordSelection = (data: string) => {
     setSelectedKeywords(prev => (prev.includes(data) ? prev.filter(tag => tag !== data) : [...prev, data]));
@@ -36,10 +35,6 @@ const KeywordForm = ({ userData, setToast }: ProfileFormProps) => {
       setIsTabOpen(false);
     }
   }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) setToast({ message: error.response.message, isError: true });
-  }, [isError]);
 
   useEffect(() => {
     if (userData) resetKeywords();

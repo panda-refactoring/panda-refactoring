@@ -8,18 +8,14 @@ import Navigation from "../components/common/navigation";
 import FloatingButton from "../components/common/ui/floating-button";
 import ImageSlide from "../components/market/detail/image-slide";
 import Recommend from "../components/main/recommend";
-import ErrorBoundary from "./error-boundary";
 
 import Modal from "src/components/common/ui/modal";
 
 import useAuth from "../hooks/useAuth";
-import useModal from "src/hooks/useModal";
 import { bannerImages } from "../common/consts/banner";
 
 const Home: NextPage = () => {
   const { userData } = useAuth();
-
-  const { setModal } = useModal();
 
   return (
     <>

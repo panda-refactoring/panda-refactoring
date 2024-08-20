@@ -30,7 +30,6 @@ const Recommend: NextPage<{ userData?: UserData }> = ({ userData }) => {
         <NextSuspense fallback={<LoadingFallback />}>
           <RecommendList userData={userData} />
         </NextSuspense>
-        s
       </>
     </div>
   );

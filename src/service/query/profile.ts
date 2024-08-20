@@ -22,9 +22,6 @@ export const useUpdateProfileImage = ({ userId }: { userId: number }) => {
     onSuccess: ({ message }) => {
       setToast({ message });
     },
-    onError: ({ response }) => {
-      setToast({ message: response.data.message, isError: true });
-    },
   });
 };
 
@@ -32,7 +29,6 @@ export const useCheckNickname = () => {
   return useMutation({
     mutationKey: PROFILE_KEY.NICKNAME_CHECK,
     mutationFn: async (nickname: string) => await apiPost.CREATE_NICKNAME({ nickname }),
-    onError: ({ response }) => response.data,
   });
 };
 
@@ -40,7 +36,6 @@ export const useUpdateNickname = ({ userId }: { userId: number }) => {
   return useMutation({
     mutationKey: PROFILE_KEY.NICKNAME_UPDATE,
     mutationFn: async (nickname: string) => await apiPost.UPDATE_NICKNAME(userId.toString(), { nickname }),
-    onError: ({ response }) => response.data,
   });
 };
 
@@ -48,6 +43,5 @@ export const useUpdateUserKeywords = ({ userId }: { userId: number }) => {
   return useMutation({
     mutationKey: PROFILE_KEY.KEYWORDS,
     mutationFn: async (keywords: string[]) => await apiPost.UPDATE_TAG(userId, { tags: keywords }),
-    onError: ({ response }) => response.data,
   });
 };

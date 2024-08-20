@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 
 import { Icon } from "@iconify/react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
-import { currentUserInfoQuery, userInfoQuery } from "src/recoil/user";
 
 import Overlay from "../../components/common/overlay";
 import Header from "../../components/common/header";
@@ -24,13 +22,13 @@ import { ProductDataMin } from "../../common/types/data.types";
 import { CreateState } from "../../common/types/create.types";
 import { useCreateStyleFeed } from "src/service/query/create";
 import { toastContext } from "src/context/toast-context";
+import useAuth from "src/hooks/useAuth";
 
 const CreatePost = () => {
   const [tagItems, setTagItems] = useState<ProductDataMin[]>([]);
   const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
 
-  const userData = useRecoilValueLoadable(currentUserInfoQuery);
-  const refreshUserInfo = useRecoilRefresher_UNSTABLE(userInfoQuery(userData?.contents?.email));
+  const { userData } = useAuth();
 
   const router = useRouter();
 
@@ -76,16 +74,19 @@ const CreatePost = () => {
   };
 
   useEffect(() => {
-    setToast({ message: "게시글 등록이 완료되었습니다." });
-    refreshUserInfo();
-    setTimeout(() => router.replace("/mypage"), 1000);
+    if (isSuccess) {
+      setToast({ message: "게시글 등록이 완료되었습니다." });
+      setTimeout(() => router.replace("/mypage"), 1000);
+    }
   }, [isSuccess]);
 
   useEffect(() => {
-    setToast({
-      message: "게시글 등록에 실패했어요😥!\n다시 시도해주세요.",
-      isError: true,
-    });
+    if (isError) {
+      setToast({
+        message: "게시글 등록에 실패했어요😥!\n다시 시도해주세요.",
+        isError: true,
+      });
+    }
   }, [isError]);
 
   return (
@@ -137,7 +138,7 @@ const CreatePost = () => {
         </form>
         {isTabOpen && (
           <ProductTagTab
-            product={userData?.contents?.product}
+            product={userData?.product}
             tagItems={tagItems}
             closeTab={closeTab}
             onSetItems={setTagItemList}
