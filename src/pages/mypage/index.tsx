@@ -14,13 +14,11 @@ import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import noExistUser from "../noExistUser";
 
 import useAuth from "src/hooks/useAuth";
-import { STATUS } from "src/common/consts/status";
 
 const MyPage: NextPage = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [category, setCategory] = useState<string>("items");
 
-  const { userData, status } = useAuth();
+  const { userData, isLoading } = useAuth();
 
   const router = useRouter();
 
@@ -28,12 +26,6 @@ const MyPage: NextPage = () => {
     const currentTarget = event.target as HTMLButtonElement;
     setCategory(currentTarget.name);
   };
-
-  useEffect(() => {
-    if (status === STATUS.SUCCESS) {
-      setIsLoading(false);
-    }
-  }, [status]);
 
   return (
     <>

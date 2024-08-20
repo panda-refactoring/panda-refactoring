@@ -1,16 +1,14 @@
-import { NextPage } from "next";
-
 import ProductItem from "./product-item";
 import EmptyProduct from "./empty-product";
 import RecommendButton from "./ui/recommend-button";
 
 import useRecommend from "../../hooks/useRecommend";
-import { RecommendListProps } from "./types";
+import { UserData } from "src/common/types/data.types";
+import useKeyword from "src/hooks/useKeyword";
 
-const RecommendList: NextPage<RecommendListProps> = ({
-  selectedKeyword,
-  keywordItemList,
-}) => {
+const RecommendList = ({ userData }: { userData?: UserData }) => {
+  const { selectedKeyword, keywordItemList } = useKeyword({ userData });
+
   const { recommendList, setRecommendItems } = useRecommend({
     keyword: selectedKeyword,
     productList: keywordItemList,
@@ -18,8 +16,7 @@ const RecommendList: NextPage<RecommendListProps> = ({
 
   const hasRecommendList = recommendList?.length > 0;
 
-  const isVisibleRecommendButton =
-    recommendList?.length > 0 && keywordItemList[selectedKeyword];
+  const isVisibleRecommendButton = recommendList?.length > 0 && keywordItemList[selectedKeyword];
 
   return (
     <>

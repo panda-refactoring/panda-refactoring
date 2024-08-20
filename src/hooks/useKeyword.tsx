@@ -17,14 +17,12 @@ const useKeyword = ({ userData }: { userData?: UserData }) => {
     queryKey: ["products"],
     queryFn: apiGet.GET_ITEMS,
     enabled: !!userData,
+    suspense: true,
   });
 
   const setKeyword = (tagName: string) => setSelectedKeyword(tagName);
 
-  const setKeywordItems = (
-    keywords: { id: number; tag: string }[],
-    products: ProductData[],
-  ) => {
+  const setKeywordItems = (keywords: { id: number; tag: string }[], products: ProductData[]) => {
     if (keywords.length === 0) return;
 
     const keywordItems: KeywordItemList = {};
