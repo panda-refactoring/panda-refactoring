@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Icon } from "@iconify/react";
 import { useRecoilValueLoadable } from "recoil";
@@ -18,7 +18,6 @@ import MarketList from "../../components/market/market-list";
 import { cls } from "../../common/util/class";
 
 const Market: NextPage = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFilterOpen, setFilterOpen] = useState<boolean>(false);
 
   const { state, contents: filteredList } = useRecoilValueLoadable(filteredMarketListState);
@@ -26,10 +25,6 @@ const Market: NextPage = () => {
   const openFilterOverlay = () => setFilterOpen(true);
 
   const closeFilterOverlay = () => setFilterOpen(false);
-
-  useEffect(() => {
-    if (state === "hasValue") setIsLoading(false);
-  }, [state]);
 
   return (
     <div>
@@ -63,7 +58,7 @@ const Market: NextPage = () => {
           <FilterList />
         </div>
       </div>
-      <MarketList marketData={filteredList} isLoading={isLoading} />
+      <MarketList marketData={filteredList} hasValue={state === "hasValue"} />
       <Navigation />
       <FloatingButton path="/create/market" />
     </div>

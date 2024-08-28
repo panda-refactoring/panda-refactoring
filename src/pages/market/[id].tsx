@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import Loading from "src/components/common/ui/loading";
 import Header from "../../components/common/header";
-import LoadingSpinner from "../../components/common/ui/loading-spinner";
 import ImageSlide from "../../components/market/detail/image-slide";
 import TitleArea from "src/components/market/detail/title-box";
 import CategoryArea from "src/components/market/detail/category-box";
@@ -63,11 +63,7 @@ const Product: NextPage = () => {
   return (
     <>
       <Header goBack />
-      {isLoading && (
-        <div className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
-          <LoadingSpinner />
-        </div>
-      )}
+      {isLoading && <Loading />}
       {hasProduct ? (
         <>
           <ImageSlide images={product.imgurl} isLoading={isLoading} />

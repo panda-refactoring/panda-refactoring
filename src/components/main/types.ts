@@ -10,11 +10,6 @@ export interface KeywordItemList {
   [key: string]: ProductData[];
 }
 
-export interface RecommendListProps {
-  selectedKeyword: string;
-  keywordItemList: KeywordItemList;
-}
-
 export interface RecommendButtonProps {
   refreshRecommends: (keywordItemList: KeywordItemList) => void;
   keywordItemList: KeywordItemList;

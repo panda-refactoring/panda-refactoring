@@ -10,7 +10,6 @@ import { cls } from "../../common/util/class";
 import { apiGet } from "../../service/request";
 import { translateClasses } from "../../common/consts/translate-class";
 import { ProductData } from "../../common/types/data.types";
-import useRecentstyle from "../../hooks/useRecentstyle";
 
 const RecentStyle: NextPage = () => {
   const { data: products } = useQuery<ProductData[]>({
@@ -18,7 +17,7 @@ const RecentStyle: NextPage = () => {
     queryFn: apiGet.GET_ITEMS,
   });
 
-  const { recentItems } = useRecentstyle({ products });
+  const recentItems = products?.slice(-10).reverse() ?? [];
 
   const { next, prev, transitionEnd, translateX, isMoving } = useSlide({
     list: recentItems,
@@ -36,10 +35,7 @@ const RecentStyle: NextPage = () => {
               <Icon icon="material-symbols:arrow-back-ios" />
             </button>
             <button onClick={next}>
-              <Icon
-                icon="material-symbols:arrow-back-ios"
-                className="rotate-180"
-              />
+              <Icon icon="material-symbols:arrow-back-ios" className="rotate-180" />
             </button>
           </div>
         </div>
@@ -54,11 +50,7 @@ const RecentStyle: NextPage = () => {
           )}
         >
           <li>
-            <ProductItem
-              {...(recentItems[recentItems.length - 1] as ProductData)}
-              imgw="w-[140px]"
-              imgh="h-[160px]"
-            />
+            <ProductItem {...(recentItems[recentItems.length - 1] as ProductData)} imgw="w-[140px]" imgh="h-[160px]" />
           </li>
           {recentItems.map(data => (
             <li key={data.id}>
@@ -66,25 +58,13 @@ const RecentStyle: NextPage = () => {
             </li>
           ))}
           <li>
-            <ProductItem
-              {...(recentItems[0] as ProductData)}
-              imgw="w-[140px]"
-              imgh="h-[160px]"
-            />
+            <ProductItem {...(recentItems[0] as ProductData)} imgw="w-[140px]" imgh="h-[160px]" />
           </li>
           <li>
-            <ProductItem
-              {...(recentItems[1] as ProductData)}
-              imgw="w-[140px]"
-              imgh="h-[160px]"
-            />
+            <ProductItem {...(recentItems[1] as ProductData)} imgw="w-[140px]" imgh="h-[160px]" />
           </li>
           <li>
-            <ProductItem
-              {...(recentItems[2] as ProductData)}
-              imgw="w-[140px]"
-              imgh="h-[160px]"
-            />
+            <ProductItem {...(recentItems[2] as ProductData)} imgw="w-[140px]" imgh="h-[160px]" />
           </li>
         </ul>
       </div>

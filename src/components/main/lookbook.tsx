@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
 
 import { useQuery } from "react-query";
 
@@ -7,7 +6,6 @@ import LookBookItem from "./lookbook-item";
 
 import { apiGet } from "../../service/request";
 import { LookbookData, LookbookDataMin } from "../../common/types/data.types";
-import useLookbook from "../../hooks/useLookbook";
 
 const LookBook: NextPage = () => {
   const { data: lookbooks } = useQuery<LookbookData[]>({
@@ -15,7 +13,11 @@ const LookBook: NextPage = () => {
     queryFn: apiGet.GET_LOOKS,
   });
 
-  const { lookbookList } = useLookbook({ lookbooks: lookbooks ?? [] });
+  const sortingWithFavoriteCounts = (lookbooks: LookbookData[]) => {
+    return lookbooks.sort((a, b) => b.favorite.length - a.favorite.length);
+  };
+
+  const lookbookList = lookbooks ? sortingWithFavoriteCounts(lookbooks).splice(0, 7) : [];
 
   return (
     <div>

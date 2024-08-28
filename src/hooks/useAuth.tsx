@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import useModal from "./useModal";
 import { apiGet } from "../service/request";
@@ -15,13 +15,9 @@ const useAuth = () => {
 
   const goLoginPage = () => router.push("/login");
 
-  const {
-    data,
-    mutate,
-    status: mutateStatus,
-  } = useMutation({
-    mutationFn: async (email: string) => await apiGet.GET_USER(email),
-    onError: err => console.log(err),
+  const { data, mutate, isLoading, status } = useMutation({
+    mutationKey: ["userData"],
+    mutationFn: (email: string) => apiGet.GET_USER(email),
   });
 
   useEffect(() => {
@@ -42,7 +38,7 @@ const useAuth = () => {
     }
   }, [session]);
 
-  return { userData: data?.user, status: mutateStatus };
+  return { userData: data?.user, isLoading, status };
 };
 
 export default useAuth;
