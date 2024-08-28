@@ -1,11 +1,33 @@
-# 판다 프로젝트 리팩토링 버전
+<div align="center">
+<h1>Panda-refactoring 🔮</h1>
+
+<p>2024.07.10 ~</p>
+<p>과거 토이 프로젝트를 리팩토링하는 프로젝트입니다.</p>
+</div>
+
+## 시작가이드
+
+![iOS badge](https://img.shields.io/badge/Node.js-v20.9.0-1fb6ff)
+![iOS badge](https://img.shields.io/badge/Npm-v10.1.0-orange)
+
+**개발모드로 실행**
+```jsx
+$ npm run dev
+```
+
+**프로젝트 빌드**
+```jsx
+$ npm run build
+```
+
+## 목록
 
 - [msw모킹](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/mocks/handlers.ts)
 - 폴더구조 재정의
 - 코드 정리
   - 안쓰는 코드, 주석제거, import구문의 정리
 - 관심사의 분리 & 컴포넌트 추상화 수준 높이기
-  - [컴포넌트 분리하기 (도메인 / 공통)]()
+  - [컴포넌트 분리하기 (도메인 / 공통)](https://github.com/panda-refactoring/panda-refactoring?tab=readme-ov-file#%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B6%84%EB%A6%AC)
   - [도메인 전용 로직을 커스텀 훅으로 분리하기]()
   - 공통 로직을 유틸함수로 분리하기
 - 명확한 이름
@@ -13,25 +35,27 @@
   - 상수화
   - [조건부 렌더링의 조건을 변수화]()
 - 코드 리팩토링
-  - [중복코드 추출, 긴 함수 리팩토링]()
-  - [플래그인수 제거]()
-  - [불필요한 상태 동기화 제거]()
+  - [중복코드 추출, 긴 함수 리팩토링](https://github.com/panda-refactoring/panda-refactoring?tab=readme-ov-file#%EC%A4%91%EB%B3%B5%EC%BD%94%EB%93%9C-%EC%B6%94%EC%B6%9C)
+  - [플래그인수 제거](https://github.com/panda-refactoring/panda-refactoring?tab=readme-ov-file#%ED%94%8C%EB%9E%98%EA%B7%B8%EC%9D%B8%EC%88%98-%EC%A0%9C%EA%B1%B0)
+  - [불필요한 상태 동기화 제거](https://github.com/panda-refactoring/panda-refactoring?tab=readme-ov-file#%EB%B6%88%ED%95%84%EC%9A%94%ED%95%9C-%EC%83%81%ED%83%9C-%EB%8F%99%EA%B8%B0%ED%99%94useeffect-%EC%A0%9C%EA%B1%B0)
   - 조건문, 반복문 리팩토링
 - 선언적인 코드
   - useQuery요청을 선언적으로 리팩토링
-  - [선언적 로딩처리 (isLoading => suspense)]()
-- [에러처리]()
+  - 선언적 로딩처리 (isLoading => suspense)
+- [에러처리](https://github.com/panda-refactoring/panda-refactoring?tab=readme-ov-file#%EC%A0%84%EC%97%AD-%EC%97%90%EB%9F%AC%ED%95%B8%EB%93%A4%EB%A7%81)
 - 테스트
 
----
+<br>
 
 ## 관련 글
 
-[[Refactoring] Chapter1. 폴더구조를 바꿔보자](https://velog.io/@rlorxl/Refactoring-Chapter1.-%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0%EB%A5%BC-%EB%B0%94%EA%BF%94%EB%B3%B4%EC%9E%90)
-[[Refactoring] Chapter2 .msw로 가짜 데이터를 모킹해보자 (비동기 문제해결)](https://velog.io/@rlorxl/Refactoring-Chapter2-.msw%EB%A1%9C-%EA%B0%80%EC%A7%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EB%AA%A8%ED%82%B9%ED%95%B4%EB%B3%B4%EC%9E%90-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0)
-[[Refactoring] Chapter3. 관심사분리 & useQuery hook을 사용해보자 (feat. SOLID 원칙)]()
-[[Refactoring] Chapter4. 불필요한 useEffect동기화를 제거해보자]()
-[[Refactoring] Chapter5. React query global 에러콜백과 Error Boundary를 통한 컴포넌트 에러 핸들링을 하자]()
+[[Refactoring] Chapter1. 폴더구조를 바꿔보자](https://velog.io/@rlorxl/Refactoring-Chapter1.-%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0%EB%A5%BC-%EB%B0%94%EA%BF%94%EB%B3%B4%EC%9E%90)<br>
+[[Refactoring] Chapter2 .msw로 가짜 데이터를 모킹해보자 (비동기 문제해결)](https://velog.io/@rlorxl/Refactoring-Chapter2-.msw%EB%A1%9C-%EA%B0%80%EC%A7%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EB%AA%A8%ED%82%B9%ED%95%B4%EB%B3%B4%EC%9E%90-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0)<br>
+[[Refactoring] Chapter3. 관심사분리 & useQuery hook을 사용해보자 (feat. SOLID 원칙)](https://velog.io/@rlorxl/Refactoring-Chapter3.-%EA%B4%80%EC%8B%AC%EC%82%AC%EB%B6%84%EB%A6%AC-useQuery-hook%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90-feat.-SOLID-%EC%9B%90%EC%B9%99)<br>
+[[Refactoring] Chapter4. 불필요한 useEffect동기화를 제거해보자](https://velog.io/@rlorxl/Refactoring-Chapter4.-%EB%B6%88%ED%95%84%EC%9A%94%ED%95%9C-useEffect%EB%8F%99%EA%B8%B0%ED%99%94%EB%A5%BC-%EC%A0%9C%EA%B1%B0%ED%95%B4%EB%B3%B4%EC%9E%90)<br>
+[[Refactoring] Chapter5. React query global 에러콜백과 Error Boundary를 통한 컴포넌트 에러 핸들링을 하자](https://velog.io/@rlorxl/Refactoring-Chapter5.-React-query-global-%EC%97%90%EB%9F%AC%EC%BD%9C%EB%B0%B1%EA%B3%BC-Error-Boundary%EB%A1%9C-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81%EC%9D%84-%ED%95%98%EC%9E%90-fu42zesv)<br>
+
+<br>
 
 ## 관심사 분리
 
@@ -71,7 +95,7 @@
 > **명확한 책임 분리와 재사용성 증가**
 > e.g. `Keyword` 컴포넌트는 개별 키워드 버튼을 렌더링하는 역할만 담당하기 때문에, 컴포넌트의 역할이 명확해졌고 컴포넌트를 다른 리스트에서도 재사용할 수 있다.
 
-[recommend.tsx 32 line ~](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/components/main/recommend.tsx)
+[recommend.tsx 32 line ~](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/components/main/recommend.tsx)<br>
 [keyword.tsx](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/components/main/keyword.tsx)
 
 **선언적인 코드**
@@ -117,15 +141,16 @@
 }
 ```
 
-**도메인관련 로직을 커스텀 훅으로 분리**
+### 도메인관련 로직을 커스텀 훅으로 분리
 
 도메인 관련 로직을 커스텀 훅으로 분리해 컴포넌트의 관심사를 분리한다.
 
-- [useComment]()
-- [useTextArea]()
-- [useRecentWord]()
+- [useComment](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/hooks/useComment.tsx)
+- [useRecentWord](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/hooks/useRecentWord.tsx)
+- [useTextArea](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/hooks/useTextArea.tsx)
+- [useModal](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/hooks/useModal.tsx)
 
-### 명확한 이름 정하기
+## 명확한 이름 정하기
 
 **파일-컴포넌트 명 통일**
 
@@ -141,7 +166,7 @@
 - `keywords={keywords}` → keywordItemList={keywordItemList}
 - `keyword={keyword}` → keyword={selectedKeyword}
 
-**조건부 렌더링의 조건을 변수화**
+### 조건부 렌더링의 조건을 변수화
 
 ```jsx
 // as-is
@@ -454,7 +479,7 @@ QueryClientProvider의 Wrapper역할을 수행하고 global 오류폴백을 렌�
 <QueryClientProvider client={queryClient}>
 ```
 
-[query-provider.tsx]()
+[query-provider.tsx](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/pages/query-provider-wrapper.tsx)
 
 **ErrorBoundary.tsx**
 
@@ -484,4 +509,4 @@ render() {
 }
 ```
 
-[error-boundary.tsx]()
+[error-boundary.tsx](https://github.com/panda-refactoring/panda-refactoring/blob/main/src/pages/error-boundary.tsx)
