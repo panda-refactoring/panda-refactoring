@@ -1,3 +1,6 @@
+![iOS badge](https://img.shields.io/badge/Node.js-v20.9.0-1fb6ff)
+![iOS badge](https://img.shields.io/badge/Npm-v10.1.0-orange)
+
 <div align="center">
 <h1>Panda-refactoring 🔮</h1>
 
@@ -7,8 +10,8 @@
 
 ## 시작가이드
 
-![iOS badge](https://img.shields.io/badge/Node.js-v20.9.0-1fb6ff)
-![iOS badge](https://img.shields.io/badge/Npm-v10.1.0-orange)
+- Node.js - v20.9.0
+- Npm - v10.1.0
 
 **개발모드로 실행**
 ```jsx
