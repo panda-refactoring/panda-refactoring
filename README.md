@@ -31,7 +31,7 @@ $ npm run build
   - 안쓰는 코드, 주석제거, import구문의 정리
 - 관심사의 분리 & 컴포넌트 추상화 수준 높이기
   - [컴포넌트 분리하기 (도메인 / 공통)](https://github.com/panda-refactoring/panda-refactoring?tab=readme-ov-file#%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B6%84%EB%A6%AC)
-  - [도메인 전용 로직을 커스텀 훅으로 분리하기]()
+  - [도메인 전용 로직을 커스텀 훅으로 분리하기](https://github.com/panda-refactoring/panda-refactoring/tree/main?tab=readme-ov-file#%EB%8F%84%EB%A9%94%EC%9D%B8%EA%B4%80%EB%A0%A8-%EB%A1%9C%EC%A7%81%EC%9D%84-%EC%BB%A4%EC%8A%A4%ED%85%80-%ED%9B%85%EC%9C%BC%EB%A1%9C-%EB%B6%84%EB%A6%AC)
   - 공통 로직을 유틸함수로 분리하기
 - 명확한 이름
   - [모호한 함수명, 변수명을 일관되고 이유있는 이름으로 바꾸기]()
